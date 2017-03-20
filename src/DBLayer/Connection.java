@@ -5,6 +5,9 @@ import java.sql.DriverManager;
 
 public class Connection {
     //Constants used to get access to the database
+    public static void main(String[] args) {
+        Connection.getInstance();
+    }
     private static final String  driver = "jdbc:sqlserver://kraka.ucn.dk";
     private static final String  databaseName = ";databaseName=dmaj0916_197306";
 
