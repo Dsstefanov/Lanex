@@ -1,7 +1,5 @@
 package ModelLayer;
 
-import com.sun.xml.internal.bind.v2.TODO;
-
 import java.util.ArrayList;
 
 /**
@@ -30,7 +28,7 @@ public class Container {
 
     public Container()
     {
-        /** 20' container*/
+        /**20' container*/
         height = 2.591;
         width = 2.438;
         length = 6.058;

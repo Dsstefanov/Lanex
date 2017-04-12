@@ -3,11 +3,7 @@ package DBLayer;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 
-public class Connection {
-    //Constants used to get access to the database
-    public static void main(String[] args) {
-        Connection.getInstance();
-    }
+public class DBConnection {
     private static final String  driver = "jdbc:sqlserver://kraka.ucn.dk";
     private static final String  databaseName = ";databaseName=dmaj0916_197306";
 
@@ -18,10 +14,10 @@ public class Connection {
     private static java.sql.Connection con;
 
     // an instance of the class is generated
-    private static Connection  instance = null;
+    private static DBConnection  instance = null;
 
     // the constructor is private to ensure that only one object of this class is created
-    private Connection()
+    private DBConnection()
     {
         String url = driver + databaseName + userName + password;
 
@@ -75,11 +71,11 @@ public class Connection {
         return (instance == null);
     }
     //this method is used to get the instance of the connection
-    public static Connection getInstance()
+    public static DBConnection getInstance()
     {
         if (instance == null)
         {
-            instance = new Connection();
+            instance = new DBConnection();
         }
         return instance;
     }
