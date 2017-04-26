@@ -9,4 +9,8 @@ public class ProductController {
 
     public ProductController(){
     }
+
+    public boolean create(){
+        return true;
+    }
 }
