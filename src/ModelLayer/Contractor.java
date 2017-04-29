@@ -22,4 +22,15 @@ public class Contractor extends Person {
     public void setCvr(int cvr) {
         this.cvr = cvr;
     }
+
+    public String getContractor() {
+        return "Contractor{ " +
+                "name=" + getName() +
+                ", address='" + getAddress() + '\'' +
+                ", email='" + getEmail() + '\'' +
+                ", phone=" + getPhone() +
+                ", city=" + getCity() +
+                ", id='" + getCvr() + '\'' +
+                '}';
+    }
 }

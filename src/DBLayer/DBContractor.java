@@ -12,14 +12,21 @@ import java.sql.Statement;
  * Created by Admin on 4/28/2017.
  */
 public class DBContractor {
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         try {
             new DBContractor().create("stefan","Denmark","bogstefdn@abv.bg","44113","aalborg",232323);
             System.out.println("success");
         } catch(SQLException e) {
             System.out.println("error");
         }
-    }
+    }*/
+    /*public static void main(String[] args) {
+        try {
+            System.out.println(new DBContractor().read(2666).getContractor());
+        } catch(SQLException e) {
+            System.out.println("error");
+        }
+    }*/
 
 
     public Contractor create(String name, String address, String email, String phone, String city, int cvr) throws SQLException{
@@ -47,11 +54,17 @@ public class DBContractor {
         return contractor;
     }
 
-    public Contractor read(int cvr) throws SQLException{ //TODO need to fix with join
+    public Contractor read(int cvr) throws SQLException{
         Contractor contractor = null;
         try {
             Connection conn = DBConnection.getInstance().getDBcon();
-            String sql = String.format("SELECT * FROM contractor WHERE cvr = %d", cvr);
+            //String sql = String.format("SELECT * FROM contractor WHERE cvr = %d", cvr);
+            String sql = String.format("SELECT p.id, p.name , p.address, p.email, p.city, p.phone, " +
+                    "c.cvr FROM person p \n" +
+                    "INNER JOIN contractor c \n" +
+                    "ON p.id = c.person_id \n" +
+                    "WHERE c.cvr =" + cvr + " \n" +
+                    "ORDER BY p.id ASC");
             ResultSet rs = conn.createStatement().executeQuery(sql);
             while(rs.next()) {
                 contractor = buildObject(rs);
