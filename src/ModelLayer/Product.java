@@ -4,24 +4,26 @@ package ModelLayer;
  * Created by Luke on 21/03/2017.
  */
 public class Product {
-    private double productID;
+    private String productID;
     private int currentQuantity;
     private int minQuantity;
     private int maxQuantity;
+    private int cvr;
 
-    public Product(double productID, int currentQuantity, int minQuantity, int maxQuantity) {
+    public Product(String productID, int currentQuantity, int minQuantity, int maxQuantity, int cvr) {
         this.productID = productID;
         this.currentQuantity = currentQuantity;
         this.minQuantity = minQuantity;
         this.maxQuantity = maxQuantity;
+        this.cvr = cvr;
     }
 
-    public double getProductID() {
+    public String getProductID() {
 
         return productID;
     }
 
-    public void setProductID(double productID) {
+    public void setProductID(String productID) {
         this.productID = productID;
     }
 
@@ -49,6 +51,11 @@ public class Product {
         this.maxQuantity = maxQuantity;
     }
 
+    public int getCvr() {
+        return cvr;
+    }
 
-
+    public void setCvr(int cvr) {
+        this.cvr = cvr;
+    }
 }
