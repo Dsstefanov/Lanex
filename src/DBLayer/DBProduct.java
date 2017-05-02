@@ -9,10 +9,19 @@ import java.sql.SQLException;
  * Created by RedJohn on 4/26/2017.
  */
 public class DBProduct {
-
-    public boolean create(String productID, int currentQuantity, int minQuantity, int maxQuantity, int cvr)
+    public static void main(String[] args) {
+        Product product = new Product("123456",140,20,200,2666);
+        try {
+            new DBProduct().update(product);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("success");
+    }
+    public Product create(String productID, int currentQuantity, int minQuantity, int maxQuantity, int cvr)
     {
-        String sql = String.format("INSERT INTO product(barcode,current_quantity,min_quantity,max_quantity,cvr)values('%s','%d','%d','%d','%d')",productID,currentQuantity,minQuantity,maxQuantity,cvr);
+        Product product = new Product(productID,currentQuantity,minQuantity,maxQuantity,cvr);
+        String sql = String.format("INSERT INTO Product VALUES ('%s', '%d', '%d', '%d', '%d') ",productID,currentQuantity,minQuantity,maxQuantity,cvr);
 
 
         try {
@@ -21,9 +30,10 @@ public class DBProduct {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        DBConnection.closeConnection();
-
-        return true;
+        finally {
+            DBConnection.closeConnection();
+        }
+        return product;
     }
     public Product read(String productId) throws SQLException{
         Product product = null;
@@ -60,7 +70,9 @@ public class DBProduct {
     public boolean update(Product product) throws SQLException{
         try {
             java.sql.Connection conn = DBConnection.getInstance().getDBcon();
-            String sql = String.format("UPDATE Product SET barcode='%s',current_quantity='%d',min_quantity='%d',max_quantity='%d',cvr='%d' WHERE barcode = '%d'",product.getProductID(),product.getCurrentQuantity(),product.getMinQuantity(),product.getMaxQuantity(),product.getCvr(),product.getProductID());
+            String productId = product.getProductID();
+
+            String sql = String.format("UPDATE Product SET barcode='%s', current_quantity='%d', min_quantity='%d', max_quantity='%d', cvr='%d' WHERE barcode = '%d'",product.getProductID(),product.getCurrentQuantity(),product.getMinQuantity(),product.getMaxQuantity(),product.getCvr(),product.getProductID());
             conn.createStatement().executeUpdate(sql);
         } catch(SQLException e) {
             e.printStackTrace();
