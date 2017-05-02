@@ -3,6 +3,7 @@ package DBLayer;
 import ModelLayer.Contractor;
 import ModelLayer.Employee;
 import ModelLayer.Warehouse;
+import com.sun.xml.internal.bind.v2.TODO;
 
 import java.sql.*;
 
@@ -32,8 +33,7 @@ public class DBEmployee {
         }
     }
 
-/////////DONE//////////////////////////////////
-/////////DONE//////////////////////////////////
+
     public Employee create(String name, String address, String email, String phone, String city)throws SQLException{
         Employee employee = new Employee(name, address, email, phone, city);
         String sql = String.format("INSERT INTO person (name, address, email, phone, city, category) VALUES ('%s', '%s', '%s', '%s', '%s', 1)", name, address, email, phone, city);
@@ -59,9 +59,7 @@ public class DBEmployee {
         return employee;
     }
 
-
-    /////////To be DONE//////////////////////////////////
-/////////To be DONE//////////////////////////////////
+    /*TODO method*/
     public Employee read(int id) throws SQLException{
         Employee employee = new Employee();
         try{
@@ -92,8 +90,7 @@ public class DBEmployee {
     }
 
 
-    /////////To be DONE//////////////////////////////////
-/////////To be DONE//////////////////////////////////
+    /*TODO method*/
     public Employee update(int id) throws SQLException{
         Employee employee = new Employee();
         try {
@@ -109,9 +106,6 @@ public class DBEmployee {
     }
 
 
-
-    /////////DONE//////////////////////////////////
-/////////DONE//////////////////////////////////
     public boolean delete(int id)throws SQLException{
         try {
             java.sql.Connection conn = DBConnection.getInstance().getDBcon();
@@ -127,7 +121,5 @@ public class DBEmployee {
         }
         return true;
     }
-
-
 
 }
