@@ -8,7 +8,7 @@ import java.sql.SQLException;
 /**
  * Created by RedJohn on 4/26/2017.
  */
-public class DBProduct {
+public class    DBProduct {
 
     public boolean create(String productID, int currentQuantity, int minQuantity, int maxQuantity, int cvr)
     {

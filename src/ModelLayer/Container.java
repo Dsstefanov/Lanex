@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class Container {
     /**3D Dimensions of the container in meters, digits after comma represent
      * subdivisions of meters(aka: centimeters, millimeters etc)*/
+    private String containerId;
     private double height;
     private double width;
     private double length;
@@ -17,8 +18,9 @@ public class Container {
     //TODO: Change the implementation so that the container contains crates that store the products.
     private ArrayList<Product> products;
 
-    public Container(double height, double width, double length, double maxCapacity, ArrayList<Product> products)
+    public Container(String containerId, double height, double width, double length, double maxCapacity, ArrayList<Product> products)
     {
+        this.containerId = containerId;
         this.height = height;
         this.width = width;
         this.length = length;
@@ -74,5 +76,13 @@ public class Container {
 
     public void setProducts(ArrayList<Product> products) {
         this.products = products;
+    }
+
+    public String getContainerId() {
+        return containerId;
+    }
+
+    public void setContainerId(String containerId) {
+        this.containerId = containerId;
     }
 }

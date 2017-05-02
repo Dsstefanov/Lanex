@@ -78,11 +78,11 @@ public class DBWarehouse {
         }
         return warehouse;
     }
-    private Warehouse buildObject(ResultSet rs) throws SQLException{
+    private Warehouse buildObject(ResultSet rs) throws SQLException {
         Warehouse warehouse = new Warehouse();
         try {
             warehouse.setId(rs.getInt("id"));
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             throw e;
         }
