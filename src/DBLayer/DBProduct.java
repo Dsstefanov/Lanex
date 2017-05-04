@@ -2,6 +2,7 @@ package DBLayer;
 
 import ModelLayer.Product;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -10,9 +11,10 @@ import java.sql.SQLException;
  */
 public class DBProduct {
     public static void main(String[] args) {
-        Product product = new Product("123456",140,20,200,2666);
+
         try {
-            new DBProduct().update(product);
+            Product product = new Product("123456",152,20,200,2666);
+            new DBProduct().delete("123456");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -71,9 +73,20 @@ public class DBProduct {
         try {
             java.sql.Connection conn = DBConnection.getInstance().getDBcon();
             String productId = product.getProductID();
-
-            String sql = String.format("UPDATE Product SET barcode='%s', current_quantity='%d', min_quantity='%d', max_quantity='%d', cvr='%d' WHERE barcode = '%d'",product.getProductID(),product.getCurrentQuantity(),product.getMinQuantity(),product.getMaxQuantity(),product.getCvr(),product.getProductID());
-            conn.createStatement().executeUpdate(sql);
+            int curentQuantity = product.getCurrentQuantity();
+            int minQuantity = product.getMinQuantity();
+            int maxQuantity = product.getMaxQuantity();
+            int cvr = product.getCvr();
+            /*String sql = String.format("UPDATE Product SET barcode = '%s', current_quantity = '%d', min_quantity = '%d', max_quantity = '%d', cvr = '%d' WHERE barcode = '%s' ;",product.getProductID(),product.getCurrentQuantity(),product.getMinQuantity(),product.getMaxQuantity(),product.getCvr(),product.getProductID());
+            */
+            PreparedStatement psttm = conn.prepareStatement("UPDATE Product SET current_quantity = ?, min_quantity = ?, max_quantity = ?, cvr = ? WHERE barcode = ? ");
+           // psttm.setNString(1,productId);
+            psttm.setInt(1,curentQuantity);
+            psttm.setInt(2,minQuantity);
+            psttm.setInt(3,maxQuantity);
+            psttm.setInt(4,cvr);
+            psttm.setNString(5,productId);
+            psttm.executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();
             throw e;
@@ -85,7 +98,7 @@ public class DBProduct {
     public boolean delete(String productId)throws SQLException{
         try {
             java.sql.Connection conn = DBConnection.getInstance().getDBcon();
-            String sql = String.format("Delete from warehouse where barcode='%s'", productId);
+            String sql = String.format("Delete from Product where barcode='%s'", productId);
             conn.createStatement().executeUpdate(sql);
         } catch(SQLException e) {
             e.printStackTrace();
