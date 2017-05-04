@@ -17,9 +17,9 @@ public class ProductController {
 
     public boolean create(String productId, int currentQuantity,int minQuantity,int maxQuantity,int cvr){
 
-        boolean aux = dbProduct.create(productId,currentQuantity,minQuantity,maxQuantity,cvr);
+        dbProduct.create(productId,currentQuantity,minQuantity,maxQuantity,cvr);
 
-        return aux;
+        return true;
     }
 
     public Product read(String productId){

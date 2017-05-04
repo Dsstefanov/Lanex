@@ -13,6 +13,11 @@ public class Employee extends Person {
         this.workId = workId;
     }
 
+    public Employee() {
+        super(null,null,null,null,null);
+    }
+
+
     public int getWorkId() {
         return workId;
     }
