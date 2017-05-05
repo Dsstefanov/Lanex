@@ -12,23 +12,6 @@ import java.sql.Statement;
  * Created by Admin on 4/28/2017.
  */
 public class DBContractor {
-    /*public static void main(String[] args) {
-        try {
-            new DBContractor().create("stefan","Denmark","bogstefdn@abv.bg","44113","aalborg",232323);
-            System.out.println("success");
-        } catch(SQLException e) {
-            System.out.println("error");
-        }
-    }*/
-    /*public static void main(String[] args) {
-        try {
-            System.out.println(new DBContractor().read(2666).getContractor());
-        } catch(SQLException e) {
-            System.out.println("error");
-        }
-    }*/
-
-
     public Contractor create(String name, String address, String email, String phone, String city, int cvr) throws SQLException{
         Contractor contractor = new Contractor(name, address, email, phone, city, cvr);
         String sql = String.format("INSERT INTO person (name, address, email, phone, city, category) VALUES ('%s', '%s', '%s', '%s', '%s', 2)", name, address, email, phone, city);
@@ -40,7 +23,7 @@ public class DBContractor {
             ResultSet rs = conn.createStatement().executeQuery(sql2);
 
             if(rs.next()) {
-                String sql3 = "INSERT INTO contractor (cvr, person_id) VALUES (2666,"+rs.getInt("id")+")";
+                String sql3 = "INSERT INTO contractor (cvr, person_id) VALUES ("+cvr+","+rs.getInt("id")+")";
                 conn.createStatement().executeUpdate(sql3);
             }else{
                 throw new SQLException();
@@ -91,12 +74,10 @@ public class DBContractor {
         return  contractor;
     }
 
-    public boolean delete(int cvr) throws SQLException{
+    public boolean delete(int id) throws SQLException{
         try {
             Connection conn = DBConnection.getInstance().getDBcon();
-            String sql = String.format("DELETE FROM contractor WHERE cvr = %d", cvr);
-            conn.createStatement().executeUpdate(sql);
-            String sql2 = String.format("DELETE FROM person WHERE "); // TODO finish the Database table - contractor
+            String sql = String.format("DELETE FROM person WHERE id = '%d'", id);
             conn.createStatement().executeUpdate(sql);
         } catch (SQLException e) {
             e.printStackTrace();

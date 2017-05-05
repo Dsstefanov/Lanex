@@ -53,4 +53,14 @@ public abstract class Person {
     public void setCity(String city) {
         this.city = city;
     }
+
+    @Override
+    public String toString() {
+        return "Contractor{\n" +
+                "name=" + getName() +
+                ",\n address='" + getAddress() +
+                ",\n email='" + getEmail() +
+                ",\n phone=" + getPhone() +
+                ",\n city=" + getCity() + '}' + "\n";
+    }
 }

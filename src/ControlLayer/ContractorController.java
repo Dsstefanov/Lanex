@@ -25,13 +25,13 @@ public class ContractorController {
         }
     }
 
-    /*public String read(int cvr) {
+    public String read(int cvr) {
         try {
            return dbContractor.read(cvr).toString();
         } catch (SQLException e) {
             return null;
         }
-    }*/
+    }
 
     public boolean update(int id, String name) {
         try {
