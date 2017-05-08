@@ -13,5 +13,4 @@ public interface IDBEmployee {
     public Employee read(int id) throws SQLException;
     public Employee update(int id) throws SQLException;
     public boolean delete(int id)throws SQLException;
-
 }

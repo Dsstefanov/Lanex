@@ -5,7 +5,6 @@ package ModelLayer;
  */
 public class Warehouse {
     int id;
-
     public void setId(int id) {
         this.id = id;
     }
