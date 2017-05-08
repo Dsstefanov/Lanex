@@ -10,7 +10,7 @@ import java.sql.*;
 /**
  * Created by USER on 12.4.2017 г..
  */
-public class DBEmployee {
+public class DBEmployee implements IDBEmployee {
     /**
      *
     // * @param name: employee name
@@ -22,18 +22,7 @@ public class DBEmployee {
      * @throws SQLException thrown if insertion fails
      */
 
-
-    public static void main(String[] args) {
-        try {
-           // new DBEmployee().create("Nasko","here","donno","123456","Aalborg");
-           new DBEmployee().delete(29);
-            System.out.println("success");
-        }catch (SQLException e){
-            System.out.println("error");
-        }
-    }
-
-
+    @Override
     public Employee create(String name, String address, String email, String phone, String city)throws SQLException{
         Employee employee = new Employee(name, address, email, phone, city);
         String sql = String.format("INSERT INTO person (name, address, email, phone, city, category) VALUES ('%s', '%s', '%s', '%s', '%s', 1)", name, address, email, phone, city);
@@ -60,6 +49,7 @@ public class DBEmployee {
     }
 
     /*TODO method*/
+    @Override
     public Employee read(int id) throws SQLException{
         Employee employee = new Employee();
         try{
@@ -91,6 +81,7 @@ public class DBEmployee {
 
 
     /*TODO method*/
+    @Override
     public Employee update(int id) throws SQLException{
         Employee employee = new Employee();
         try {
@@ -105,7 +96,7 @@ public class DBEmployee {
         return employee;
     }
 
-
+    @Override
     public boolean delete(int id)throws SQLException{
         try {
             java.sql.Connection conn = DBConnection.getInstance().getDBcon();
