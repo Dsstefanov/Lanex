@@ -11,7 +11,8 @@ import java.sql.Statement;
 /**
  * Created by Admin on 4/28/2017.
  */
-public class DBContractor {
+public class DBContractor implements DBIFContractor {
+    @Override
     public Contractor create(String name, String address, String email, String phone, String city, int cvr) throws SQLException{
         Contractor contractor = new Contractor(name, address, email, phone, city, cvr);
         String sql = String.format("INSERT INTO person (name, address, email, phone, city, category) VALUES ('%s', '%s', '%s', '%s', '%s', 2)", name, address, email, phone, city);
@@ -37,6 +38,7 @@ public class DBContractor {
         return contractor;
     }
 
+    @Override
     public Contractor read(int cvr) throws SQLException{
         Contractor contractor = null;
         try {
@@ -61,6 +63,7 @@ public class DBContractor {
         return contractor;
     }
 
+    @Override
     public Contractor update(int id, String name) throws SQLException {
         Contractor contractor = new Contractor();
         try {
@@ -74,6 +77,7 @@ public class DBContractor {
         return  contractor;
     }
 
+    @Override
     public boolean delete(int id) throws SQLException{
         try {
             Connection conn = DBConnection.getInstance().getDBcon();
@@ -88,6 +92,7 @@ public class DBContractor {
         return true;
     }
 
+    @Override
     public ArrayList<Person> readAll() throws SQLException {
         ArrayList<Person> person = new ArrayList<>();
         String sql = "SELECT * FROM person WHERE category = 2";

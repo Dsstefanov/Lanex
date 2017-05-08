@@ -1,6 +1,7 @@
 package DBLayer;
 
 import ModelLayer.Contractor;
+import org.junit.After;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -13,13 +14,13 @@ public class DBContractorTest {
 
     @org.junit.Before
     public void setUp() throws Exception {
-        try {
+        /*try {
             DBCleanup.cleanDB();//TODO fix the cleanDB class
         }
         catch(Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Could not clean up the db");
-        }
+        }*/
         dbCon = new DBContractor();
     }
 
