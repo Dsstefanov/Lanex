@@ -1,6 +1,7 @@
 package ControlLayer;
 
 import DBLayer.DBContractor;
+import ModelLayer.Contractor;
 import ModelLayer.Person;
 
 import java.sql.SQLException;
@@ -33,9 +34,9 @@ public class ContractorController {
         }
     }
 
-    public boolean update(int id, String name) {
+    public boolean update(Contractor contractor, int cvr) {
         try {
-            dbContractor.update(id, name);
+            dbContractor.update(contractor, cvr);
             return true;
         } catch (SQLException e) {
             return false;

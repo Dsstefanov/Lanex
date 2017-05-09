@@ -24,6 +24,12 @@ public class DBContractorTest {
         dbCon = new DBContractor();
     }
 
+    @After
+    public void tearDown() throws Exception {
+        ///
+    }
+
+
     @org.junit.Test
     public void create() throws Exception {
         try {
@@ -60,9 +66,11 @@ public class DBContractorTest {
     }
 
     @Test
-    public void update() throws Exception {
+    public void update() throws Exception { //TODO finish the update fields
         try {
-            dbCon.update(1,"exampleName");
+            Contractor contractor = dbCon.read(556655);
+            assertNotNull(dbCon.read(556655));
+            dbCon.update(contractor, 556655);
         } catch(Exception e) {
             fail();
             e.getMessage();

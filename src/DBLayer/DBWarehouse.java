@@ -7,16 +7,7 @@ import java.sql.SQLException;
 /**
  * Created by USER on 26.4.2017 г..
  */
-public class DBWarehouse {
-    public static void main(String[] args) {
-        try {
-            new DBWarehouse().delete(2);
-            System.out.println("success");
-        }catch (SQLException e){
-            System.out.println("error");
-        }
-    }
-
+public class DBWarehouse implements IDBWarehouse{
     /**
      * @return Warehouse object
      * @throws SQLException: if something goes wrong
@@ -90,18 +81,17 @@ public class DBWarehouse {
         return warehouse;
     }
 
-    public Warehouse update(int id) throws SQLException{
-        Warehouse warehouse = new Warehouse();
+    public boolean update(Warehouse warehouse) throws SQLException{
         try {
             java.sql.Connection conn = DBConnection.getInstance().getDBcon();
-            String sql = String.format("UPDATE customer SET something=something WHERE id = '%d'",id);//TODO modify the script when table is updated
+            String sql = String.format("UPDATE customer SET something=something WHERE id = '%d'",warehouse.getId());//TODO modify the script when table is updated
             conn.createStatement().executeUpdate(sql);
         } catch(SQLException e) {
             e.printStackTrace();
             throw e;
         }
 
-        return warehouse;
+        return true;
     }
     public boolean delete(int id)throws SQLException{
        try {

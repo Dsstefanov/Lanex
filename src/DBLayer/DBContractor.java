@@ -3,15 +3,13 @@ package DBLayer;
 import ModelLayer.Contractor;
 import ModelLayer.Person;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
-import java.sql.Connection;
-import java.sql.Statement;
+
 /**
  * Created by Admin on 4/28/2017.
  */
-public class DBContractor implements DBIFContractor {
+public class DBContractor implements IDBContractor {
     @Override
     public Contractor create(String name, String address, String email, String phone, String city, int cvr) throws SQLException{
         Contractor contractor = new Contractor(name, address, email, phone, city, cvr);
@@ -64,17 +62,31 @@ public class DBContractor implements DBIFContractor {
     }
 
     @Override
-    public Contractor update(int id, String name) throws SQLException {
-        Contractor contractor = new Contractor();
+    public boolean update(Contractor contractor, int cvr) throws SQLException {
         try {
             Connection conn = DBConnection.getInstance().getDBcon();
-            String sql = String.format("UPDATE person SET name = '%s' WHERE id = '%d'", name, id); // TODO mofidy the fields
-            conn.createStatement().executeUpdate(sql);
+            String name = contractor.getName();
+            String address = contractor.getAddress();
+            String email = contractor.getEmail();
+            String phone = contractor.getPhone();
+            String city = contractor.getCity();
+            PreparedStatement preparedStatement = conn.prepareStatement("UPDATE Person \n" +
+                    "SET name = ?, address = ?, email = ?, city = ?, phone = ?\n" +
+                    "FROM Person p\n" +
+                    "INNER JOIN Contractor c\n" +
+                    "ON p.id = c.person_id\n" +
+                    "WHERE c.cvr = cvr");
+            preparedStatement.setNString(1,name);
+            preparedStatement.setNString(2,address);
+            preparedStatement.setNString(3,email);
+            preparedStatement.setNString(4,city);
+            preparedStatement.setNString(5,phone);
+            preparedStatement.executeUpdate();
         }catch (SQLException e) {
             e.printStackTrace();
             throw e;
         }
-        return  contractor;
+        return true;
     }
 
     @Override

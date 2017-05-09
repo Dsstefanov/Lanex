@@ -24,8 +24,7 @@ public class WarehouseController {
     }
     public boolean update(int id){
         try{
-            new DBWarehouse().update(id);
-            return true;
+            return new DBWarehouse().update(new DBWarehouse().read(id));
         }catch (SQLException e){
             return false;
         }
