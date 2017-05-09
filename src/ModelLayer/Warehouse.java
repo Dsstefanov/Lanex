@@ -5,6 +5,23 @@ package ModelLayer;
  */
 public class Warehouse {
     int id;
+    private float length;
+    private float width;
+    private float height;
+
+    public Warehouse(float length, float width, float height) {
+        this.length = length;
+        this.width = width;
+        this.height = height;
+    }
+
+    public Warehouse(int id, float length, float width, float height) {
+        this.id = id;
+        this.length = length;
+        this.width = width;
+        this.height = height;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -17,6 +34,9 @@ public class Warehouse {
     public String toString() {
         return "Warehouse{" +
                 "id=" + id +
+                ", length=" + length +
+                ", width=" + width +
+                ", height=" + height +
                 '}';
     }
 }

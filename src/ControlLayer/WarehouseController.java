@@ -7,9 +7,9 @@ import java.sql.SQLException;
  * Created by USER on 26.4.2017 г..
  */
 public class WarehouseController {
-    public boolean create(){
+    public boolean create(float length, float width, float height){
         try{
-            new DBWarehouse().create();
+            new DBWarehouse().create(length, width, height);
             return true;
         }catch (SQLException e){
             return false;

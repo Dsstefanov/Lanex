@@ -12,13 +12,13 @@ import static org.junit.Assert.*;
  * Created by USER on 8.5.2017 г..
  */
 public class DBWarehouseTest {
-    DBWarehouse dbWarehouse=null;
-    Warehouse warehouse = null;
+    private DBWarehouse dbWarehouse=null;
+    private Warehouse warehouse = null;
 
     @Before
     public void setUp() throws Exception {
         dbWarehouse = new DBWarehouse();
-        warehouse = dbWarehouse.create();
+        warehouse = dbWarehouse.create(120, 20, 20);
     }
 
     @Test
