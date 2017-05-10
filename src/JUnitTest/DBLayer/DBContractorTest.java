@@ -3,7 +3,7 @@ package DBLayer;
 import ModelLayer.Contractor;
 import org.junit.After;
 import org.junit.Test;
-
+import java.sql.*;
 import static org.junit.Assert.*;
 
 /**
@@ -11,6 +11,7 @@ import static org.junit.Assert.*;
  */
 public class DBContractorTest {
     DBContractor dbCon;
+    boolean isDeleted = false;
 
     @org.junit.Before
     public void setUp() throws Exception {
@@ -21,47 +22,48 @@ public class DBContractorTest {
             e.printStackTrace();
             throw new RuntimeException("Could not clean up the db");
         }*/
-        dbCon = new DBContractor();
+        try{
+            dbCon = new DBContractor();
+            dbCon.create("testName","Skensevaj","testMail@gmail.bg","44113","Aarhus",556655);
+        } catch (Exception e){
+            System.out.println("Couldn't insert the contractor in the DB");
+            fail();
+        }
     }
 
     @After
     public void tearDown() throws Exception {
-        ///
+        if (!isDeleted) {
+            try {
+                dbCon.delete(getContractorId());
+            } catch (Exception e) {
+                System.out.println("Couldn't remove the test contractor from the DB");
+                fail();
+            }
+        }
     }
 
 
     @org.junit.Test
     public void create() throws Exception {
         try {
-            Contractor contractor = dbCon.create("testName","Skensevaj","testMail@gmail.bg","44113","aalborg",556655);
+            Contractor contractor = new Contractor("testName","Skensevaj","testMail@gmail.bg","44113","Aarhus",556655);
             assertNotNull(contractor);
-            contractor.setName("testName");
-            contractor.setAddress("Skensevaj");
-            contractor.setEmail("testMail@gmail.bg");
-            contractor.setPhone("44113");
-            contractor.setCity("aalborg");
-            contractor.setCvr(556655);
-            assertEquals("testName", contractor.getName());
-            assertEquals("Skensevaj", contractor.getAddress());
-            assertEquals("testMail@gmail.bg", contractor.getEmail());
-            assertEquals("44113", contractor.getPhone());
-            assertEquals("aalborg", contractor.getCity());
-            assertEquals(556655, contractor.getCvr());
         } catch(Exception e) {
-            fail();
             e.getMessage();
+            fail();
         }
     }
 
     @Test
-    public void read() throws Exception {
+    public void read() throws Exception { //raboti
         try {
             dbCon.read(556655);
             assertNotNull(dbCon.read(556655));
             System.out.println(dbCon.read(556655).getContractor());
         } catch(Exception e) {
-            fail();
             e.getMessage();
+            fail();
         }
     }
 
@@ -72,19 +74,19 @@ public class DBContractorTest {
             assertNotNull(dbCon.read(556655));
             dbCon.update(contractor, 556655);
         } catch(Exception e) {
-            fail();
             e.getMessage();
+            fail();
         }
     }
 
     @Test
     public void delete() throws Exception {
         try {
-            dbCon.delete(1);
-            assertTrue(dbCon.delete((1)));
+            isDeleted = dbCon.delete(getContractorId());
+            assertTrue(isDeleted);
         } catch(Exception e) {
-            fail();
             e.getMessage();
+            fail();
         }
     }
 
@@ -94,9 +96,26 @@ public class DBContractorTest {
             dbCon.readAll().forEach(x -> {System.out.print(x.toString());});
             assertNotNull(dbCon.readAll());
         } catch(Exception e) {
-            fail();
             e.getMessage();
+            fail();
         }
+    }
+
+    public int getContractorId() {
+        try {
+            int currentID;
+            Connection conn = DBConnection.getInstance().getDBcon();
+            String sql = "SELECT TOP 1 id FROM Person ORDER BY id DESC";
+            ResultSet rs = conn.createStatement().executeQuery(sql);
+            if (rs.next()) {
+                currentID = rs.getInt("id");
+                return currentID;
+            }
+        } catch (Exception e) {
+            System.out.println("Couldn't return the current id");
+            fail();
+        }
+        return 0;
     }
 
 }

@@ -85,6 +85,8 @@ public class DBContractor implements IDBContractor {
         }catch (SQLException e) {
             e.printStackTrace();
             throw e;
+        } finally {
+            DBConnection.closeConnection();
         }
         return true;
     }
