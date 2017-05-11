@@ -3,6 +3,7 @@ package ControlLayer;
 import DBLayer.DBContractor;
 import ModelLayer.Contractor;
 import ModelLayer.Person;
+import ValidatorLayer.Validator;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,17 +13,25 @@ import java.util.ArrayList;
  */
 public class ContractorController {
     private DBContractor dbContractor;
+    Validator validator = new Validator();
 
     public ContractorController() {
         dbContractor = new DBContractor();
     }
 
-    public boolean create() {
+    public boolean create(String firstLastName, String address, String email, String phone, String city, int cvr) {
         try {
+            validator.validateName(firstLastName);
+            validator.validateAddress(address);
+            validator.validateEmail(email);
+            validator.validatePhone(phone);
+            validator.validateCity(city);
+            validator.validateCVR(cvr);
             dbContractor.create(null, null, null, null, null, 0);
             return true;
         } catch (SQLException e) {
-            return  false;
+            e.getMessage();
+            return false;
         }
     }
 
