@@ -25,7 +25,7 @@ public class DBContractor implements IDBContractor {
                 String sql3 = "INSERT INTO contractor (cvr, person_id) VALUES ("+cvr+","+rs.getInt("id")+")";
                 conn.createStatement().executeUpdate(sql3);
             }else{
-                throw new SQLException();
+                throw new SQLException("Something went wrong with inserting the data into the contractor");
             }
 
         } catch (SQLException e){
@@ -85,6 +85,8 @@ public class DBContractor implements IDBContractor {
         }catch (SQLException e) {
             e.printStackTrace();
             throw e;
+        } finally {
+            DBConnection.closeConnection();
         }
         return true;
     }

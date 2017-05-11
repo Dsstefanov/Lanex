@@ -1,6 +1,7 @@
 package DBLayer;
 import ModelLayer.Warehouse;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -8,17 +9,28 @@ import java.sql.SQLException;
  * Created by USER on 26.4.2017 г..
  */
 public class DBWarehouse implements IDBWarehouse{
+    public static void main(String[] args) {
+        try {
+            new DBWarehouse().create(120, 20, 20);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
     /**
      * @return Warehouse object
      * @throws SQLException: if something goes wrong
      */
-    public Warehouse create() throws SQLException{
-        Warehouse warehouse = new Warehouse();
-        String sql = "INSERT INTO warehouse DEFAULT VALUES";
-
+    public synchronized Warehouse create(float length, float width, float height) throws SQLException{
+        Warehouse warehouse = new Warehouse(length,width,height);
         try{
             java.sql.Connection conn = DBConnection.getInstance().getDBcon();
-            conn.createStatement().executeUpdate(sql);
+            PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO Warehouse " +
+                    "(length, width, height) VALUES " +
+                    "(?,?,?)");
+            preparedStatement.setFloat(1,length);
+            preparedStatement.setFloat(2,width);
+            preparedStatement.setFloat(3,height);
+            preparedStatement.executeUpdate();
             String sql2 = "SELECT TOP 1 id FROM warehouse ORDER BY id DESC";
             ResultSet rs = conn.createStatement().executeQuery(sql2);
             if (rs.next()){
@@ -69,11 +81,11 @@ public class DBWarehouse implements IDBWarehouse{
         }
         return warehouse;
     }
-    private Warehouse buildObject(ResultSet rs) throws SQLException {
-        Warehouse warehouse = new Warehouse();
+    private Warehouse buildObject(ResultSet rs) throws SQLException{
+        Warehouse warehouse = new Warehouse(rs.getFloat("length"), rs.getFloat("height"), rs.getFloat("width"));
         try {
             warehouse.setId(rs.getInt("id"));
-        } catch (SQLException e) {
+        } catch(SQLException e) {
             e.printStackTrace();
             throw e;
         }
