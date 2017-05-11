@@ -21,13 +21,13 @@ public class ContractorController {
 
     public boolean create(String firstLastName, String address, String email, String phone, String city, int cvr) {
         try {
-            validator.validateName(firstLastName);
-            validator.validateAddress(address);
-            validator.validateEmail(email);
-            validator.validatePhone(phone);
-            validator.validateCity(city);
-            validator.validateCVR(cvr);
-            dbContractor.create(null, null, null, null, null, 0);
+            String validateName = validator.validateName(firstLastName);
+            String validateAddress = validator.validateAddress(address);
+            String validateEmail = validator.validateEmail(email);
+            String validatePhone = validator.validatePhone(phone);
+            String validateCity = validator.validateCity(city);
+            int validateCVR = validator.validateCVR(cvr);
+            dbContractor.create(validateName, validateAddress, validateEmail, validatePhone, validateCity, validateCVR);
             return true;
         } catch (SQLException e) {
             e.getMessage();

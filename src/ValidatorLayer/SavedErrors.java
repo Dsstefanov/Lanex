@@ -4,11 +4,16 @@ import java.util.HashMap;
 
 /**
  * Created by Admin on 5/10/2017.
+ * Contains only the error messages
  */
 public class SavedErrors {
     private static HashMap<String, String> errors = new HashMap<>();
     private static SavedErrors instance;
 
+    /**
+     *
+     * @singleton pattern
+     */
     public static SavedErrors getInstance(){
         if (instance == null) {
             instance = new SavedErrors();
@@ -20,6 +25,9 @@ public class SavedErrors {
         setErrors();
     }
 
+    /**
+     * Method that set the default error messages and store them as a hashmap
+     */
     public void setErrors(){
         errors.put("WORNG_NAME", "Must contains first name and last name in the format: \'Mike Tyson\', first name and last name must consist of only letters with length at least 4 letters and a single free space between them!");
         errors.put("WORNG_ADDRESS","Address must consists of street and number of the street in format: \'Boulevarden 101\', street must contains only letters with length at least 4 and the number must be positive!");
