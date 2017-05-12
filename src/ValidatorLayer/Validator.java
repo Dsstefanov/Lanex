@@ -17,9 +17,9 @@ public class Validator {
         final Pattern pattern = Pattern.compile(regex);
         final Matcher matcher = pattern.matcher(firstLastName);
 
-        String result = errors.getErrors().get("WRONG_NAME");
+        String result = errors.getErrors().get("WRONG_NAME"); // get and save the specific error
         if (matcher.matches()) {
-            return null;
+            return matcher.group(0); // take the value
         }
         else {
             throw new IllegalArgumentException(result);
@@ -32,7 +32,7 @@ public class Validator {
 
         String result = errors.getErrors().get("WRONG_ADDRESS");
         if (matcher.matches()) {
-            return null;
+            return matcher.group(0); // take the value
         }
         else {
             throw new IllegalArgumentException(result);
@@ -45,7 +45,7 @@ public class Validator {
 
         String result = errors.getErrors().get("WRONG_EMAIL");
         if (matcher.matches()) {
-            return null;
+            return matcher.group(0);// take the value
         }
         else {
             throw new IllegalArgumentException(result);
@@ -58,7 +58,7 @@ public class Validator {
 
         String result = errors.getErrors().get("WRONG_EMAIL");
         if (matcher.matches()) {
-            return null;
+            return matcher.group(0); // take the value
         }
         else {
             throw new IllegalArgumentException(result);
@@ -71,7 +71,7 @@ public class Validator {
 
         String result = errors.getErrors().get("WRONG_CITY");
         if (matcher.matches()) {
-            return null;
+            return matcher.group(0);// take the value
         }
         else {
             throw new IllegalArgumentException(result);
@@ -81,7 +81,7 @@ public class Validator {
         String result = errors.getErrors().get("WRONG_CVR");
 
         if (cvr <= 99999999 && cvr >= 10000000) {
-            return 0;
+            return cvr;// take the value
         }
         else {
             throw new IllegalArgumentException(result);
