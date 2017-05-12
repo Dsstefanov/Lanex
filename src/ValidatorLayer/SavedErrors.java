@@ -7,7 +7,7 @@ import java.util.HashMap;
  * Contains only the error messages
  */
 public class SavedErrors {
-    private static HashMap<String, String> errors = new HashMap<>();
+    private HashMap<String, String> errors = new HashMap<>();
     private static SavedErrors instance;
 
     /**
@@ -28,7 +28,7 @@ public class SavedErrors {
     /**
      * Method that set the default error messages and store them as a hashmap
      */
-    public void setErrors(){
+    private void setErrors(){
         errors.put("WORNG_NAME", "Must contains first name and last name in the format: \'Mike Tyson\', first name and last name must consist of only letters with length at least 4 letters and a single free space between them!");
         errors.put("WORNG_ADDRESS","Address must consists of street and number of the street in format: \'Boulevarden 101\', street must contains only letters with length at least 4 and the number must be positive!");
         errors.put("WRONG_EMAIL","Email address must contains only digits, letters, _ and - example: \'user@mail.com\'!");

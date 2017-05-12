@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 /**
  * Created by Admin on 5/10/2017.
- * Validate all the give input with the appropriate regex
+ * Validate all the given input with the appropriate regex
  */
 public class Validator {
 
