@@ -9,17 +9,14 @@ import java.sql.SQLException;
 /**
  * Created by RedJohn on 4/26/2017.
  */
-public class DBProduct {
+public class DBProduct implements IDBProduct{
     public static void main(String[] args) {
 
-        try {
-            Product product = new Product("123456",152,20,200,2666);
-            new DBProduct().delete("123456");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        Product product = new Product("123444",200,20,200,556655);
+        new DBProduct().create("123444",200,20,200,556655);
         System.out.println("success");
     }
+
     public Product create(String productID, int currentQuantity, int minQuantity, int maxQuantity, int cvr)
     {
         Product product = new Product(productID,currentQuantity,minQuantity,maxQuantity,cvr);
