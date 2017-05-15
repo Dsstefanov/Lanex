@@ -24,7 +24,7 @@ public class DBContractorTest {
         }*/
         try{
             dbCon = new DBContractor();
-            dbCon.create("testName","Skensevaj","testMail@gmail.bg","44113","Aarhus",556655);
+            dbCon.create("testName","Skensevaj","testMail@gmail.bg","44113","Aarhus",666666);
         } catch (Exception e){
             System.out.println("Couldn't insert the contractor in the DB");
             fail();
@@ -47,7 +47,7 @@ public class DBContractorTest {
     @org.junit.Test
     public void create() throws Exception {
         try {
-            Contractor contractor = new Contractor("testName","Skensevaj","testMail@gmail.bg","44113","Aarhus",556655);
+            Contractor contractor = new Contractor("testName","Skensevaj","testMail@gmail.bg","44113","Aarhus",666666);
             assertNotNull(contractor);
         } catch(Exception e) {
             e.getMessage();
@@ -58,9 +58,9 @@ public class DBContractorTest {
     @Test
     public void read() throws Exception { //raboti
         try {
-            dbCon.read(556655);
-            assertNotNull(dbCon.read(556655));
-            System.out.println(dbCon.read(556655).getContractor());
+            dbCon.read(666666);
+            assertNotNull(dbCon.read(666666));
+            System.out.println(dbCon.read(666666).getContractor());
         } catch(Exception e) {
             e.getMessage();
             fail();
@@ -70,9 +70,9 @@ public class DBContractorTest {
     @Test
     public void update() throws Exception { //TODO finish the update fields
         try {
-            Contractor contractor = dbCon.read(556655);
-            assertNotNull(dbCon.read(556655));
-            dbCon.update(contractor, 556655);
+            Contractor contractor = dbCon.read(666666);
+            assertNotNull(dbCon.read(666666));
+            dbCon.update(contractor, 666666);
         } catch(Exception e) {
             e.getMessage();
             fail();
