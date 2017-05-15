@@ -11,6 +11,7 @@ import static org.junit.Assert.*;
  */
 public class DBContractorTest {
     DBContractor dbCon;
+    Contractor contractor = null;
     boolean isDeleted = false;
 
     @org.junit.Before
@@ -24,7 +25,7 @@ public class DBContractorTest {
         }*/
         try{
             dbCon = new DBContractor();
-            dbCon.create("testName","Skensevaj","testMail@gmail.bg","44113","Aarhus",666666);
+            contractor = dbCon.create("testName","Skensevaj","testMail@gmail.bg","44113","Aarhus",666666);
         } catch (Exception e){
             System.out.println("Couldn't insert the contractor in the DB");
             fail();
@@ -47,7 +48,6 @@ public class DBContractorTest {
     @org.junit.Test
     public void create() throws Exception {
         try {
-            Contractor contractor = new Contractor("testName","Skensevaj","testMail@gmail.bg","44113","Aarhus",666666);
             assertNotNull(contractor);
         } catch(Exception e) {
             e.getMessage();
