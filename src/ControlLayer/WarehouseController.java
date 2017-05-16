@@ -1,5 +1,6 @@
 package ControlLayer;
 import DBLayer.DBWarehouse;
+import ModelLayer.Warehouse;
 
 import java.sql.SQLException;
 
@@ -22,9 +23,10 @@ public class WarehouseController {
             return null;
         }
     }
-    public boolean update(int id){
+    public boolean update(Warehouse warehouse){
         try{
-            return new DBWarehouse().update(new DBWarehouse().read(id));
+
+            return new DBWarehouse().update(new DBWarehouse().read(warehouse.getId());
         }catch (SQLException e){
             return false;
         }

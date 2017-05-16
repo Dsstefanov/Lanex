@@ -9,15 +9,8 @@ import java.sql.SQLException;
  * Created by USER on 26.4.2017 г..
  */
 public class DBWarehouse implements IDBWarehouse{
-    public static void main(String[] args) {
-        try {
-            new DBWarehouse().create(120, 20, 20);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
     /**
-     * @return Warehouse object
+     * @return ModelLayer.Warehouse
      * @throws SQLException: if something goes wrong
      */
     public synchronized Warehouse create(float length, float width, float height) throws SQLException{
@@ -65,6 +58,11 @@ public class DBWarehouse implements IDBWarehouse{
         return warehouses;
     }*/
 
+    /**
+     * @param id warehouse id
+     * @return ModelLayer.Warehouse
+     * @throws SQLException
+     */
     public Warehouse read(int id) throws SQLException{
         Warehouse warehouse = null;
         try{
@@ -81,6 +79,13 @@ public class DBWarehouse implements IDBWarehouse{
         }
         return warehouse;
     }
+
+    /**
+     * Object generator from ResultSet
+     * @param rs ResultSet
+     * @return ModelLayer.Warehouse
+     * @throws SQLException
+     */
     private Warehouse buildObject(ResultSet rs) throws SQLException{
         Warehouse warehouse = new Warehouse(rs.getFloat("length"), rs.getFloat("height"), rs.getFloat("width"));
         try {
@@ -93,11 +98,21 @@ public class DBWarehouse implements IDBWarehouse{
         return warehouse;
     }
 
-    public boolean update(Warehouse warehouse) throws SQLException{
+
+    /**
+     * @param warehouse ModelLayer.Warehouse
+     * @return success:true/failure:SQLException
+     * @throws SQLException
+     */
+    public synchronized boolean update(Warehouse warehouse) throws SQLException{
         try {
             java.sql.Connection conn = DBConnection.getInstance().getDBcon();
-            String sql = String.format("UPDATE customer SET something=something WHERE id = '%d'",warehouse.getId());//TODO modify the script when table is updated
-            conn.createStatement().executeUpdate(sql);
+            PreparedStatement preparedStatement = conn.prepareStatement("UPDATE Warehouse SET length=?, width=?, height=? WHERE id=?");
+            preparedStatement.setFloat(1,warehouse.getLength());
+            preparedStatement.setFloat(2,warehouse.getWidth());
+            preparedStatement.setFloat(3,warehouse.getHeight());
+            preparedStatement.setInt(4,warehouse.getId());
+            preparedStatement.executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();
             throw e;
@@ -105,6 +120,12 @@ public class DBWarehouse implements IDBWarehouse{
 
         return true;
     }
+
+    /**
+     * @param id warehouse id
+     * @return success:true/failure:SQLException
+     * @throws SQLException
+     */
     public boolean delete(int id)throws SQLException{
        try {
            java.sql.Connection conn = DBConnection.getInstance().getDBcon();

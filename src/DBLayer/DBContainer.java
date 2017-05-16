@@ -1,3 +1,4 @@
+/*
 package DBLayer;
 
 import ModelLayer.Container;
@@ -10,9 +11,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 
+*/
 /**
  * Created by Luke on 29.04.2017.
- */
+ *//*
+
 public class DBContainer {
 
 
@@ -95,5 +98,6 @@ public class DBContainer {
         return true;
     }
 }
-    }
 
+
+*/

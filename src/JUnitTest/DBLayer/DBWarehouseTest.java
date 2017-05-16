@@ -43,10 +43,16 @@ public class DBWarehouseTest {
         }
     }
 
-    /*@Test
+    @Test
     public void update() throws Exception {
-        TODO untestable lack of parameters
-    }*/
+        warehouse.setHeight(5);
+        warehouse.setLength(5);
+        warehouse.setWidth(5);
+        dbWarehouse.update(warehouse);
+        assertEquals(warehouse.getHeight(),dbWarehouse.read(warehouse.getId()).getHeight(),0.002);
+        assertEquals(warehouse.getLength(),dbWarehouse.read(warehouse.getId()).getLength(),0.002);
+        assertEquals(warehouse.getWidth(),dbWarehouse.read(warehouse.getId()).getWidth(),0.002);
+    }
 
     @Test
     public void delete() throws Exception {
