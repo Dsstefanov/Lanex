@@ -141,6 +141,7 @@ public class DBContractor implements IDBContractor {
         return contractor;
     }
 
+
     private ArrayList<Person> buildObjects(ResultSet rs) throws SQLException{
         ArrayList<Person> person = new ArrayList<>();
         while(rs.next()) {

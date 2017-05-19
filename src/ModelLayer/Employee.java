@@ -25,4 +25,9 @@ public class Employee extends Person {
     public void setWorkId(int workId) {
         this.workId = workId;
     }
+
+    @Override
+    public String toString() {
+        return "Name: " + getName() + "Address : " + getAddress() + "Email : " + getEmail() + " Phone : " + getPhone() + " City : " + getCity();
+    }
 }
