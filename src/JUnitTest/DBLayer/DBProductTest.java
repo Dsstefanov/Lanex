@@ -1,8 +1,8 @@
 package DBLayer;
 
 import ModelLayer.Product;
-import org.junit.runners.MethodSorters;
-import org.junit.FixMethodOrder;
+//import org.junit.runners.MethodSorters;
+//import org.junit.FixMethodOrder;
 import org.junit.After;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 /**
  *
  */
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+//@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class DBProductTest {
     DBProduct dbProduct;
     boolean isDeleted = false;

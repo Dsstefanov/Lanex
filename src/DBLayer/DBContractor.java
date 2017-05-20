@@ -57,6 +57,7 @@ public class DBContractor implements IDBContractor {
             throw e;
         } finally {
             DBConnection.closeConnection();
+
         }
         return contractor;
     }
@@ -101,6 +102,7 @@ public class DBContractor implements IDBContractor {
             e.printStackTrace();
             throw e;
         } finally {
+
             DBConnection.closeConnection();
         }
         return true;

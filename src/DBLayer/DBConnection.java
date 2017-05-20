@@ -3,6 +3,7 @@ package DBLayer;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 
+
 public class DBConnection {
     private static final String  driver = "jdbc:sqlserver://kraka.ucn.dk";
     private static final String  databaseName = ";databaseName=dmaj0916_197306";
@@ -33,6 +34,7 @@ public class DBConnection {
         }
         try{
             //connection to the database
+
             con = DriverManager.getConnection(url);
             con.setAutoCommit(true);
             dma = con.getMetaData(); // get meta data
@@ -51,6 +53,7 @@ public class DBConnection {
     public static void closeConnection()
     {
         try{
+
             con.close();
             instance= null;
             System.out.println("The connection is closed");
