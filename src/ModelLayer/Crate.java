@@ -9,8 +9,8 @@ public class Crate extends Box {
     private String crateId;
 
 
-    public Crate(String crateId, double  height,double width, double  length){
-        super( height, width, length);
+    public Crate(String crateId, double  height, double  length, double width){
+        super( height, length, width);
         this.crateId = crateId;
     }
 
@@ -22,6 +22,10 @@ public class Crate extends Box {
 
     public void setCrateId(String crateId) {
         this.crateId = crateId;
+    }
+
+    public String toString(){
+        return "Crate id:" +getCrateId() + "Height : " + getHeight() + "Length : " +getLength() + "Width : " +getWidth();
     }
 
 

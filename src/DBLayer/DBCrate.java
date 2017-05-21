@@ -7,18 +7,19 @@ import java.sql.*;
 /**
  * Created by Luke on 10.05.2017.
  */
-public class DBCrate {
+public class DBCrate implements IDBCrate {
 
 
     public static void main(String[] args) {
 
-       /*try {
-           Crate crate = new Crate( "11234",120,130,150);
-           new DBCrate().create("11234",120, 130, 150 );
+       try {
+//           Crate crate = new Crate( "11234567",120.1,130,150);
+//           new DBCrate().create("11234567",120.1, 130, 150 );
+           new DBCrate().read("123456");
         } catch (SQLException e) {
            e.printStackTrace();
        }
-       System.out.println("success");*/
+       System.out.println("success");
     }
         public Crate create( String crateId, double height, double length, double width) throws SQLException {
             Crate crate = new Crate(crateId, height, length, width);
@@ -45,16 +46,14 @@ public class DBCrate {
         public Crate read(String crateId) throws SQLException{
             Crate crate = null;
             String sql = String.format("SELECT * FROM crate where crateId= ?");
-            try(
+            try{
                 java.sql.Connection conn = DBConnection.getInstance().getDBcon();
 
-//                ResultSet rs = conn.createStatement().executeQuery(sql);
-//                if (rs.next()){
-//                    crate = buildObject(rs);
-//                }
-                PreparedStatement ps = conn.prepareStatement(sql)){
-                ps.setString(1,crateId);
-                //crate = buildObject(ps)
+                ResultSet rs = conn.createStatement().executeQuery(sql);
+                if (rs.next()){
+                    crate = buildObject(rs);
+                }
+
 
             }catch (SQLException e) {
                 throw e;
