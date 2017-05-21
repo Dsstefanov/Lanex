@@ -82,6 +82,16 @@ public class Validator {
 
         if (cvr <= 99999999 && cvr >= 10000000) {
             return cvr;// take the value
+        } else {
+            throw new IllegalArgumentException(result);
+        }
+    }
+
+    public int validateWorkId(int work_id) {
+        String result = errors.getErrors().get("WRONG_WORK_ID");
+
+        if (work_id <= 999999999 && work_id >= 100000000) {
+            return work_id;// take the value
         }
         else {
             throw new IllegalArgumentException(result);

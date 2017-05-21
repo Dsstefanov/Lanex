@@ -22,7 +22,7 @@ public class DBEmployee implements IDBEmployee {
      */
 
     @Override
-    public Employee create(int work_id,String name, String address, String email, String phone, String city)throws SQLException{
+    public Employee create(String name, String address, String email, String phone, String city,int work_id)throws SQLException{
         Employee employee = new Employee(name, address, email, phone, city);
         String sql = String.format("INSERT INTO person (name, address, email, phone, city, category) VALUES ('%s', '%s', '%s', '%s', '%s', 1)", name, address, email, phone, city);
         try{
