@@ -35,7 +35,7 @@ public class SavedErrors {
         errors.put("WRONG_PHONE","Phone number must contains only digits and/or + in format: \'+45112233\'!");
         errors.put("WRONG_CITY","City my contains only letters and to be at least 3 letters long!");
         errors.put("WRONG_CVR", "The CVR must consist of exactly 8 digits!");
-        errors.put("WRONG_WORK_ID", ""); //TODO Nas put your error message here
+        errors.put("WRONG_WORK_ID", "The work ID must consist exactly 9 digits!");
     }
     public HashMap<String, String> getErrors(){
         return errors;
