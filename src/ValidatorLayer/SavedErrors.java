@@ -36,7 +36,7 @@ public class SavedErrors {
         errors.put("WRONG_CITY","City my contains only letters and to be at least 3 letters long!");
         errors.put("WRONG_CVR", "The CVR must consist of exactly 8 digits and cannot be null value or string!");
         errors.put("WRONG_WORK_ID", "The work ID must consist exactly 9 digits!");
-        errors.put("WRONG_OBJECT_SIZE", "Size must consist of numbers only");
+        errors.put("WRONG_OBJECT_SIZE", "Size must consist of positive numbers only");
         errors.put("WRONG_TYPE", "Type number must be between 1-5");
         errors.put ("WRONG_QUANTITIES", "Quantities must be only numbers");
     }

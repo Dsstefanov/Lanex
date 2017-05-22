@@ -1,18 +1,26 @@
 package ControlLayer;
 import DBLayer.DBWarehouse;
 import ModelLayer.Warehouse;
+import ValidatorLayer.Validator;
 
 import java.sql.SQLException;
 
 /**
  * Created by USER on 26.4.2017 г..
  */
-public class WarehouseController {
+public class WarehouseController extends Controller{
+    public static void main(String[] args) {
+        new WarehouseController().create(10,11,12);
+    }
     public boolean create(float length, float width, float height){
         try{
-            new DBWarehouse().create(length, width, height);
+            check("Dimitar Stefanov", "validateName", new Validator());
+            float checkedLength = Validator.validateObjectSize(length);
+            float checkedWidth = Validator.validateObjectSize(width);
+            float checkedHeight = Validator.validateObjectSize(height);
+            //new DBWarehouse().create(checkedLength, checkedWidth, checkedHeight);
             return true;
-        }catch (SQLException e){
+        }catch (Exception e){
             return false;
         }
     }

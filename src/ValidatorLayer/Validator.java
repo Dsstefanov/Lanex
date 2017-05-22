@@ -100,6 +100,15 @@ public class Validator {
             return size;
         } else {
             throw new IllegalArgumentException(result);
+        }
+    }
+
+    public static float validateObjectSize(float size) {
+        String result = SavedErrors.getInstance().getErrors().get("WRONG_OBJECT_SIZE");
+        if (size > 0) {
+            return size;
+        } else {
+            throw new IllegalArgumentException(result);
 
         }
     }
@@ -120,8 +129,8 @@ public class Validator {
             return quantity;
         } else {
             throw new IllegalArgumentException(result);
-
         }
-
     }
+
+
 }
