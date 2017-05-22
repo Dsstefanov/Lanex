@@ -17,11 +17,11 @@ public class Validator {
         String result = SavedErrors.getInstance().getErrors().get("WRONG_NAME"); // get and save the specific error
         if (matcher.matches()) {
             return matcher.group(0); // take the value
-        }
-        else {
+        } else {
             throw new IllegalArgumentException(result);
         }
     }
+
     public static String validateAddress(String address) {
         final String regex = "^[a-zA-Z]{3,}\\s[0-9]+$";
         final Pattern pattern = Pattern.compile(regex);
@@ -30,11 +30,11 @@ public class Validator {
         String result = SavedErrors.getInstance().getErrors().get("WRONG_ADDRESS");
         if (matcher.matches()) {
             return matcher.group(0); // take the value
-        }
-        else {
+        } else {
             throw new IllegalArgumentException(result);
         }
     }
+
     public static String validateEmail(String email) {
         final String regex = "^[a-zA-Z0-9_-]+@[a-z]+\\.[a-z]{2,3}$";
         final Pattern pattern = Pattern.compile(regex);
@@ -43,11 +43,11 @@ public class Validator {
         String result = SavedErrors.getInstance().getErrors().get("WRONG_EMAIL");
         if (matcher.matches()) {
             return matcher.group(0);// take the value
-        }
-        else {
+        } else {
             throw new IllegalArgumentException(result);
         }
     }
+
     public static String validatePhone(String phone) {
         final String regex = "^\\+[0-9]{8,}$";
         final Pattern pattern = Pattern.compile(regex);
@@ -56,11 +56,11 @@ public class Validator {
         String result = SavedErrors.getInstance().getErrors().get("WRONG_EMAIL");
         if (matcher.matches()) {
             return matcher.group(0); // take the value
-        }
-        else {
+        } else {
             throw new IllegalArgumentException(result);
         }
     }
+
     public static String validateCity(String city) {
         final String regex = "^[a-zA-Z]{3,}$";
         final Pattern pattern = Pattern.compile(regex);
@@ -69,11 +69,11 @@ public class Validator {
         String result = SavedErrors.getInstance().getErrors().get("WRONG_CITY");
         if (matcher.matches()) {
             return matcher.group(0);// take the value
-        }
-        else {
+        } else {
             throw new IllegalArgumentException(result);
         }
     }
+
     public static int validateCVR(int cvr) {
         String result = SavedErrors.getInstance().getErrors().get("WRONG_CVR");
 
@@ -89,9 +89,39 @@ public class Validator {
 
         if (work_id <= 999999999 && work_id >= 100000000) {
             return work_id;// take the value
-        }
-        else {
+        } else {
             throw new IllegalArgumentException(result);
         }
+    }
+
+    public static int validateObjectSize(int size) {
+        String result = SavedErrors.getInstance().getErrors().get("WRONG_OBJECT_SIZE");
+        if (size > 0) {
+            return size;
+        } else {
+            throw new IllegalArgumentException(result);
+
+        }
+    }
+
+    public static int validateType(int type) {
+        String result = SavedErrors.getInstance().getErrors().get("WRONG_TYPE");
+        if (type > 0 && type < 5) {
+            return type;
+        } else {
+            throw new IllegalArgumentException(result);
+
+        }
+    }
+
+    public static int validateQuantities(int quantity) {
+        String result = SavedErrors.getInstance().getErrors().get("WRONG_QUANTITIES");
+        if (quantity > 0) {
+            return quantity;
+        } else {
+            throw new IllegalArgumentException(result);
+
+        }
+
     }
 }
