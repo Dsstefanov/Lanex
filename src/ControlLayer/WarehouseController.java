@@ -1,5 +1,6 @@
 package ControlLayer;
 import DBLayer.DBWarehouse;
+import Exceptions.ValidationException;
 import ModelLayer.Warehouse;
 import ValidatorLayer.Validator;
 
@@ -10,17 +11,22 @@ import java.sql.SQLException;
  */
 public class WarehouseController extends Controller{
     public static void main(String[] args) {
-        new WarehouseController().create(10,11,12);
+        new WarehouseController().create(13,-11,-12);
     }
-    public boolean create(float length, float width, float height){
+    public boolean create(int length, int width, int height){
         try{
-            check("Dimitar Stefanov", "validateName", new Validator());
-            float checkedLength = Validator.validateObjectSize(length);
-            float checkedWidth = Validator.validateObjectSize(width);
-            float checkedHeight = Validator.validateObjectSize(height);
-            //new DBWarehouse().create(checkedLength, checkedWidth, checkedHeight);
-            return true;
-        }catch (Exception e){
+            int checkedLength = (check(length, "validateObjectLength")!=null)?(int) check(length, "validateObjectLength"):length;
+            int checkedWidth =  (check(width, "validateObjectWidth")!=null)?(int) check(width, "validateObjectWidth"):width;
+            int checkedHeight = (check(height, "validateObjectHeight")!=null)?(int) check(height, "validateObjectHeight"):height;
+            if (errors.size()>0){
+                throw new ValidationException(String.join("\n", errors));
+            }else {
+                new DBWarehouse().create(checkedLength, checkedWidth, checkedHeight);
+                return true;
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+            System.out.println(e.getClass());
             return false;
         }
     }

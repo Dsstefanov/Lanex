@@ -1,36 +1,48 @@
 package ControlLayer;
 
+import Exceptions.ValidationException;
 import ValidatorLayer.Validator;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.function.DoubleBinaryOperator;
 import java.lang.reflect.Method;
 
 /**
  * Created by Admin on 5/22/2017.
  */
 public abstract class Controller implements IController{
-    //TODO finish the code
     ArrayList<String> errors = new ArrayList<>();
-    void check(Object parameterForMethod, String methodToBeExecuted, Object objectOfValidator){
+
+    /**
+     * <p>
+     *     takes the class of ValidatorLayer.Validator and applies the given method
+     *     'methodToBeExecuted' and then to this method passes the parameter 'parameterForMethod'
+     * </p>
+     * @param parameterForMethod: This is the parameter for the method inside ValidatorLayer.Validator.@param methodToBeExecuted
+     * @param methodToBeExecuted: Method inside ValidatorLayer.Validator
+     * @return Object if everything is correct or null if any of the exceptions triggers
+     */
+    Object check(Object parameterForMethod, String methodToBeExecuted){
         try{
-            Method method = objectOfValidator.getClass().getMethod(methodToBeExecuted, parameterForMethod.getClass());
-            System.out.println(method);
+            Method method = Validator.class.getMethod(methodToBeExecuted, parameterForMethod.getClass());
             try {
-                System.out.println(method.invoke(parameterForMethod, parameterForMethod));
+                return method.invoke(null, parameterForMethod);
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
-            } catch (IllegalAccessException e) {
-                System.out.println(e.getClass());
+                return null;
             } catch (InvocationTargetException e) {
-                System.out.println(e.getClass());
+                if (e.getTargetException().getClass() == ValidationException.class) {
+                    errors.add(e.getTargetException().getMessage());
+                } else {
+                    e.printStackTrace();
+                }
+                return null;
+            } catch (IllegalAccessException e) {
+                System.out.println("Developer error check Validator method visibility");
+                return null;
             }
-        }catch (Exception e){
-            System.out.println(e.getMessage());
+        }catch (NoSuchMethodException e){
+            System.out.println(e.getMessage() + "   -   Method with that name does not exist");
+            return null;
         }
-    }
-    public ArrayList<String> getErrors(){
-        return errors;
     }
 }

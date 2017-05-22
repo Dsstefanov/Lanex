@@ -39,6 +39,9 @@ public class SavedErrors {
         errors.put("WRONG_OBJECT_SIZE", "Size must consist of positive numbers only");
         errors.put("WRONG_TYPE", "Type number must be between 1-5");
         errors.put ("WRONG_QUANTITIES", "Quantities must be only numbers");
+        errors.put("WRONG_OBJECT_HEIGHT", "Height must consist of positive numbers only");
+        errors.put("WRONG_OBJECT_WIDTH", "Width must consist of positive numbers only");
+        errors.put("WRONG_OBJECT_LENGTH", "Length must consist of positive numbers only");
     }
     public HashMap<String, String> getErrors(){
         return errors;

@@ -1,5 +1,7 @@
 package ValidatorLayer;
 
+import Exceptions.ValidationException;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,7 +11,7 @@ import java.util.regex.Pattern;
  */
 public class Validator {
 
-    public static String validateName(String firstLastName) {
+    public static String validateName(String firstLastName) throws ValidationException {
         final String regex = "^[a-zA-Z]{4,}\\s[a-zA-Z]{4,}$";
         final Pattern pattern = Pattern.compile(regex);
         final Matcher matcher = pattern.matcher(firstLastName);
@@ -18,7 +20,7 @@ public class Validator {
         if (matcher.matches()) {
             return matcher.group(0); // take the value
         } else {
-            throw new IllegalArgumentException(result);
+            throw new ValidationException(result);
         }
     }
 
@@ -31,7 +33,7 @@ public class Validator {
         if (matcher.matches()) {
             return matcher.group(0); // take the value
         } else {
-            throw new IllegalArgumentException(result);
+            throw new ValidationException(result);
         }
     }
 
@@ -44,7 +46,7 @@ public class Validator {
         if (matcher.matches()) {
             return matcher.group(0);// take the value
         } else {
-            throw new IllegalArgumentException(result);
+            throw new ValidationException(result);
         }
     }
 
@@ -57,7 +59,7 @@ public class Validator {
         if (matcher.matches()) {
             return matcher.group(0); // take the value
         } else {
-            throw new IllegalArgumentException(result);
+            throw new ValidationException(result);
         }
     }
 
@@ -70,65 +72,79 @@ public class Validator {
         if (matcher.matches()) {
             return matcher.group(0);// take the value
         } else {
-            throw new IllegalArgumentException(result);
+            throw new ValidationException(result);
         }
     }
 
-    public static int validateCVR(int cvr) {
+    public static Integer validateCVR(Integer cvr) {
         String result = SavedErrors.getInstance().getErrors().get("WRONG_CVR");
 
         if (cvr <= 99999999 && cvr >= 10000000) {
             return cvr;// take the value
         } else {
-            throw new IllegalArgumentException(result);
+            throw new ValidationException(result);
         }
     }
 
-    public static int validateWorkId(int work_id) {
+    public static Integer validateWorkId(Integer work_id) {
         String result = SavedErrors.getInstance().getErrors().get("WRONG_WORK_ID");
 
         if (work_id <= 999999999 && work_id >= 100000000) {
             return work_id;// take the value
         } else {
-            throw new IllegalArgumentException(result);
+            throw new ValidationException(result);
         }
     }
 
-    public static int validateObjectSize(int size) {
+    public static Integer validateObjectSize(Integer size) {
         String result = SavedErrors.getInstance().getErrors().get("WRONG_OBJECT_SIZE");
         if (size > 0) {
             return size;
         } else {
-            throw new IllegalArgumentException(result);
+            throw new ValidationException(result);
         }
     }
-
-    public static float validateObjectSize(float size) {
-        String result = SavedErrors.getInstance().getErrors().get("WRONG_OBJECT_SIZE");
+    public static Integer validateObjectHeight(Integer size) {
+        String result = SavedErrors.getInstance().getErrors().get("WRONG_OBJECT_HEIGHT");
         if (size > 0) {
             return size;
         } else {
-            throw new IllegalArgumentException(result);
-
+            throw new ValidationException(result);
+        }
+    }
+    public static Integer validateObjectWidth(Integer size) {
+        String result = SavedErrors.getInstance().getErrors().get("WRONG_OBJECT_WIDTH");
+        if (size > 0) {
+            return size;
+        } else {
+            throw new ValidationException(result);
+        }
+    }
+    public static Integer validateObjectLength(Integer size) {
+        String result = SavedErrors.getInstance().getErrors().get("WRONG_OBJECT_LENGTH");
+        if (size > 0) {
+            return size;
+        } else {
+            throw new ValidationException(result);
         }
     }
 
-    public static int validateType(int type) {
+    public static Integer validateType(Integer type) {
         String result = SavedErrors.getInstance().getErrors().get("WRONG_TYPE");
         if (type > 0 && type < 5) {
             return type;
         } else {
-            throw new IllegalArgumentException(result);
+            throw new ValidationException(result);
 
         }
     }
 
-    public static int validateQuantities(int quantity) {
+    public static Integer validateQuantities(Integer quantity) {
         String result = SavedErrors.getInstance().getErrors().get("WRONG_QUANTITIES");
         if (quantity > 0) {
             return quantity;
         } else {
-            throw new IllegalArgumentException(result);
+            throw new ValidationException(result);
         }
     }
 
