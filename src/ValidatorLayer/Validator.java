@@ -148,5 +148,47 @@ public class Validator {
         }
     }
 
+    public static Integer validateMinimumQuantity(Integer minQuantity) {
+        String result = SavedErrors.getInstance().getErrors().get("WRONG_MIN_QUANTITY");
+        if (minQuantity > 0) {
+            return minQuantity;
+        } else {
+            throw new ValidationException(result);
+        }
+    }
+
+    public static Integer validateMaxQuantity(Integer maxQuantity) {
+        String result = SavedErrors.getInstance().getErrors().get("WRONG_MAX_QUANTITY");
+        if (maxQuantity > 0) {
+            return maxQuantity;
+        } else {
+            throw new ValidationException(result);
+        }
+    }
+    public static Integer validateCurrentQuantity(Integer currentQuantity) {
+        String result = SavedErrors.getInstance().getErrors().get("WRONG_MIN_QUANTITY");
+        if (currentQuantity > 0) {
+            return currentQuantity;
+        } else {
+            throw new ValidationException(result);
+        }
+
+    }
+    public static String validateBarcode (String barcode){
+        String result = SavedErrors.getInstance().getErrors().get("WRONG_BARCODE");
+        final String regex = "[a-zA-Z][0-9]{1,}";
+
+        final Pattern pattern = Pattern.compile(regex);
+
+        final Matcher matcher = pattern.matcher(barcode);
+
+        if (matcher.matches()) {
+            return matcher.group(0);// take the value
+        } else {
+            throw new ValidationException(result);
+        }
+    }
+
+
 
 }

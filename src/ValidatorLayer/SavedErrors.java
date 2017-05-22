@@ -33,7 +33,7 @@ public class SavedErrors {
         errors.put("WRONG_ADDRESS","Address must consist of street and number of the street in format: \'Boulevarden 101\', street must contains only letters with length at least 4 and the number must be positive!");
         errors.put("WRONG_EMAIL","Email address must contains only digits, letters, _ and - example: \'user@mail.com\'!");
         errors.put("WRONG_PHONE","Phone number must contains only digits and/or + in format: \'+45112233\'!");
-        errors.put("WRONG_CITY","City my contains only letters and to be at least 3 letters long!");
+        errors.put("WRONG_CITY","City must contains only letters and to be at least 3 letters long!");
         errors.put("WRONG_CVR", "The CVR must consist of exactly 8 digits and cannot be null value or string!");
         errors.put("WRONG_WORK_ID", "The work ID must consist exactly 9 digits!");
         errors.put("WRONG_OBJECT_SIZE", "Size must consist of positive numbers only");
@@ -42,6 +42,10 @@ public class SavedErrors {
         errors.put("WRONG_OBJECT_HEIGHT", "Height must consist of positive numbers only");
         errors.put("WRONG_OBJECT_WIDTH", "Width must consist of positive numbers only");
         errors.put("WRONG_OBJECT_LENGTH", "Length must consist of positive numbers only");
+        errors.put("WRONG_BARCODE", "Product barcode can consist only of letters or numbers");
+        errors.put("WRONG_CURRENT_QUANTITY", "Current quantity must consist of numbers only");
+        errors.put("WRONG_MIN_QUANTITY", "Minimum quantity must consist of numbers only");
+        errors.put("WRONG_MAX_QUANTITY", "Maximum quantity must consist of numbers only");
     }
     public HashMap<String, String> getErrors(){
         return errors;
