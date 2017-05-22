@@ -11,35 +11,69 @@ import java.util.ArrayList;
 /**
  * Created by Admin on 4/28/2017.
  */
-public class ContractorController {
+public class ContractorController extends Controller{
     private DBContractor dbContractor;
+    ArrayList<String> errors = new ArrayList<>();
+    private String validateName, validateAddress, validateEmail, validatePhone, validateCity;
+    private int validateCVR;
 
     public ContractorController() {
         dbContractor = new DBContractor();
     }
 
-    public static void main(String[] args) {
-        ContractorController cc = new ContractorController();
-        try {
-            cc.create("fg", "d", "fg", "d", "d", 5);
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
+    public ArrayList<String> getErrors(){
+        return errors;
     }
+
+    public void removeErrorMessages() {
+        this.errors.clear();
+    }
+
     public boolean create(String firstLastName, String address, String email, String phone, String city, int cvr) {
+        ///TODO Try catch statement need to refactor because it has duplicated too often !!
         try {
-            String validateName = Validator.validateName(firstLastName);
-            String validateAddress = Validator.validateAddress(address);
-            String validateEmail = Validator.validateEmail(email);
-            String validatePhone = Validator.validatePhone(phone);
-            String validateCity = Validator.validateCity(city);
-            int validateCVR = Validator.validateCVR(cvr);
-            dbContractor.create(validateName, validateAddress, validateEmail, validatePhone, validateCity, validateCVR);
-            return true;
-        } catch (SQLException e) {
-            e.getMessage();
-            return false;
+            this.validateName = Validator.validateName(firstLastName);
+        } catch (IllegalArgumentException e) {
+            errors.add(e.getMessage());
         }
+        try {
+            this.validateAddress = Validator.validateAddress(address);
+        } catch (IllegalArgumentException e) {
+            errors.add(e.getMessage());
+        }
+        try {
+            this.validateEmail = Validator.validateEmail(email);
+        } catch (IllegalArgumentException e) {
+            errors.add(e.getMessage());
+        }
+        try {
+            this.validatePhone = Validator.validatePhone(phone);
+        } catch (IllegalArgumentException e) {
+            errors.add(e.getMessage());
+        }
+        try {
+            this.validateCity = Validator.validateCity(city);
+        } catch (IllegalArgumentException e) {
+            errors.add(e.getMessage());
+        }
+        try {
+            this.validateCVR = Validator.validateCVR(cvr);
+        } catch (IllegalArgumentException e) {
+            errors.add(e.getMessage());
+        }
+
+        if(errors.size() == 0) {
+            try{
+                dbContractor.create(validateName, validateAddress, validateEmail, validatePhone, validateCity, validateCVR);
+                return true;
+            } catch(SQLException e) {
+                return false;
+            }
+        }
+        else {
+            throw new IllegalArgumentException(String.join("\n", errors));
+        }
+
     }
 
     public String read(int cvr) {

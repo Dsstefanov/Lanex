@@ -53,7 +53,7 @@ public class Validator {
         final Pattern pattern = Pattern.compile(regex);
         final Matcher matcher = pattern.matcher(phone);
 
-        String result = SavedErrors.getInstance().getErrors().get("WRONG_EMAIL");
+        String result = SavedErrors.getInstance().getErrors().get("WRONG_PHONE");
         if (matcher.matches()) {
             return matcher.group(0); // take the value
         } else {
