@@ -23,7 +23,7 @@ public class DBEmployeeTest {
     public void setUp() throws Exception {
         try {
             dbCon = new DBEmployee();
-            employee = dbCon.create(123456789,"Atanas","Hobrovej","123456@gmail.com","7654321","Vejle");
+            employee = dbCon.create("Atanas","Hobrovej","123456@gmail.com","7654321","Vejle",123456789);
         }catch (Exception e) {
             System.out.println("Could not insert this employee in the Database!");
             fail();
