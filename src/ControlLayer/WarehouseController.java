@@ -15,7 +15,15 @@ public class WarehouseController extends Controller{
         new WarehouseController().create(13,-11,-12);
     }
 
-    public boolean create(int length, int width, int height){
+    /**
+     * @param length: warehouse length
+     * @param width: warehouse width
+     * @param height: warehouse height
+     *
+     * @return true if object is saved in DB
+     * @throws ValidationException
+     */
+    public boolean create(int length, int width, int height)throws ValidationException{
         try{
             if (errors.size()!=0){
                 errors = null;
@@ -44,10 +52,28 @@ public class WarehouseController extends Controller{
             return null;
         }
     }
-    public boolean update(Warehouse warehouse){
-        try{
 
-            return new DBWarehouse().update(new DBWarehouse().read(warehouse.getId()));
+    /**
+     * @param warehouse: current dbo
+     * @param length: new length inputted
+     * @param width: new width inputted
+     * @param height: new height inputted
+     * @return true if everything passes
+     * @throws ValidationException
+     */
+    public boolean update(Warehouse warehouse, int length, int width, int height) throws ValidationException{
+        try{
+            int checkedLength = (check(length, "validateObjectLength")!=null)?(int) check(length, "validateObjectLength"):length;
+            int checkedWidth =  (check(width, "validateObjectWidth")!=null)?(int) check(width, "validateObjectWidth"):width;
+            int checkedHeight = (check(height, "validateObjectHeight")!=null)?(int) check(height, "validateObjectHeight"):height;
+            if (errors.size()>0){
+                throw new ValidationException(String.join("\n", errors));
+            }else {
+                warehouse.setLength(checkedLength);
+                warehouse.setWidth(checkedWidth);
+                warehouse.setHeight(checkedHeight);
+                return new DBWarehouse().update(warehouse);
+            }
         }catch (SQLException e){
             return false;
         }
