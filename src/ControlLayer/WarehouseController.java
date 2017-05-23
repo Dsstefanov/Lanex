@@ -5,6 +5,7 @@ import ModelLayer.Warehouse;
 import ValidatorLayer.Validator;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Created by USER on 26.4.2017 г..
@@ -13,9 +14,15 @@ public class WarehouseController extends Controller{
     public static void main(String[] args) {
         new WarehouseController().create(13,-11,-12);
     }
+
     public boolean create(int length, int width, int height){
         try{
+            if (errors.size()!=0){
+                errors = null;
+                errors = new ArrayList<>();
+            }
             int checkedLength = (check(length, "validateObjectLength")!=null)?(int) check(length, "validateObjectLength"):length;
+            // int checkedLength = if(check(length, "validateObjectLength")!=null){return (int) check(length, "validateObjectLength")}else{return length};
             int checkedWidth =  (check(width, "validateObjectWidth")!=null)?(int) check(width, "validateObjectWidth"):width;
             int checkedHeight = (check(height, "validateObjectHeight")!=null)?(int) check(height, "validateObjectHeight"):height;
             if (errors.size()>0){

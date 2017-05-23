@@ -11,7 +11,6 @@ import java.lang.reflect.Method;
  */
 public abstract class Controller implements IController{
     ArrayList<String> errors = new ArrayList<>();
-
     /**
      * <p>
      *     takes the class of ValidatorLayer.Validator and applies the given method
@@ -44,5 +43,9 @@ public abstract class Controller implements IController{
             System.out.println(e.getMessage() + "   -   Method with that name does not exist");
             return null;
         }
+    }
+
+    public ArrayList<String> getErrors() {
+        return errors;
     }
 }
