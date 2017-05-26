@@ -5,13 +5,10 @@ import java.util.ArrayList;
 /**
  * Created by Red John on 24-Mar-17.
  */
-public class Container {
+public class Container extends Box{
     /**3D Dimensions of the container in meters, digits after comma represent
      * subdivisions of meters(aka: centimeters, millimeters etc)*/
     private String containerId;
-    private double height;
-    private double width;
-    private double length;
     /**Storage Capacity in kilograms*/
     private double netLoad;
     /**List of the products that the container will contain*/
@@ -20,10 +17,8 @@ public class Container {
 
     public Container(String containerId, double height, double width, double length, double maxCapacity, ArrayList<Product> products)
     {
+        super(height, width, length);
         this.containerId = containerId;
-        this.height = height;
-        this.width = width;
-        this.length = length;
         this.netLoad = maxCapacity;
         this.products = products;
     }
@@ -31,35 +26,9 @@ public class Container {
     public Container()
     {
         /**20' container*/
-        height = 2.591;
-        width = 2.438;
-        length = 6.058;
+        super(2.591,2.438,6.058);
         netLoad = 28200;
         products = new ArrayList<>();
-    }
-
-    public double getHeight() {
-        return height;
-    }
-
-    public void setHeight(double height) {
-        this.height = height;
-    }
-
-    public double getWidth() {
-        return width;
-    }
-
-    public void setWidth(double width) {
-        this.width = width;
-    }
-
-    public double getLength() {
-        return length;
-    }
-
-    public void setLength(double length) {
-        this.length = length;
     }
 
     public double getNetLoad() {

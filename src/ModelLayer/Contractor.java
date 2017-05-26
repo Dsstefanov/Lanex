@@ -24,13 +24,11 @@ public class Contractor extends Person {
     }
 
     public String getContractor() {
-        return "Contractor{ " +
-                "name=" + getName() +
-                ", address='" + getAddress() + '\'' +
-                ", email='" + getEmail() + '\'' +
-                ", phone=" + getPhone() +
-                ", city=" + getCity() +
-                ", id='" + getCvr() + '\'' +
-                '}';
+        return 	"name=" + getName() +
+                ",address=" + getAddress() +
+                ",email=" + getEmail() +
+                ",phone=" + getPhone() +
+                ",city=" + getCity() +
+                ",id=" + getCvr();
     }
 }

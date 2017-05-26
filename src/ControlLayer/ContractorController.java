@@ -30,7 +30,24 @@ public class ContractorController extends Controller{
     }
 
     public boolean create(String firstLastName, String address, String email, String phone, String city, int cvr) {
-        ///TODO Try catch statement need to refactor because it has duplicated too often !!
+        checkMultipleErrors(firstLastName, address, email, phone, city, cvr);
+
+        if(errors.size() == 0) {
+            try{
+                dbContractor.create(validateName, validateAddress, validateEmail, validatePhone, validateCity, validateCVR);
+                return true;
+            } catch(SQLException e) {
+                return false;
+            }
+        }
+        else {
+            throw new IllegalArgumentException(String.join("\n", errors));
+        }
+
+    }
+
+    private void checkMultipleErrors(String firstLastName, String address, String email, String phone, String city,
+                                     int cvr) {
         try {
             this.validateName = Validator.validateName(firstLastName);
         } catch (IllegalArgumentException e) {
@@ -61,19 +78,6 @@ public class ContractorController extends Controller{
         } catch (IllegalArgumentException e) {
             errors.add(e.getMessage());
         }
-
-        if(errors.size() == 0) {
-            try{
-                dbContractor.create(validateName, validateAddress, validateEmail, validatePhone, validateCity, validateCVR);
-                return true;
-            } catch(SQLException e) {
-                return false;
-            }
-        }
-        else {
-            throw new IllegalArgumentException(String.join("\n", errors));
-        }
-
     }
 
     public String read(int cvr) {
@@ -85,11 +89,17 @@ public class ContractorController extends Controller{
     }
 
     public boolean update(Contractor contractor, int cvr) {
-        try {
-            dbContractor.update(contractor, cvr);
-            return true;
-        } catch (SQLException e) {
-            return false;
+        checkMultipleErrors(contractor.getName(),contractor.getAddress(), contractor.getEmail(),contractor.getPhone(),contractor.getCity(), cvr);
+        if(errors.size() == 0) {
+            try {
+                dbContractor.update(contractor, cvr);
+                return true;
+            } catch (SQLException e) {
+                return false;
+            }
+        }
+        else {
+            throw new IllegalArgumentException(String.join("\n", errors));
         }
     }
 
