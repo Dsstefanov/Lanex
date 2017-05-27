@@ -16,7 +16,7 @@ public class DBProduct implements IDBProduct{
         try{
             int dailyConsumption = 30;
             Product product = new Product(1,1,1,"123456",37*dailyConsumption,74*dailyConsumption,44*dailyConsumption,dailyConsumption,"Lime Rope",556655);
-            delete("123456");
+            read("123456");
         } catch (Exception e){
             System.out.println("Couldn't insert the contractor in the DB");
         }
@@ -31,9 +31,9 @@ public class DBProduct implements IDBProduct{
         try {
             java.sql.Connection conn = DBConnection.getInstance().getDBcon();
 
-            float height =(float) product.getHeight();
-            float length = (float) product.getLength();
-            float width = (float) product.getWidth();
+            double height = product.getHeight();
+            double length = product.getLength();
+            double width =  product.getWidth();
             String productID = product.getProductID();
             int minQuantity = product.getMinQuantity();
             int maxQuantity = product.getMaxQuantity();
@@ -44,13 +44,13 @@ public class DBProduct implements IDBProduct{
 
 
             PreparedStatement psttm = conn.prepareStatement("INSERT INTO Product (barcode,currentQuantity, minQuantity, "
-                    + "maxQuantity, cvr, name, height, lenght, width,dailyConsumption) "
+                    + "maxQuantity, cvr, name, height, length, width,dailyConsumption) "
                     + "VALUES(?,?,?,?,?,?,?,?,?,?)");
 
 
-            psttm.setFloat(7,height);
-            psttm.setFloat(8,length);
-            psttm.setFloat(9, width);
+            psttm.setDouble(7,height);
+            psttm.setDouble(8,length);
+            psttm.setDouble(9, width);
             psttm.setString(1, productID);
             psttm.setInt(3, minQuantity);
             psttm.setInt(4, maxQuantity);
@@ -71,11 +71,11 @@ public class DBProduct implements IDBProduct{
     }
 
 
-    public Product read(String productId) throws SQLException{
+    public static Product read(String productId) throws SQLException{
         Product product = null;
         try{
             java.sql.Connection conn = DBConnection.getInstance().getDBcon();
-            String sql = String.format("SELECT * FROM product WHERE barcode=%s",productId);
+            String sql = String.format("SELECT * FROM product WHERE barcode= %s ",productId);
             ResultSet rs = conn.createStatement().executeQuery(sql);
             if (rs.next()){
                 product = buildObject(rs);
@@ -87,16 +87,16 @@ public class DBProduct implements IDBProduct{
         }
         return product;
     }
-    private Product buildObject(ResultSet rs) throws SQLException{
+    private static Product buildObject(ResultSet rs) throws SQLException{
         Product product;
         try {
             String productId = rs.getString("barcode");
-            double height =(double) rs.getFloat("height");
-            double length = (double) rs.getFloat("length");
-            double width = (double) rs.getFloat("width");;
+            double height =rs.getDouble("height");
+            double length =  rs.getDouble("length");
+            double width = rs.getDouble("width");
             int minQuantity = rs.getInt("minQuantity");
             int maxQuantity = rs.getInt("maxQuantity");
-            int currentCapacity = rs.getInt("currentCapacity");
+            int currentCapacity = rs.getInt("currentQuantity");
             int dailyConsumption = rs.getInt("dailyConsumption");
             String name = rs.getString("name");
             int cvr  = rs.getInt("cvr");
