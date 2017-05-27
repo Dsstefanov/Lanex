@@ -9,9 +9,9 @@ import java.sql.SQLException;
  */
 public interface IDBCrate {
 
-        Crate create(String crateId, double height, double length, double width) throws SQLException;
+        Crate create(int id, double height, double length, double width) throws SQLException;
 //        Crate read(String crateId) throws SQLException;
 
-        boolean delete(String crateId) throws SQLException;
+        boolean delete(int id) throws SQLException;
 //        ArrayList<Person> readAll() throws SQLException;
 }

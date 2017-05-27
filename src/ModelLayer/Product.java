@@ -3,24 +3,45 @@ package ModelLayer;
 /**
  * Created by Luke on 21/03/2017.
  */
-public class Product {
+public class Product extends Box{
     private String productID;
     private int currentQuantity;
+    private int dailyConsumption;
     private int minQuantity;
     private int maxQuantity;
     private int cvr;
+    private String name;
 
-    public Product(String productID, int currentQuantity, int minQuantity, int maxQuantity, int cvr) {
+    public Product(double height, double length, double width, String productID, int minQuantity,int maxQuantity, int currentQuantity,int dailyConsumption,String name ,int cvr) {
+        super(length, width, height);
         this.productID = productID;
-        this.currentQuantity = currentQuantity;
         this.minQuantity = minQuantity;
         this.maxQuantity = maxQuantity;
+        this.currentQuantity = currentQuantity;
+        this.dailyConsumption = dailyConsumption;
+        this.name = name;
         this.cvr = cvr;
     }
 
     public String getProductID() {
 
         return productID;
+    }
+
+    public int getDailyConsumption(){
+        return dailyConsumption;
+    }
+
+    public void setDailyConsumption(int dailyConsumption){
+        this.dailyConsumption = dailyConsumption;
+    }
+
+    public String getName(){
+        return name;
+    }
+
+    public void setName(String name){
+        this.name = name;
     }
 
     public void setProductID(String productID) {

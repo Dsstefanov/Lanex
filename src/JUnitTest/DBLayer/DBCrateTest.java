@@ -23,7 +23,7 @@ public class DBCrateTest {
 
             try{
                 dbCrate = new DBCrate();
-                dbCrate.create("10",51,8,10);
+                dbCrate.create(10,51,8,10);
             } catch (Exception e){
                 System.out.println("Couldn't insert the crate in the DB");
                 e.getMessage();
@@ -35,7 +35,7 @@ public class DBCrateTest {
         public void tearDown() throws Exception {
             if (!isDeleted) {
                 try {
-                    dbCrate.delete("10");
+                    dbCrate.delete(10);
                 } catch (Exception e) {
                     System.out.println("Couldn't remove the test contractor from the DB");
                     fail();
@@ -47,7 +47,7 @@ public class DBCrateTest {
         @org.junit.Test
         public void testACreate() throws Exception {
             try {
-                Crate crate = new Crate("10",5,8,10);
+                Crate crate = new Crate(10,5,8,10);
                 assertNotNull(crate);
             } catch(Exception e) {
                 e.getMessage();
@@ -58,8 +58,8 @@ public class DBCrateTest {
         @Test
         public void testBRead() throws Exception {
             try {
-                dbCrate.read("10");
-                assertNotNull(dbCrate.read("10"));
+                dbCrate.read(10);
+                assertNotNull(dbCrate.read(10));
 
             } catch(Exception e) {
                 e.getMessage();
@@ -70,8 +70,8 @@ public class DBCrateTest {
         @Test
         public void testCUpdate() throws Exception {
             try {
-                Crate crate = dbCrate.read("10");
-                crate.setCrateId("15");
+                Crate crate = dbCrate.read(10);
+                crate.setCrateId(15);
                 assertNotNull(crate.getCrateId());
             } catch(Exception e) {
                 e.getMessage();
@@ -82,7 +82,7 @@ public class DBCrateTest {
         @Test
         public void testDDelete() throws Exception {
             try {
-                isDeleted = dbCrate.delete("10");
+                isDeleted = dbCrate.delete(10);
                 assertTrue(isDeleted);
             } catch(Exception e) {
                 e.getMessage();

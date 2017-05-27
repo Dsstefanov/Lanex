@@ -14,21 +14,21 @@ public class DBCrate implements IDBCrate {
 
        try {
 //           Crate crate = new Crate( "11234567",120.1,130,150);
-//           new DBCrate().create("11234567",120.1, 130, 150 );
-           new DBCrate().read("123456");
+          new DBCrate().create(1,120.1, 130, 150 );
+
         } catch (SQLException e) {
            e.printStackTrace();
        }
        System.out.println("success");
     }
-        public Crate create( String crateId, double height, double length, double width) throws SQLException {
-            Crate crate = new Crate(crateId, height, length, width);
-            String sql = String.format("INSERT INTO Crate (crateId, height, length, width) VALUES (?,?,?,?)");
+        public Crate create( int id, double height, double length, double width) throws SQLException {
+            Crate crate = new Crate(id, height, length, width);
+            String sql = String.format("INSERT INTO Crate (id, height, length, width) VALUES (?,?,?,?)");
 
             try
                     (java.sql.Connection conn = DBConnection.getInstance().getDBcon();
                 PreparedStatement ps =conn.prepareStatement(sql)){
-                ps.setString(1,crateId);
+                ps.setInt(1, id);
                 ps.setDouble(2, height);
                 ps.setDouble(3,length);
                 ps.setDouble(4, width);
@@ -43,9 +43,9 @@ public class DBCrate implements IDBCrate {
         }
 
 
-        public Crate read(String crateId) throws SQLException{
+        public Crate read(int id) throws SQLException{
             Crate crate = null;
-            String sql = String.format("SELECT * FROM crate where crateId= ?");
+            String sql = String.format("SELECT * FROM crate where id= %d",id);
             try{
                 java.sql.Connection conn = DBConnection.getInstance().getDBcon();
 
@@ -65,7 +65,7 @@ public class DBCrate implements IDBCrate {
         private Crate buildObject(ResultSet rs) throws SQLException{
             Crate crate;
             try {
-                String crateId = rs.getString(1);
+                int crateId = rs.getInt(1);
                 double height = rs.getDouble(2);
                 double length = rs.getDouble(3);
                 double width = rs.getDouble(4);
@@ -85,11 +85,11 @@ public class DBCrate implements IDBCrate {
                 double height = crate.getHeight();
                 double width = crate.getWidth();
                 double length = crate.getLength();
-                String crateId = crate.getCrateId();
+                int crateId = crate.getCrateId();
 
 
-                PreparedStatement psttm = conn.prepareStatement("UPDATE Crate SET height = ?,length = ?, width = ? WHERE crateId = ? ");
-                psttm.setString(4,crateId);
+                PreparedStatement psttm = conn.prepareStatement("UPDATE Crate SET height = ?,length = ?, width = ? WHERE id = ? ");
+                psttm.setInt(4,crateId);
                 psttm.setDouble(1,height);
                 psttm.setDouble(2,length);
                 psttm.setDouble(3,width);
@@ -104,10 +104,10 @@ public class DBCrate implements IDBCrate {
             return true;
         }
 
-        public boolean delete(String crateId)throws SQLException{
+        public boolean delete(int id)throws SQLException{
             try {
                 java.sql.Connection conn = DBConnection.getInstance().getDBcon();
-                String sql = String.format("Delete from Crate where crateId='%s'", crateId);
+                String sql = String.format("Delete from Crate where id = %d", id);
                 conn.createStatement().executeUpdate(sql);
             } catch(SQLException e) {
                 e.printStackTrace();

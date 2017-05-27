@@ -2,9 +2,10 @@ package DBLayer;
 
 import ModelLayer.Product;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+
+import static org.junit.Assert.fail;
 
 /**
  * Created by RedJohn on 4/26/2017.
@@ -12,20 +13,54 @@ import java.sql.SQLException;
 public class DBProduct implements IDBProduct{
     public static void main(String[] args) {
 
-        Product product = new Product("123444",200,20,200,556655);
-        new DBProduct().create("123444",200,20,200,556655);
-        System.out.println("success");
+        try{
+            int dailyConsumption = 30;
+            Product product = new Product(1,1,1,"123456",37*dailyConsumption,74*dailyConsumption,44*dailyConsumption,dailyConsumption,"Lime Rope",556655);
+            delete("123456");
+        } catch (Exception e){
+            System.out.println("Couldn't insert the contractor in the DB");
+        }
     }
 
-    public Product create(String productID, int currentQuantity, int minQuantity, int maxQuantity, int cvr)
+    public static Product create(Product product)
     {
-        Product product = new Product(productID,currentQuantity,minQuantity,maxQuantity,cvr);
-        String sql = String.format("INSERT INTO Product VALUES ('%s', '%d', '%d', '%d', '%d') ",productID,currentQuantity,minQuantity,maxQuantity,cvr);
+        //Product product = new Product(height,length,width,productID,minQuantity,maxQuantity,currentQuantity,dailyConsumption,name,cvr);
+        //String sql = String.format("INSERT INTO Product VALUES ('%s', '%d', '%d', '%d', '%d') ",height,length,width,productID,minQuantity,maxQuantity,currentQuantity,dailyConsumption,name,cvr);
 
 
         try {
             java.sql.Connection conn = DBConnection.getInstance().getDBcon();
-            conn.createStatement().executeUpdate(sql);
+
+            float height =(float) product.getHeight();
+            float length = (float) product.getLength();
+            float width = (float) product.getWidth();
+            String productID = product.getProductID();
+            int minQuantity = product.getMinQuantity();
+            int maxQuantity = product.getMaxQuantity();
+            int currentCapacity = product.getCurrentQuantity();
+            int dailyConsumption = product.getDailyConsumption();
+            String name = product.getName();
+            int cvr  = product.getCvr();
+
+
+            PreparedStatement psttm = conn.prepareStatement("INSERT INTO Product (barcode,currentQuantity, minQuantity, "
+                    + "maxQuantity, cvr, name, height, lenght, width,dailyConsumption) "
+                    + "VALUES(?,?,?,?,?,?,?,?,?,?)");
+
+
+            psttm.setFloat(7,height);
+            psttm.setFloat(8,length);
+            psttm.setFloat(9, width);
+            psttm.setString(1, productID);
+            psttm.setInt(3, minQuantity);
+            psttm.setInt(4, maxQuantity);
+            psttm.setInt(2,currentCapacity);
+            psttm.setInt(10, dailyConsumption);
+            psttm.setString(6, name);
+            psttm.setInt(5, cvr);
+
+            psttm.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -34,11 +69,13 @@ public class DBProduct implements IDBProduct{
         }
         return product;
     }
+
+
     public Product read(String productId) throws SQLException{
         Product product = null;
         try{
             java.sql.Connection conn = DBConnection.getInstance().getDBcon();
-            String sql = String.format("SELECT * FROM product where barcode=%s",productId);
+            String sql = String.format("SELECT * FROM product WHERE barcode=%s",productId);
             ResultSet rs = conn.createStatement().executeQuery(sql);
             if (rs.next()){
                 product = buildObject(rs);
@@ -53,12 +90,17 @@ public class DBProduct implements IDBProduct{
     private Product buildObject(ResultSet rs) throws SQLException{
         Product product;
         try {
-            String productId = rs.getString(1);
-            int currentQuantity = rs.getInt(2);
-            int minQuantity = rs.getInt(3);
-            int maxQuantity = rs.getInt(4);
-            int cvr = rs.getInt(5);
-            product = new Product(productId,currentQuantity,minQuantity,maxQuantity,cvr);
+            String productId = rs.getString("barcode");
+            double height =(double) rs.getFloat("height");
+            double length = (double) rs.getFloat("length");
+            double width = (double) rs.getFloat("width");;
+            int minQuantity = rs.getInt("minQuantity");
+            int maxQuantity = rs.getInt("maxQuantity");
+            int currentCapacity = rs.getInt("currentCapacity");
+            int dailyConsumption = rs.getInt("dailyConsumption");
+            String name = rs.getString("name");
+            int cvr  = rs.getInt("cvr");
+            product = new Product(height,length,width,productId,minQuantity,maxQuantity,currentCapacity,dailyConsumption,name,cvr);
         } catch(SQLException e) {
             e.printStackTrace();
             throw e;
@@ -66,33 +108,74 @@ public class DBProduct implements IDBProduct{
 
         return product;
     }
+
+    private ArrayList<Product> buildObjects(ResultSet rs) throws SQLException{
+        ArrayList<Product> products = new ArrayList<>();
+        while(rs.next()) {
+            products.add(buildObject(rs));
+        }
+        return products;
+    }
+
+
+
+    public ArrayList<Product> readAll() throws SQLException {
+        ArrayList<Product> products = new ArrayList<>();
+        String sql = "SELECT * FROM Product";
+        try(Statement st = DBConnection.getInstance().getDBcon().createStatement()) {
+            ResultSet rs = st.executeQuery(sql);
+            while(rs.next()) {
+                products = buildObjects(rs);
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            DBConnection.closeConnection();
+        }
+        return  products;
+    }
+
+
     public boolean update(Product product) throws SQLException{
         try {
             java.sql.Connection conn = DBConnection.getInstance().getDBcon();
-            String productId = product.getProductID();
-            int curentQuantity = product.getCurrentQuantity();
+            float height =(float) product.getHeight();
+            float length = (float) product.getLength();
+            float width = (float) product.getWidth();
+            String productID = product.getProductID();
             int minQuantity = product.getMinQuantity();
             int maxQuantity = product.getMaxQuantity();
-            int cvr = product.getCvr();
-            /*String sql = String.format("UPDATE Product SET barcode = '%s', current_quantity = '%d', min_quantity = '%d', max_quantity = '%d', cvr = '%d' WHERE barcode = '%s' ;",product.getProductID(),product.getCurrentQuantity(),product.getMinQuantity(),product.getMaxQuantity(),product.getCvr(),product.getProductID());
-            */
-            PreparedStatement psttm = conn.prepareStatement("UPDATE Product SET current_quantity = ?, min_quantity = ?, max_quantity = ?, cvr = ? WHERE barcode = ? ");
-           // psttm.setNString(1,productId);
-            psttm.setInt(1,curentQuantity);
-            psttm.setInt(2,minQuantity);
-            psttm.setInt(3,maxQuantity);
-            psttm.setInt(4,cvr);
-            psttm.setNString(5,productId);
-            psttm.executeUpdate();
+            int curentCapacity = product.getCurrentQuantity();
+            int dailyConsumption = product.getDailyConsumption();
+            String name = product.getName();
+            int cvr  = product.getCvr();
+
+            PreparedStatement psttm = conn.prepareStatement("UPDATE Product SET height = ?, length = ?, "
+                    + "width = ?, minCapacity = ?, maxCapacity = ?,curentCapacity = ?, "
+                    + "dailyConsumption = ?,name = ?, cvr = ? WHERE barcode = ? ");
+            // psttm.setNString(1,productId);
+            psttm.setFloat(1,height);
+            psttm.setFloat(2,length);
+            psttm.setFloat(3, width);
+            psttm.setInt(4, minQuantity);
+            psttm.setInt(5, maxQuantity);
+            psttm.setInt(6,curentCapacity);
+            psttm.setInt(7, dailyConsumption);
+            psttm.setString(8, name);
+            psttm.setInt(9, cvr);
+            psttm.setString(10, productID);
         } catch(SQLException e) {
             e.printStackTrace();
             throw e;
 
+        }finally {
+            DBConnection.closeConnection();
         }
         return true;
     }
 
-    public boolean delete(String productId)throws SQLException{
+    public static boolean delete(String productId)throws SQLException{
         try {
             java.sql.Connection conn = DBConnection.getInstance().getDBcon();
             String sql = String.format("Delete from Product where barcode='%s'", productId);

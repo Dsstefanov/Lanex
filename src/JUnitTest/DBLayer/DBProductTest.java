@@ -1,10 +1,13 @@
-package DBLayer;
+package JUnitTest.DBLayer;
 
 import ModelLayer.Product;
 //import org.junit.runners.MethodSorters;
 //import org.junit.FixMethodOrder;
 import org.junit.After;
 import org.junit.Test;
+
+import DBLayer.DBProduct;
+
 import static org.junit.Assert.*;
 
 /**
@@ -14,21 +17,18 @@ import static org.junit.Assert.*;
 public class DBProductTest {
     DBProduct dbProduct;
     boolean isDeleted = false;
-
+    Product product = null;
     @org.junit.Before
     public void setUp() throws Exception {
-        /*try {
-            DBCleanup.cleanDB();//TODO fix the cleanDB class
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Could not clean up the db");
-        }*/
+
         try{
             dbProduct = new DBProduct();
-            dbProduct.create("654321",300,50,500,556655);
+            int dailyConsumption = 30;
+            product = new Product(1.15,0.44,0.23,"123456",37*dailyConsumption,74*dailyConsumption,44*dailyConsumption,dailyConsumption,"Lime Rope",556655);
+            dbProduct.create(product);
+            isDeleted = false;
         } catch (Exception e){
-            System.out.println("Couldn't insert the contractor in the DB");
+            System.out.println("Couldn't insert the product in the DB");
             fail();
         }
     }
@@ -37,7 +37,7 @@ public class DBProductTest {
     public void tearDown() throws Exception {
         if (!isDeleted) {
             try {
-                dbProduct.delete("654321");
+                dbProduct.delete("123456");
             } catch (Exception e) {
                 System.out.println("Couldn't remove the test contractor from the DB");
                 fail();
@@ -49,8 +49,7 @@ public class DBProductTest {
     @org.junit.Test
     public void testACreate() throws Exception {
         try {
-            Product contractor = new Product("654321",300,50,500,556655);
-            assertNotNull(contractor);
+            assertNotNull(product);
         } catch(Exception e) {
             e.getMessage();
             fail();
@@ -60,9 +59,9 @@ public class DBProductTest {
     @Test
     public void testBRead() throws Exception {
         try {
-            dbProduct.read("654321");
-            assertNotNull(dbProduct.read("654321"));
-            System.out.println(dbProduct.read("654321"));
+            dbProduct.read("123456");
+            assertNotNull(dbProduct.read("123456"));
+            System.out.println(dbProduct.read("123456"));
         } catch(Exception e) {
             e.getMessage();
             fail();
@@ -72,8 +71,8 @@ public class DBProductTest {
     @Test
     public void testCUpdate() throws Exception {
         try {
-            Product myNewProduct = dbProduct.read("654321");
-            assertNotNull(dbProduct.read("654321"));
+            Product myNewProduct = dbProduct.read("123456");
+            assertNotNull(dbProduct.read("123456"));
             myNewProduct.setMaxQuantity(myNewProduct.getMaxQuantity()*2);
             dbProduct.update(myNewProduct);
         } catch(Exception e) {
@@ -85,7 +84,7 @@ public class DBProductTest {
     @Test
     public void testDDelete() throws Exception {
         try {
-            isDeleted = dbProduct.delete("654321");
+            isDeleted = dbProduct.delete("123456");
             assertTrue(isDeleted);
         } catch(Exception e) {
             e.getMessage();
@@ -93,7 +92,7 @@ public class DBProductTest {
         }
     }
 
-    /*@Test
+    @Test
     public void readAll() throws Exception {
         try {
             dbProduct.readAll().forEach(x -> {System.out.print(x.toString());});
@@ -102,7 +101,7 @@ public class DBProductTest {
             e.getMessage();
             fail();
         }
-    }*/
+    }
 
     /*public String getProductId() {
         try {
