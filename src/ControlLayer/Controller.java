@@ -9,7 +9,7 @@ import java.lang.reflect.Method;
 /**
  * Created by Admin on 5/22/2017.
  */
-public abstract class Controller implements IController{
+public abstract class Controller{
     ArrayList<String> errors = new ArrayList<>();
     /**
      * <p>

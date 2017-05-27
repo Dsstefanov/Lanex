@@ -2,6 +2,7 @@ package ControlLayer;
 import DBLayer.DBWarehouse;
 import Exceptions.ValidationException;
 import ModelLayer.Warehouse;
+import ValidatorLayer.SavedErrors;
 import ValidatorLayer.Validator;
 
 import java.sql.SQLException;
@@ -11,9 +12,6 @@ import java.util.ArrayList;
  * Created by USER on 26.4.2017 г..
  */
 public class WarehouseController extends Controller{
-    public static void main(String[] args) {
-        new WarehouseController().create(13,-11,-12);
-    }
 
     /**
      * @param length: warehouse length
@@ -45,11 +43,21 @@ public class WarehouseController extends Controller{
             return false;
         }
     }
-    public String read(int id){
+    public Warehouse read(int id) throws ValidationException{
         try{
-            return new DBWarehouse().read(id).toString();
+
+            Warehouse warehouse = new DBWarehouse().read(id);
+           if (warehouse!=null){
+               return warehouse;
+           }else{
+               throw new NullPointerException();
+           }
         }catch (SQLException e){
+            System.out.println(e.getMessage());
             return null;
+        }catch (NullPointerException e){
+            errors.add(SavedErrors.getInstance().getErrors().get("WAREHOUSE_NOT_FOUND"));
+            throw new ValidationException(String.join("\n", errors));
         }
     }
 
@@ -83,6 +91,9 @@ public class WarehouseController extends Controller{
             new DBWarehouse().delete(id);
             return true;
         }catch (SQLException e){
+            return false;
+        }catch (NullPointerException e){
+            errors.add(SavedErrors.getInstance().getErrors().get("WAREHOUSE_NOT_FOUND"));
             return false;
         }
     }

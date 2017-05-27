@@ -45,7 +45,11 @@ public class SavedErrors {
         errors.put("WRONG_BARCODE", "Product barcode can consist only of letters or numbers");
         errors.put("WRONG_CURRENT_QUANTITY", "Current quantity must consist of numbers only");
         errors.put("WRONG_MIN_QUANTITY", "Minimum quantity must consist of numbers only");
-     }
+        errors.put("WRONG_MAX_QUANTITY", "Maximum quantity must consist of numbers only");
+        errors.put("WAREHOUSE_NOT_FOUND", "Warehouse with that ID does not exist");
+        errors.put("NUMBER_EXCEPTION", "Enter a valid number");
+        errors.put("ID_EMPTY", "Select first a warehouse to modify");
+    }
     public HashMap<String, String> getErrors(){
         return errors;
     }

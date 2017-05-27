@@ -31,10 +31,6 @@ public class DBWarehouse implements IDBWarehouse{
             }else{
                 throw new SQLException();
             }
-        } catch (SQLException e) {
-            throw e;
-        }catch (Exception e){
-            return null;
         }finally {
             DBConnection.closeConnection();
         }
