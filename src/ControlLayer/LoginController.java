@@ -7,11 +7,11 @@ import java.util.ArrayList;
 /**
  * Created by Luke on 23.05.2017.
  */
-public class Login1 {
+public class LoginController {
     ArrayList<Integer> logins = new ArrayList<>();
 
 
-    public Login1() {
+    public LoginController() {
         setup();
     }
 

@@ -10,6 +10,10 @@ public class Contractor extends Person {
         super(null, null, null, null, null);
     }
 
+    public Contractor(String name, String address, String email, String phone, String city) {
+        super(name, address, email, phone, city);
+    }
+
     public Contractor(String name, String address, String email, String phone, String city, int cvr) {
         super(name, address, email, phone, city);
         this.cvr = cvr;

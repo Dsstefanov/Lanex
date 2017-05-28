@@ -82,7 +82,7 @@ public class ContractorController extends Controller{
 
     public String read(int cvr) {
         try {
-           return dbContractor.read(cvr).toString();
+           return dbContractor.read(cvr).getContractor();
         } catch (SQLException e) {
             return null;
         }
