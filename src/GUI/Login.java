@@ -1,45 +1,33 @@
 package GUI;
 
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.LayoutStyle.ComponentPlacement;
-
-import javax.swing.JPasswordField;
-import javax.swing.JButton;
-import javax.swing.ImageIcon;
 import java.awt.Font;
-import javax.swing.JPanel;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-
-import java.awt.Toolkit;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
+import ControlLayer.LoginController;
+
+import javax.swing.*;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class Login {
 
     private JFrame mainFrame;
     private JTextField txtUsername;
-    private JPasswordField pwdPassword;
     private JMenuItem mbiExit;
     private JButton btnLogin;
-
+    int loginCommand;
     /**
      * Launch the application.
      */
     public static void main(String[] args) {
+
         EventQueue.invokeLater(new Runnable() {
+
             public void run() {
                 try {
+
+
                     Login window = new Login();
                     window.mainFrame.setVisible(true);
                 } catch (Exception e) {
@@ -71,16 +59,10 @@ public class Login {
         JLabel lblUsername = new JLabel("USERNAME");
         lblUsername.setFont(new Font("Britannic Bold", Font.BOLD, 17));
 
-        JLabel lblPassword = new JLabel("PASSWORD");
-        lblPassword.setFont(new Font("Britannic Bold", Font.BOLD, 17));
-
         txtUsername = new JTextField();
 
         txtUsername.setFont(new Font("SansSerif", Font.PLAIN, 15));
         txtUsername.setColumns(10);
-
-        pwdPassword = new JPasswordField();
-        pwdPassword.setFont(new Font("SansSerif", Font.PLAIN, 15));
 
         btnLogin = new JButton("LOGIN");
         GroupLayout groupLayout = new GroupLayout(mainFrame.getContentPane());
@@ -91,13 +73,9 @@ public class Login {
                                 .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
                                         .addComponent(btnLogin, GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE)
                                         .addGroup(groupLayout.createSequentialGroup()
-                                                .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-                                                        .addComponent(lblUsername, GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
-                                                        .addComponent(lblPassword, GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE))
+                                                .addComponent(lblUsername, GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
                                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                                .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-                                                        .addComponent(txtUsername)
-                                                        .addComponent(pwdPassword, GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE))))
+                                                .addComponent(txtUsername, 143, 143, 143)))
                                 .addGap(223))
         );
         groupLayout.setVerticalGroup(
@@ -109,13 +87,7 @@ public class Login {
                                                 .addGap(3)
                                                 .addComponent(lblUsername, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE))
                                         .addComponent(txtUsername, GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE))
-                                .addGap(18)
-                                .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-                                        .addGroup(groupLayout.createSequentialGroup()
-                                                .addGap(6)
-                                                .addComponent(lblPassword, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(pwdPassword, GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE))
-                                .addGap(53)
+                                .addGap(108)
                                 .addComponent(btnLogin, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
                                 .addGap(75))
         );
@@ -143,9 +115,13 @@ public class Login {
 
         btnLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String username = txtUsername.getText();
-                String pass = pwdPassword.getText();
-                if(username.equals("admin") && pass.equals("adminpass") ) {
+                LoginController loginCon = new LoginController();
+
+                if (tryParseInt(txtUsername.getText())) {
+                    loginCommand = Integer.parseInt(txtUsername.getText());
+                }
+
+                if(loginCon.checkLogin(loginCommand)) {
                     JOptionPane.showMessageDialog(null, "Welcome");
                     mainFrame.dispose();
                     MainMenu chooseMenu = new MainMenu();
@@ -156,5 +132,13 @@ public class Login {
                 }
             }
         });
+    }
+    private boolean tryParseInt(Object object) {
+        try {
+            Integer.parseInt(object.toString());
+            return true;
+        } catch (NumberFormatException e){
+            return false;
+        }
     }
 }
