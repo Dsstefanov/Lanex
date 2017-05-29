@@ -61,12 +61,12 @@ public class CreateProduct extends JFrame{
             public void actionPerformed(ActionEvent arg0) {
                 String barcode = textBarcode.getText();
                 String name = textName.getText();
-                double height = 0;
-                double lenght = 0;
-                double width = 0;
-                int currentQuantity = 0;
-                int dailyConsumption = 0;
-                int cvr = 0;
+                double height = Double.parseDouble(textHeight.getText());
+                double length = Double.parseDouble(textLength.getText());
+                double width = Double.parseDouble(textWidth.getText());
+                int currentQuantity = Integer.parseInt(textcurrentQuantity.getText());
+                int dailyConsumption = Integer.parseInt(textdailyConsumption.getText());
+                int cvr = Integer.parseInt(textCVR.getText());
 
                 /*try {
                     if(tryParseInt(textCVR.getText())) {
@@ -117,7 +117,7 @@ public class CreateProduct extends JFrame{
                 }*/
 
                 try {
-                    if(controller.create(height,lenght,width,barcode,currentQuantity*37,currentQuantity*74,currentQuantity,dailyConsumption,name,cvr)) {
+                    if(controller.create(height,length,width,barcode,dailyConsumption*37,dailyConsumption*74,currentQuantity,dailyConsumption,name,cvr)) {
                         textBarcode.setText("");
                         textHeight.setText("");
                         textLength.setText("");

@@ -12,15 +12,27 @@ import java.util.GregorianCalendar;
  */
 public class DBProduct implements IDBProduct{
 
+    public int getNumberRows(){
+        int counter = 0;
+        String sql = String.format("SELECT * FROM Product");
+        try{
+            Connection conn = DBConnection.getInstance().getDBcon();
+            ResultSet rs = conn.createStatement().executeQuery(sql);
+            while(rs.next()){
+                counter++;
+            }
+
+        } catch (Exception e){
+            e.getMessage();
+        } finally {
+            DBConnection.closeConnection();
+        }
+        return counter;
+    }
+
     public Product create(Product product) throws SQLException
     {
-        //Product product = new Product(height,length,width,barcode,minQuantity,maxQuantity,currentQuantity,dailyConsumption,name,cvr);
-        //String sql = String.format("INSERT INTO Product VALUES ('%s', '%d', '%d', '%d', '%d') ",height,length,width,barcode,minQuantity,maxQuantity,currentQuantity,dailyConsumption,name,cvr);
-
-
-        try {
-            java.sql.Connection conn = DBConnection.getInstance().getDBcon();
-
+            int currentRows = getNumberRows();
             double height = product.getHeight();
             double length = product.getLength();
             double width =  product.getWidth();
@@ -31,34 +43,39 @@ public class DBProduct implements IDBProduct{
             int dailyConsumption = product.getDailyConsumption();
             String name = product.getName();
             int cvr  = product.getCvr();
+            String sql = "BEGIN TRANSACTION " +
+                    "INSERT INTO Product (barcode,currentQuantity, minQuantity, "
+                    + "maxQuantity, cvr, name, height, length, width,dailyConsumption) " +
+                    "VALUES ('"+barcode+"', '"+currentCapacity+"', '"+minQuantity+"', '"+maxQuantity+"', '"+cvr+"',  '"+name+"', " +
+                    "'"+height+"', '"+length+"', '"+width+"', '"+dailyConsumption+"') " +
+                    "IF @@ROWCOUNT <> 1 " +
+                    "BEGIN " +
+                    "ROLLBACK " +
+                    "RAISERROR('Barcode already exists!', 16, 1) " +
+                    "END " +
+                    "ELSE " +
+                    "BEGIN " +
+                    "COMMIT " +
+                    "END";
 
+            try{
+                Connection conn;
+                conn = DBConnection.getInstance().getDBcon();
+                conn.createStatement().executeUpdate(sql);
 
-            PreparedStatement psttm = conn.prepareStatement("INSERT INTO Product (barcode,currentQuantity, minQuantity, "
-                    + "maxQuantity, cvr, name, height, length, width,dailyConsumption) "
-                    + "VALUES(?,?,?,?,?,?,?,?,?,?)");
+            } catch (SQLException e){
+                e.getMessage();
+            } finally {
+                DBConnection.closeConnection();
+            }
 
+            int lastChangesOfRows = getNumberRows();
+            if(currentRows == lastChangesOfRows) {
+                throw new IllegalArgumentException("The barcode already exists!!!");
+            }
 
-            psttm.setDouble(7,height);
-            psttm.setDouble(8,length);
-            psttm.setDouble(9, width);
-            psttm.setString(1, barcode);
-            psttm.setInt(3, minQuantity);
-            psttm.setInt(4, maxQuantity);
-            psttm.setInt(2,currentCapacity);
-            psttm.setInt(10, dailyConsumption);
-            psttm.setString(6, name);
-            psttm.setInt(5, cvr);
-
-            psttm.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+            return product;
         }
-        finally {
-            DBConnection.closeConnection();
-        }
-        return product;
-    }
 
 
     public Product read(String productId) throws SQLException{
