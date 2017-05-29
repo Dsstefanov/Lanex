@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 
 import ControlLayer.ContractorController;
 import DBLayer.DBConnection;
+import ValidatorLayer.SavedErrors;
 
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -168,7 +169,6 @@ public class ReadContractor extends JFrame {
     }
 
     private void createEvents() {
-        // TODO Auto-generated method stub
         btnBack.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 dispose();
@@ -182,37 +182,33 @@ public class ReadContractor extends JFrame {
                     if(tryParseInt(cvr)) {
                         cvr = Integer.parseInt(searchFieldCVR.getText());
                     }
+
+                    try {
+                        String splitContractor = conControl.read(cvr);
+                        String[] result = splitContractor.split(",");
+                        if(result.length != 0) {
+                            textFieldName.setText(result[0].substring(5));
+                            textFieldAddress.setText(result[1].substring(8));
+                            textFieldEmail.setText(result[2].substring(6));
+                            textFieldPhone.setText(result[3].substring(6));
+                            textFieldCity.setText(result[4].substring(5));
+                            textFieldIdNumber.setText(result[5].substring(3));
+                        }
+                    } catch(NullPointerException npe) {
+                        JOptionPane optionPane = new JOptionPane("You've got the following error:\n" + SavedErrors.getInstance().getErrors().get("WRONG_CONTRACTOR"), JOptionPane.ERROR_MESSAGE);
+                        JDialog dialog = optionPane.createDialog("Failure");
+                        dialog.setAlwaysOnTop(true);
+                        dialog.setVisible(true);
+                    }
                 } catch (NumberFormatException ee) {
                     setFieldsToNull();
-                    JOptionPane optionPane = new JOptionPane("You've got the following error:\n" + "CVR field cannot be empty or letters!", JOptionPane.ERROR_MESSAGE);
-                    JDialog dialog = optionPane.createDialog("Failure");
-                    dialog.setAlwaysOnTop(true);
-                    dialog.setVisible(true);
-                } catch (NullPointerException npe) {
-                    setFieldsToNull();
-                    JOptionPane optionPane = new JOptionPane("You've got the following error:\n" + "There is no such user!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane optionPane = new JOptionPane("You've got the following error:\n" + SavedErrors.getInstance().getErrors().get("WRONG_CVR"), JOptionPane.ERROR_MESSAGE);
                     JDialog dialog = optionPane.createDialog("Failure");
                     dialog.setAlwaysOnTop(true);
                     dialog.setVisible(true);
                 }
 
-                try {
-                    String splitContractor = conControl.read(cvr);
-                    String[] result = splitContractor.split(",");
-                    if(result.length != 0) {
-                        textFieldName.setText(result[0].substring(5));
-                        textFieldAddress.setText(result[1].substring(8));
-                        textFieldEmail.setText(result[2].substring(6));
-                        textFieldPhone.setText(result[3].substring(6));
-                        textFieldCity.setText(result[4].substring(5));
-                        textFieldIdNumber.setText(result[5].substring(3));
-                    }
-                } catch(NullPointerException npe) {
-                    JOptionPane optionPane = new JOptionPane("You've got the following error:\n" + "There is no such user!!", JOptionPane.ERROR_MESSAGE);
-                    JDialog dialog = optionPane.createDialog("Failure");
-                    dialog.setAlwaysOnTop(true);
-                    dialog.setVisible(true);
-                }
+
 
             }
         });

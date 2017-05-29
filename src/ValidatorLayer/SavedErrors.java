@@ -36,19 +36,22 @@ public class SavedErrors {
         errors.put("WRONG_CITY","City must contains only letters and to be at least 3 letters long!");
         errors.put("WRONG_CVR", "The CVR must consist of exactly 8 digits and cannot be null value or string!");
         errors.put("WRONG_WORK_ID", "The work ID must consist exactly 9 digits!");
+        errors.put("WRONG_CONTRACTOR", "There is no such contractor in the system!");
         errors.put("WRONG_OBJECT_SIZE", "Size must consist of positive numbers only");
         errors.put("WRONG_TYPE", "Type number must be between 1-5");
         errors.put ("WRONG_QUANTITIES", "Quantities must be only numbers");
         errors.put("WRONG_OBJECT_HEIGHT", "Height must consist of positive numbers only");
         errors.put("WRONG_OBJECT_WIDTH", "Width must consist of positive numbers only");
         errors.put("WRONG_OBJECT_LENGTH", "Length must consist of positive numbers only");
-        errors.put("WRONG_BARCODE", "Product barcode can consist only of letters or numbers");
+        errors.put("WRONG_BARCODE", "Product barcode can consist only of numbers");
+        errors.put("EMPTY_PRODUCT", "There is no such product in the system!");
         errors.put("WRONG_CURRENT_QUANTITY", "Current quantity must consist of numbers only");
         errors.put("WRONG_MIN_QUANTITY", "Minimum quantity must consist of numbers only");
         errors.put("WRONG_MAX_QUANTITY", "Maximum quantity must consist of numbers only");
         errors.put("WAREHOUSE_NOT_FOUND", "Warehouse with that ID does not exist");
         errors.put("NUMBER_EXCEPTION", "Enter a valid number");
         errors.put("ID_EMPTY", "Select first a warehouse to modify");
+        errors.put("WRONG_PRODUCT_NAME", "Invalid product name!");
     }
     public HashMap<String, String> getErrors(){
         return errors;

@@ -11,19 +11,8 @@ import java.util.GregorianCalendar;
  * Created by RedJohn on 4/26/2017.
  */
 public class DBProduct implements IDBProduct{
-    public static void main(String[] args) {
 
-        try{
-            int dailyConsumption = 50;
-
-            Product product = new Product(1.345,1.2,1.1,"123567",37*dailyConsumption,74*dailyConsumption,44*dailyConsumption,dailyConsumption,"Lime Rope",11111111);
-            update(product);
-        } catch (Exception e){
-            System.out.println("Couldn't insert the contractor in the DB");
-        }
-    }
-
-    public static Product create(Product product)
+    public Product create(Product product) throws SQLException
     {
         //Product product = new Product(height,length,width,barcode,minQuantity,maxQuantity,currentQuantity,dailyConsumption,name,cvr);
         //String sql = String.format("INSERT INTO Product VALUES ('%s', '%d', '%d', '%d', '%d') ",height,length,width,barcode,minQuantity,maxQuantity,currentQuantity,dailyConsumption,name,cvr);
@@ -72,7 +61,7 @@ public class DBProduct implements IDBProduct{
     }
 
 
-    public static Product read(String productId) throws SQLException{
+    public Product read(String productId) throws SQLException{
         Product product = null;
         try{
             java.sql.Connection conn = DBConnection.getInstance().getDBcon();
@@ -88,7 +77,7 @@ public class DBProduct implements IDBProduct{
         }
         return product;
     }
-    private static Product buildObject(ResultSet rs) throws SQLException{
+    private  Product buildObject(ResultSet rs) throws SQLException{
         Product product;
         try {
             String productId = rs.getString("barcode");

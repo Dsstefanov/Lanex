@@ -37,6 +37,7 @@ public class CreateProduct extends JFrame{
     /**
      * Launch the application.
      */
+    //TODO MODIFY ALL THE CLASS!!!!!!!!!!!!
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -67,7 +68,7 @@ public class CreateProduct extends JFrame{
                 int dailyConsumption = 0;
                 int cvr = 0;
 
-                try {
+                /*try {
                     if(tryParseInt(textCVR.getText())) {
                         cvr = Integer.parseInt(textCVR.getText());
                     }
@@ -113,7 +114,7 @@ public class CreateProduct extends JFrame{
                     }
                 } catch(NumberFormatException e) {
                     //controller.getErrors().add(e.getMessage());
-                }
+                }*/
 
                 try {
                     if(controller.create(height,lenght,width,barcode,currentQuantity*37,currentQuantity*74,currentQuantity,dailyConsumption,name,cvr)) {
@@ -127,12 +128,12 @@ public class CreateProduct extends JFrame{
                         textName.setText("");
                         JOptionPane.showMessageDialog(null, "Operation has finished with success!");
                     }
-                } catch (ValidationException iae) {
+                } catch (IllegalArgumentException iae) {
                     JOptionPane optionPane = new JOptionPane("You've got the following errors:\n" + iae.getMessage(), JOptionPane.ERROR_MESSAGE);
                     JDialog dialog = optionPane.createDialog("Failure");
                     dialog.setAlwaysOnTop(true);
                     dialog.setVisible(true);
-                    //controller.removeErrorMessages();
+                    controller.removeErrorMessages();
                 }
             }
         });

@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Arc2D;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -17,6 +18,8 @@ import javax.swing.border.EmptyBorder;
 
 import ControlLayer.ProductController;
 import ModelLayer.Contractor;
+import ValidatorLayer.SavedErrors;
+import ValidatorLayer.Validator;
 
 public class UpdateProduct extends JFrame{
     private JPanel contentPane;
@@ -183,6 +186,23 @@ public class UpdateProduct extends JFrame{
 
     }
 
+    private boolean tryParseInt(Object object) {
+        try {
+            Integer.parseInt(object.toString());
+            return true;
+        } catch (NumberFormatException e){
+            return false;
+        }
+    }
+    private boolean tryParseDouble(Object object) {
+        try {
+            Double.parseDouble(object.toString());
+            return true;
+        } catch (NumberFormatException e){
+            return false;
+        }
+    }
+
     private void createEvents() {
         // TODO Auto-generated method stub
         btnBack.addActionListener(new ActionListener() {
@@ -194,7 +214,7 @@ public class UpdateProduct extends JFrame{
 
         btnUpdate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                double height = Double.parseDouble( textHeight.getText());
+                double height = Double.parseDouble(textHeight.getText());
                 double length = Double.parseDouble(textLength.getText());
                 double width = Double.parseDouble(textWidth.getText());
                 int dailyConsumption = Integer.parseInt(textdailyConsumption.getText());
@@ -209,12 +229,10 @@ public class UpdateProduct extends JFrame{
                     JOptionPane.showMessageDialog(null, "Operation finished with success!!");
 
                 } catch(Exception e) {
-                    //conControl.getErrors().add(e.getMessage());
                     JOptionPane optionPane = new JOptionPane("You've got the following error:\n" + e.getMessage(), JOptionPane.ERROR_MESSAGE);
                     JDialog dialog = optionPane.createDialog("Failure");
                     dialog.setAlwaysOnTop(true);
                     dialog.setVisible(true);
-                    //conControl.removeErrorMessages();
                 }
             }
 
@@ -235,40 +253,37 @@ public class UpdateProduct extends JFrame{
                 try {
 
                     barcode = textBarcode1.getText();
-                }
-                catch (NumberFormatException ee) {
-                    setFieldsToNull();
-                    JOptionPane optionPane = new JOptionPane("You've got the following error:\n" + "Barcode field cannot be empty !", JOptionPane.ERROR_MESSAGE);
-                    JDialog dialog = optionPane.createDialog("Failure");
-                    dialog.setAlwaysOnTop(true);
-                    dialog.setVisible(true);
-                } catch (NullPointerException npe) {
-                    setFieldsToNull();
-                    JOptionPane optionPane = new JOptionPane("You've got the following error:\n" + "There is no such user!", JOptionPane.ERROR_MESSAGE);
-                    JDialog dialog = optionPane.createDialog("Failure");
-                    dialog.setAlwaysOnTop(true);
-                    dialog.setVisible(true);
-                }
+                    Validator.validateBarcode(barcode);
 
-                try {
-                    ArrayList<String> productDetails = controller.read(barcode).allDetails();
+                    try {
+                        ArrayList<String> productDetails = controller.read(barcode).allDetails();
 
-                    if(productDetails.size() != 0) {
+                        if(productDetails.size() != 0) {
 
-                        textHeight.setText(productDetails.get(1));
-                        textLength.setText(productDetails.get(2));
-                        textWidth.setText(productDetails.get(3));
-                        textdailyConsumption.setText(productDetails.get(4));
-                        textcurrentQuantity.setText(productDetails.get(5));
-                        textName.setText(productDetails.get(7));
-                        textCVR.setText(productDetails.get(6));
+                            textHeight.setText(productDetails.get(1));
+                            textLength.setText(productDetails.get(2));
+                            textWidth.setText(productDetails.get(3));
+                            textdailyConsumption.setText(productDetails.get(4));
+                            textcurrentQuantity.setText(productDetails.get(5));
+                            textName.setText(productDetails.get(7));
+                            textCVR.setText(productDetails.get(6));
+                        }
+                    } catch(NullPointerException npe) {
+                        JOptionPane optionPane = new JOptionPane("You've got the following error:\n" + SavedErrors.getInstance().getErrors().get("EMPTY_PRODUCT"), JOptionPane.ERROR_MESSAGE);
+                        JDialog dialog = optionPane.createDialog("Failure");
+                        dialog.setAlwaysOnTop(true);
+                        dialog.setVisible(true);
                     }
-                } catch(NullPointerException npe) {
-                    JOptionPane optionPane = new JOptionPane("You've got the following error:\n" + "There is no such product!", JOptionPane.ERROR_MESSAGE);
+                }
+                catch (Exception ee) {
+                    setFieldsToNull();
+                    JOptionPane optionPane = new JOptionPane("You've got the following error:\n" + ee.getMessage(), JOptionPane.ERROR_MESSAGE);
                     JDialog dialog = optionPane.createDialog("Failure");
                     dialog.setAlwaysOnTop(true);
                     dialog.setVisible(true);
                 }
+
+
 
             }
         });

@@ -89,7 +89,7 @@ public class CreateContractor extends JFrame {
                         textCVR.setText("");
                         JOptionPane.showMessageDialog(null, "Operation has finished with success!");
                     }
-                } catch (ValidationException iae) {
+                } catch (IllegalArgumentException iae) {
                     JOptionPane optionPane = new JOptionPane("You've got the following errors:\n" + iae.getMessage(), JOptionPane.ERROR_MESSAGE);
                     JDialog dialog = optionPane.createDialog("Failure");
                     dialog.setAlwaysOnTop(true);

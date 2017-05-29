@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -14,9 +15,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.xml.bind.ValidationException;
 
 
 import ControlLayer.ProductController;
+import ValidatorLayer.SavedErrors;
+import ValidatorLayer.Validator;
+import org.omg.CORBA.Environment;
 
 public class ReadProduct extends JFrame {
     private JPanel contentPane;
@@ -61,7 +66,6 @@ public class ReadProduct extends JFrame {
     }
 
     private void initializeComponents() {
-        // TODO Auto-generated method stub
         controller = new ProductController();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(600, 200, 938, 612);
@@ -196,7 +200,6 @@ public class ReadProduct extends JFrame {
     }
 
     private void createEvents() {
-        // TODO Auto-generated method stub
         btnBack.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 dispose();
@@ -209,40 +212,38 @@ public class ReadProduct extends JFrame {
                 try {
 
                     barcode = textBarcode1.getText();
-                }
-                catch (NumberFormatException ee) {
-                    setFieldsToNull();
-                    JOptionPane optionPane = new JOptionPane("You've got the following error:\n" + "Barcode field cannot be empty !", JOptionPane.ERROR_MESSAGE);
-                    JDialog dialog = optionPane.createDialog("Failure");
-                    dialog.setAlwaysOnTop(true);
-                    dialog.setVisible(true);
-                } catch (NullPointerException npe) {
-                    setFieldsToNull();
-                    JOptionPane optionPane = new JOptionPane("You've got the following error:\n" + "There is no such user!", JOptionPane.ERROR_MESSAGE);
-                    JDialog dialog = optionPane.createDialog("Failure");
-                    dialog.setAlwaysOnTop(true);
-                    dialog.setVisible(true);
-                }
+                    Validator.validateBarcode(barcode);
 
-                try {
-                    ArrayList<String> productDetails = controller.read(barcode).allDetails();
+                    try {
+                        ArrayList<String> productDetails = controller.read(barcode).allDetails();
 
-                    if(productDetails.size() != 0) {
-                        textBarcode.setText(productDetails.get(0));
-                        textHeight.setText(productDetails.get(1));
-                        textLength.setText(productDetails.get(2));
-                        textWidth.setText(productDetails.get(3));
-                        textdailyConsumption.setText(productDetails.get(4));
-                        textcurrentQuantity.setText(productDetails.get(5));
-                        textName.setText(productDetails.get(7));
-                        textCVR.setText(productDetails.get(6));
+                        if(productDetails.size() != 0) {
+                            textBarcode.setText(productDetails.get(0));
+                            textHeight.setText(productDetails.get(1));
+                            textLength.setText(productDetails.get(2));
+                            textWidth.setText(productDetails.get(3));
+                            textdailyConsumption.setText(productDetails.get(4));
+                            textcurrentQuantity.setText(productDetails.get(5));
+                            textName.setText(productDetails.get(7));
+                            textCVR.setText(productDetails.get(6));
+                        }
+                    } catch(NullPointerException npe) {
+                        JOptionPane optionPane = new JOptionPane("You've got the following error:\n" + SavedErrors.getInstance().getErrors().get("EMPTY_PRODUCT"), JOptionPane.ERROR_MESSAGE);
+                        JDialog dialog = optionPane.createDialog("Failure");
+                        dialog.setAlwaysOnTop(true);
+                        dialog.setVisible(true);
                     }
-                } catch(NullPointerException npe) {
-                    JOptionPane optionPane = new JOptionPane("You've got the following error:\n" + "There is no such user!!", JOptionPane.ERROR_MESSAGE);
+
+                } catch (Exception ee) {
+                    setFieldsToNull();
+                    JOptionPane optionPane = new JOptionPane("You've got the following error:\n" + ee.getMessage(), JOptionPane.ERROR_MESSAGE);
                     JDialog dialog = optionPane.createDialog("Failure");
                     dialog.setAlwaysOnTop(true);
                     dialog.setVisible(true);
                 }
+
+
+
 
             }
         });

@@ -78,7 +78,7 @@ public class Validator {
         }
     }
 
-    public static Integer validateCVR(Integer cvr) {
+    public static int validateCVR(Integer cvr) {
         String result = SavedErrors.getInstance().getErrors().get("WRONG_CVR");
 
         if (cvr <= 99999999 && cvr >= 10000000) {
@@ -88,7 +88,7 @@ public class Validator {
         }
     }
 
-    public static Integer validateWorkId(Integer work_id) {
+    public static int validateWorkId(Integer work_id) {
         String result = SavedErrors.getInstance().getErrors().get("WRONG_WORK_ID");
 
         if (work_id <= 999999999 && work_id >= 100000000) {
@@ -98,7 +98,7 @@ public class Validator {
         }
     }
 
-    public static Integer validateObjectSize(Integer size) {
+    public static int validateObjectSize(Integer size) {
         String result = SavedErrors.getInstance().getErrors().get("WRONG_OBJECT_SIZE");
         if (size > 0) {
             return size;
@@ -106,7 +106,7 @@ public class Validator {
             throw new ValidationException(result);
         }
     }
-    public static Integer validateObjectHeight(Integer size) {
+    public static double validateObjectHeight(double size) {
         String result = SavedErrors.getInstance().getErrors().get("WRONG_OBJECT_HEIGHT");
         if (size > 0) {
             return size;
@@ -114,7 +114,7 @@ public class Validator {
             throw new ValidationException(result);
         }
     }
-    public static Integer validateObjectWidth(Integer size) {
+    public static double validateObjectWidth(double size) {
         String result = SavedErrors.getInstance().getErrors().get("WRONG_OBJECT_WIDTH");
         if (size > 0) {
             return size;
@@ -122,7 +122,7 @@ public class Validator {
             throw new ValidationException(result);
         }
     }
-    public static Integer validateObjectLength(Integer size) {
+    public static double validateObjectLength(double size) {
         String result = SavedErrors.getInstance().getErrors().get("WRONG_OBJECT_LENGTH");
         if (size > 0) {
             return size;
@@ -131,7 +131,7 @@ public class Validator {
         }
     }
 
-    public static Integer validateType(Integer type) {
+    public static int validateType(Integer type) {
         String result = SavedErrors.getInstance().getErrors().get("WRONG_TYPE");
         if (type > 0 && type < 5) {
             return type;
@@ -141,7 +141,7 @@ public class Validator {
         }
     }
 
-    public static Integer validateQuantities(Integer quantity) {
+    public static int validateQuantities(Integer quantity) {
         String result = SavedErrors.getInstance().getErrors().get("WRONG_QUANTITIES");
         if (quantity > 0) {
             return quantity;
@@ -150,7 +150,24 @@ public class Validator {
         }
     }
 
-    public static double validateDailyConsumption(double currentQuantity) {
+    public static int validateMinQ(Integer quantity) {
+        String result = SavedErrors.getInstance().getErrors().get("WRONG_MIN_QUANTITY");
+        if (quantity > 0) {
+            return quantity;
+        } else {
+            throw new ValidationException(result);
+        }
+    }
+    public static int validateMaxQ(Integer quantity) {
+        String result = SavedErrors.getInstance().getErrors().get("WRONG_MAX_QUANTITY");
+        if (quantity > 0) {
+            return quantity;
+        } else {
+            throw new ValidationException(result);
+        }
+    }
+
+    public static int validateDailyConsumption(int currentQuantity) {
         String result = SavedErrors.getInstance().getErrors().get("WRONG_MIN_QUANTITY");
         if (currentQuantity > 0) {
             return currentQuantity;
@@ -161,19 +178,29 @@ public class Validator {
     }
     public static String validateBarcode (String barcode)  {
         String result = SavedErrors.getInstance().getErrors().get("WRONG_BARCODE");
-        final String regex = "[a-zA-Z][0-9]{1,}";
+        final String regex = "[0-9]{1,}";
 
         final Pattern pattern = Pattern.compile(regex);
 
         final Matcher matcher = pattern.matcher(barcode);
 
-        try {
-            if(matcher.matches() && (DBProduct.read(barcode) == null))
-            return matcher.group(0);// take the value
-        } catch(SQLException e){
-            throw new ValidationException(result);
-        }
-        return matcher.group(0);// take the value
+            if(matcher.matches()) {
+                return matcher.group(0);// take the value
+            } else {
+                throw new ValidationException(result);
+            }
     }
 
+    public static String validateProductName(String firstLastName) throws ValidationException {
+        final String regex = ".*";
+        final Pattern pattern = Pattern.compile(regex);
+        final Matcher matcher = pattern.matcher(firstLastName);
+
+        String result = SavedErrors.getInstance().getErrors().get("WRONG_PRODUCT_NAME"); // get and save the specific error
+        if (matcher.matches()) {
+            return matcher.group(0); // take the value
+        } else {
+            throw new ValidationException(result);
+        }
+    }
 }
