@@ -63,7 +63,9 @@ public class Product extends Box{
         return cvr;
     }
 
-
+    public void setCurrentQuantity(int currentQuantity) {
+        this.currentQuantity = currentQuantity;
+    }
 
     public ArrayList<String> allDetails(){
         ArrayList<String>productDetails = new ArrayList<>();

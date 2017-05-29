@@ -24,8 +24,7 @@ public class WarehouseController extends Controller{
     public boolean create(int length, int width, int height)throws ValidationException{
         try{
             if (errors.size()!=0){
-                errors = null;
-                errors = new ArrayList<>();
+                errors.clear();
             }
             int checkedLength = (check(length, "validateObjectLength")!=null)?(int) check(length, "validateObjectLength"):length;
             // int checkedLength = if(check(length, "validateObjectLength")!=null){return (int) check(length, "validateObjectLength")}else{return length};
@@ -45,7 +44,9 @@ public class WarehouseController extends Controller{
     }
     public Warehouse read(int id) throws ValidationException{
         try{
-
+            if (errors.size()!=0){
+                errors.clear();
+            }
             Warehouse warehouse = new DBWarehouse().read(id);
            if (warehouse!=null){
                return warehouse;
@@ -71,6 +72,9 @@ public class WarehouseController extends Controller{
      */
     public boolean update(Warehouse warehouse, int length, int width, int height) throws ValidationException{
         try{
+            if (errors.size()!=0){
+                errors.clear();
+            }
             int checkedLength = (check(length, "validateObjectLength")!=null)?(int) check(length, "validateObjectLength"):length;
             int checkedWidth =  (check(width, "validateObjectWidth")!=null)?(int) check(width, "validateObjectWidth"):width;
             int checkedHeight = (check(height, "validateObjectHeight")!=null)?(int) check(height, "validateObjectHeight"):height;
@@ -88,6 +92,9 @@ public class WarehouseController extends Controller{
     }
     public boolean delete(int id){
         try{
+            if (errors.size()!=0){
+                errors.clear();
+            }
             new DBWarehouse().delete(id);
             return true;
         }catch (SQLException e){

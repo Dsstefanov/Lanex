@@ -138,4 +138,12 @@ public class ProductController {
         }
         return aux;
     }
+
+    public ArrayList<Product> readAll() {
+        try {
+            return dbProduct.readAll();
+        } catch (SQLException e) {
+            return null;
+        }
+    }
 }
