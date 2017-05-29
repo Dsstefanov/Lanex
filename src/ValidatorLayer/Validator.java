@@ -1,7 +1,9 @@
 package ValidatorLayer;
 
+import DBLayer.DBProduct;
 import Exceptions.ValidationException;
 
+import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -148,24 +150,7 @@ public class Validator {
         }
     }
 
-    public static Integer validateMinimumQuantity(Integer minQuantity) {
-        String result = SavedErrors.getInstance().getErrors().get("WRONG_MIN_QUANTITY");
-        if (minQuantity > 0) {
-            return minQuantity;
-        } else {
-            throw new ValidationException(result);
-        }
-    }
-
-    public static Integer validateMaxQuantity(Integer maxQuantity) {
-        String result = SavedErrors.getInstance().getErrors().get("WRONG_MAX_QUANTITY");
-        if (maxQuantity > 0) {
-            return maxQuantity;
-        } else {
-            throw new ValidationException(result);
-        }
-    }
-    public static Integer validateCurrentQuantity(Integer currentQuantity) {
+    public static double validateDailyConsumption(double currentQuantity) {
         String result = SavedErrors.getInstance().getErrors().get("WRONG_MIN_QUANTITY");
         if (currentQuantity > 0) {
             return currentQuantity;
@@ -174,7 +159,7 @@ public class Validator {
         }
 
     }
-    public static String validateBarcode (String barcode){
+    public static String validateBarcode (String barcode)  {
         String result = SavedErrors.getInstance().getErrors().get("WRONG_BARCODE");
         final String regex = "[a-zA-Z][0-9]{1,}";
 
@@ -182,11 +167,13 @@ public class Validator {
 
         final Matcher matcher = pattern.matcher(barcode);
 
-        if (matcher.matches()) {
+        try {
+            if(matcher.matches() && (DBProduct.read(barcode) == null))
             return matcher.group(0);// take the value
-        } else {
+        } catch(SQLException e){
             throw new ValidationException(result);
         }
+        return matcher.group(0);// take the value
     }
 
 }

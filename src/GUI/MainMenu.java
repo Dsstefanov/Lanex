@@ -128,7 +128,7 @@ public class MainMenu extends JFrame {
         btProduct.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dispose();
-               // ProductMenu.main(null); TODO
+                ProductMenu.main(null);
             }
         });
 

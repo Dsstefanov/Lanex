@@ -1,8 +1,7 @@
 package JUnitTest.DBLayer;
 
-import DBLayer.DBConnection;
+
 import DBLayer.DBCrate;
-import DBLayer.DBProduct;
 import ModelLayer.Crate;
 import org.junit.After;
 import org.junit.Test;

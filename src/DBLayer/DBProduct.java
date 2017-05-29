@@ -4,8 +4,8 @@ import ModelLayer.Product;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
-import static org.junit.Assert.fail;
 
 /**
  * Created by RedJohn on 4/26/2017.
@@ -14,9 +14,10 @@ public class DBProduct implements IDBProduct{
     public static void main(String[] args) {
 
         try{
-            int dailyConsumption = 30;
-            Product product = new Product(1,1,1,"123456",37*dailyConsumption,74*dailyConsumption,44*dailyConsumption,dailyConsumption,"Lime Rope",556655);
-            read("123456");
+            int dailyConsumption = 50;
+
+            Product product = new Product(1.345,1.2,1.1,"123567",37*dailyConsumption,74*dailyConsumption,44*dailyConsumption,dailyConsumption,"Lime Rope",11111111);
+            update(product);
         } catch (Exception e){
             System.out.println("Couldn't insert the contractor in the DB");
         }
@@ -24,8 +25,8 @@ public class DBProduct implements IDBProduct{
 
     public static Product create(Product product)
     {
-        //Product product = new Product(height,length,width,productID,minQuantity,maxQuantity,currentQuantity,dailyConsumption,name,cvr);
-        //String sql = String.format("INSERT INTO Product VALUES ('%s', '%d', '%d', '%d', '%d') ",height,length,width,productID,minQuantity,maxQuantity,currentQuantity,dailyConsumption,name,cvr);
+        //Product product = new Product(height,length,width,barcode,minQuantity,maxQuantity,currentQuantity,dailyConsumption,name,cvr);
+        //String sql = String.format("INSERT INTO Product VALUES ('%s', '%d', '%d', '%d', '%d') ",height,length,width,barcode,minQuantity,maxQuantity,currentQuantity,dailyConsumption,name,cvr);
 
 
         try {
@@ -34,7 +35,7 @@ public class DBProduct implements IDBProduct{
             double height = product.getHeight();
             double length = product.getLength();
             double width =  product.getWidth();
-            String productID = product.getProductID();
+            String barcode = product.getBarcode();
             int minQuantity = product.getMinQuantity();
             int maxQuantity = product.getMaxQuantity();
             int currentCapacity = product.getCurrentQuantity();
@@ -51,7 +52,7 @@ public class DBProduct implements IDBProduct{
             psttm.setDouble(7,height);
             psttm.setDouble(8,length);
             psttm.setDouble(9, width);
-            psttm.setString(1, productID);
+            psttm.setString(1, barcode);
             psttm.setInt(3, minQuantity);
             psttm.setInt(4, maxQuantity);
             psttm.setInt(2,currentCapacity);
@@ -137,34 +138,36 @@ public class DBProduct implements IDBProduct{
     }
 
 
-    public boolean update(Product product) throws SQLException{
+    public static boolean update(Product product) throws SQLException{
         try {
             java.sql.Connection conn = DBConnection.getInstance().getDBcon();
-            float height =(float) product.getHeight();
-            float length = (float) product.getLength();
-            float width = (float) product.getWidth();
-            String productID = product.getProductID();
+            double height = product.getHeight();
+            double length = product.getLength();
+            double width = product.getWidth();
+            String barcode = product.getBarcode();
+            System.out.println(barcode);
             int minQuantity = product.getMinQuantity();
             int maxQuantity = product.getMaxQuantity();
-            int curentCapacity = product.getCurrentQuantity();
+            int currentCapacity = product.getCurrentQuantity();
             int dailyConsumption = product.getDailyConsumption();
             String name = product.getName();
             int cvr  = product.getCvr();
 
             PreparedStatement psttm = conn.prepareStatement("UPDATE Product SET height = ?, length = ?, "
-                    + "width = ?, minCapacity = ?, maxCapacity = ?,curentCapacity = ?, "
+                    + "width = ?, minQuantity = ?, maxQuantity = ?,currentQuantity = ?, "
                     + "dailyConsumption = ?,name = ?, cvr = ? WHERE barcode = ? ");
             // psttm.setNString(1,productId);
-            psttm.setFloat(1,height);
-            psttm.setFloat(2,length);
-            psttm.setFloat(3, width);
+            psttm.setDouble(1,height);
+            psttm.setDouble(2,length);
+            psttm.setDouble(3, width);
             psttm.setInt(4, minQuantity);
             psttm.setInt(5, maxQuantity);
-            psttm.setInt(6,curentCapacity);
+            psttm.setInt(6,currentCapacity);
             psttm.setInt(7, dailyConsumption);
             psttm.setString(8, name);
             psttm.setInt(9, cvr);
-            psttm.setString(10, productID);
+            psttm.setString(10, barcode);
+            psttm.executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();
             throw e;

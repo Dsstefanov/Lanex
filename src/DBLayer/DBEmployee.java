@@ -9,7 +9,7 @@ import java.util.ArrayList;
 /**
  * Created by USER on 12.4.2017 г..
  */
-public class DBEmployee implements IDBEmployee {
+public class DBEmployee {
     /**
      *
     // * @param name: employee name
@@ -20,8 +20,14 @@ public class DBEmployee implements IDBEmployee {
      * @return employee object
      * @throws SQLException thrown if insertion fails
      */
-
-    @Override
+    public static void main(String[] args) {
+        try {
+            delete(268);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    //@Override
     public Employee create(String name, String address, String email, String phone, String city,int work_id)throws SQLException{
         Employee employee = new Employee(name, address, email, phone, city);
         String sql = String.format("INSERT INTO person (name, address, email, phone, city, category) VALUES ('%s', '%s', '%s', '%s', '%s', 1)", name, address, email, phone, city);
@@ -48,7 +54,7 @@ public class DBEmployee implements IDBEmployee {
     }
 
 
-    @Override
+   // @Override
     public Employee read(int work_id) throws SQLException{
         Employee employee = new Employee();
         try{
@@ -73,7 +79,7 @@ public class DBEmployee implements IDBEmployee {
 
 
 
-    @Override
+    //@Override
     public boolean update(Employee employee , int work_id) throws SQLException{
         try {
             Connection conn = DBConnection.getInstance().getDBcon();
@@ -104,13 +110,15 @@ public class DBEmployee implements IDBEmployee {
         return true;
     }
 
-    @Override
-    public boolean delete(int EmployeeId)throws SQLException{
+    //@Override
+    public static boolean delete(int workId)throws SQLException{
         try {
             Connection conn = DBConnection.getInstance().getDBcon();
            // String sql = String.format("Delete from employee where person_id=%d", id);
            // conn.createStatement().executeUpdate(sql);
-            String sql = String.format("Delete from person where id= '%d'",EmployeeId);
+
+
+            String sql = String.format("Delete from person where id= '%d'",workId);
             conn.createStatement().executeUpdate(sql);
         } catch(SQLException e) {
             e.printStackTrace();
@@ -121,7 +129,7 @@ public class DBEmployee implements IDBEmployee {
         return true;
     }
 
-    @Override
+    //@Override
     public ArrayList<Person> readAll() throws SQLException {
         ArrayList<Person> person = new ArrayList<>();
         String sql = "SELECT * FROM person WHERE category = 1";

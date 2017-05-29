@@ -24,7 +24,7 @@ public class DBProductTest {
         try{
             dbProduct = new DBProduct();
             int dailyConsumption = 30;
-            product = new Product(1.15,0.44,0.23,"123456",37*dailyConsumption,74*dailyConsumption,44*dailyConsumption,dailyConsumption,"Lime Rope",556655);
+            product = new Product(1.15,0.44,0.23,"123456",37*dailyConsumption,74*dailyConsumption,44*dailyConsumption,dailyConsumption,"Lime Rope",55555555);
             dbProduct.create(product);
             isDeleted = false;
         } catch (Exception e){

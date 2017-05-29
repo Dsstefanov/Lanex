@@ -15,9 +15,9 @@ public class ProductController {
         dbProduct = new DBProduct();
     }
 
-    public boolean create(String productId, int currentQuantity,int minQuantity,int maxQuantity,int cvr){
-
-        //dbProduct.create(productId,currentQuantity,minQuantity,maxQuantity,cvr);
+    public boolean create(double height, double length, double width, String productID, int minQuantity,int maxQuantity, int currentQuantity,int dailyConsumption,String name ,int cvr){
+        Product product = new Product(height,length,width,productID,minQuantity,maxQuantity,currentQuantity,dailyConsumption,name,cvr);
+        dbProduct.create(product);
 
         return true;
     }
@@ -32,9 +32,10 @@ public class ProductController {
         return product;
     }
 
-    public boolean update(Product product){
+    public boolean update(double height, double length, double width, String productID, int minQuantity,int maxQuantity, int currentQuantity,int dailyConsumption,String name ,int cvr){
 
         try {
+            Product product = new Product(height,length,width,productID,minQuantity,maxQuantity,currentQuantity,dailyConsumption,name,cvr);
             return dbProduct.update(product);
         } catch (SQLException e) {
             e.printStackTrace();
