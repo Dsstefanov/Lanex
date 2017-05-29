@@ -61,19 +61,19 @@ public class CreateProduct extends JFrame{
             public void actionPerformed(ActionEvent arg0) {
                 String barcode = textBarcode.getText();
                 String name = textName.getText();
-                double height = Double.parseDouble(textHeight.getText());
-                double length = Double.parseDouble(textLength.getText());
-                double width = Double.parseDouble(textWidth.getText());
-                int currentQuantity = Integer.parseInt(textcurrentQuantity.getText());
-                int dailyConsumption = Integer.parseInt(textdailyConsumption.getText());
-                int cvr = Integer.parseInt(textCVR.getText());
+                double height = 0;
+                double length = 0;
+                double width = 0;
+                int currentQuantity = 0;
+                int dailyConsumption = 0;
+                int cvr = 0;
 
-                /*try {
+                try {
                     if(tryParseInt(textCVR.getText())) {
                         cvr = Integer.parseInt(textCVR.getText());
                     }
                 } catch(NumberFormatException e) {
-                    //controller.getErrors().add(e.getMessage());
+                    controller.getErrors().add(e.getMessage());
                 }
 
                 try {
@@ -81,7 +81,7 @@ public class CreateProduct extends JFrame{
                         currentQuantity = Integer.parseInt(textcurrentQuantity.getText());
                     }
                 } catch(NumberFormatException e) {
-                    //controller.getErrors().add(e.getMessage());
+                    controller.getErrors().add(e.getMessage());
                 }
 
                 try {
@@ -89,7 +89,7 @@ public class CreateProduct extends JFrame{
                         dailyConsumption = Integer.parseInt(textdailyConsumption.getText());
                     }
                 } catch(NumberFormatException e) {
-                    //controller.getErrors().add(e.getMessage());
+                    controller.getErrors().add(e.getMessage());
                 }
 
                 try {
@@ -97,15 +97,15 @@ public class CreateProduct extends JFrame{
                         height = Double.parseDouble(textHeight.getText());
                     }
                 } catch(NumberFormatException e) {
-                    //controller.getErrors().add(e.getMessage());
+                    controller.getErrors().add(e.getMessage());
                 }
 
                 try {
                     if(tryParseDouble(textLength.getText())) {
-                        lenght = Double.parseDouble(textLength.getText());
+                        length = Double.parseDouble(textLength.getText());
                     }
                 } catch(NumberFormatException e) {
-                    //controller.getErrors().add(e.getMessage());
+                    controller.getErrors().add(e.getMessage());
                 }
 
                 try {
@@ -113,11 +113,11 @@ public class CreateProduct extends JFrame{
                         width = Double.parseDouble(textWidth.getText());
                     }
                 } catch(NumberFormatException e) {
-                    //controller.getErrors().add(e.getMessage());
-                }*/
+                    controller.getErrors().add(e.getMessage());
+                }
 
                 try {
-                    if(controller.create(height,length,width,barcode,dailyConsumption*37,dailyConsumption*74,currentQuantity,dailyConsumption,name,cvr)) {
+                    if(controller.create(barcode,height,length,width,currentQuantity*37,currentQuantity*74,currentQuantity,dailyConsumption,name,cvr)) {
                         textBarcode.setText("");
                         textHeight.setText("");
                         textLength.setText("");

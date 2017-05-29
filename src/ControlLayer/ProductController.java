@@ -11,7 +11,6 @@ import java.util.ArrayList;
 /**
  * Created by RedJohn on 4/26/2017.
  */
-// TODO MODIFY ALL THE CLASS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 public class ProductController {
     ArrayList<String> errors = new ArrayList<>();
     DBProduct dbProduct;
@@ -31,12 +30,13 @@ public class ProductController {
         dbProduct = new DBProduct();
     }
 
-    public boolean create(double height, double length, double width, String productID,
+    public boolean create(String productID, double height, double length, double width,
                           int minQuantity,int maxQuantity, int currentQuantity,int dailyConsumption,String name ,int cvr){
-        checkMultipleErrors(height, length, width, productID, minQuantity, maxQuantity, currentQuantity, dailyConsumption,
+        checkMultipleErrors(height, length, width, productID, currentQuantity, dailyConsumption,
                 name, cvr);
-        Product product = new Product(this.height,this.length,this.width,this.productID,
-                this.minQuantity,this.maxQuantity,this.currentQuantity,this.dailyConsumption,this.name,this.cvr);
+
+        Product product = new Product(this.productID,this.height,this.length,this.width,
+                minQuantity,maxQuantity,this.currentQuantity,this.dailyConsumption,this.name,this.cvr);
         if (errors.size() == 0) {
             try {
                 dbProduct.create(product);
@@ -61,11 +61,11 @@ public class ProductController {
     }
 
     public boolean update(double height, double length, double width, String productID, int minQuantity,int maxQuantity, int currentQuantity,int dailyConsumption,String name ,int cvr){
-        checkMultipleErrors(height, length, width, productID, minQuantity, maxQuantity, currentQuantity, dailyConsumption,
+        checkMultipleErrors(height, length, width, productID, currentQuantity, dailyConsumption,
                 name, cvr);
         if (errors.size() == 0) {
             try {
-                Product product = new Product(height, length, width, productID, minQuantity, maxQuantity, currentQuantity, dailyConsumption, name, cvr);
+                Product product = new Product(productID , height, length, width, minQuantity, maxQuantity, currentQuantity, dailyConsumption, name, cvr);
                 dbProduct.update(product);
                 return  true;
             } catch (SQLException e) {
@@ -75,8 +75,8 @@ public class ProductController {
             throw new IllegalArgumentException(String.join("\n", errors));
         }
     }
-    private void checkMultipleErrors(double height, double length, double width, String productID, int minQuantity,
-                                     int maxQuantity, int currentQuantity, int dailyConsumption, String name, int cvr) {
+    private void checkMultipleErrors(double height, double length, double width, String productID,
+                                     int currentQuantity, int dailyConsumption, String name, int cvr) {
         try {
             this.height = Validator.validateObjectHeight(height);
         } catch (IllegalArgumentException e) {
@@ -97,7 +97,7 @@ public class ProductController {
         } catch (IllegalArgumentException e) {
             errors.add(e.getMessage());
         }
-        try {
+        /*try {
             this.minQuantity = Validator.validateMinQ(minQuantity);
         } catch (IllegalArgumentException e) {
             errors.add(e.getMessage());
@@ -106,9 +106,9 @@ public class ProductController {
             this.maxQuantity = Validator.validateMaxQ(maxQuantity);
         } catch (IllegalArgumentException e) {
             errors.add(e.getMessage());
-        }
+        }*/
         try {
-            this.currentQuantity = Validator.validateQuantities(currentQuantity);
+            this.currentQuantity = Validator.validateCurrentQuantity(currentQuantity);
         } catch (IllegalArgumentException e) {
             errors.add(e.getMessage());
         }

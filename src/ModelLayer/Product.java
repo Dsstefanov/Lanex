@@ -14,7 +14,7 @@ public class Product extends Box{
     private int cvr;
     private String name;
 
-    public Product(double height, double length, double width, String barcode, int minQuantity,int maxQuantity, int currentQuantity,int dailyConsumption,String name ,int cvr) {
+    public Product(String barcode, double height, double length, double width,int minQuantity,int maxQuantity, int currentQuantity,int dailyConsumption,String name ,int cvr) {
         super(length, width, height);
         this.barcode = barcode;
         this.minQuantity = minQuantity;

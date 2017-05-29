@@ -107,7 +107,7 @@ public class DBProduct implements IDBProduct{
             int dailyConsumption = rs.getInt("dailyConsumption");
             String name = rs.getString("name");
             int cvr  = rs.getInt("cvr");
-            product = new Product(height,length,width,productId,minQuantity,maxQuantity,currentCapacity,dailyConsumption,name,cvr);
+            product = new Product(productId,height,length,width,minQuantity,maxQuantity,currentCapacity,dailyConsumption,name,cvr);
         } catch(SQLException e) {
             e.printStackTrace();
             throw e;

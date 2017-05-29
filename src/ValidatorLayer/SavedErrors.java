@@ -39,7 +39,7 @@ public class SavedErrors {
         errors.put("WRONG_CONTRACTOR", "There is no such contractor in the system!");
         errors.put("WRONG_OBJECT_SIZE", "Size must consist of positive numbers only");
         errors.put("WRONG_TYPE", "Type number must be between 1-5");
-        errors.put("WRONG_QUANTITIES", "Quantities must be only numbers");
+        errors.put ("WRONG_CURRENT_QUANTITY", "Current quantity cannot be empty, zero or negative!");
         errors.put("WRONG_OBJECT_HEIGHT", "Height must consist of positive numbers only");
         errors.put("WRONG_OBJECT_WIDTH", "Width must consist of positive numbers only");
         errors.put("WRONG_OBJECT_LENGTH", "Length must consist of positive numbers only");
@@ -52,6 +52,8 @@ public class SavedErrors {
         errors.put("NUMBER_EXCEPTION", "Enter a valid number");
         errors.put("ID_EMPTY", "Select first a warehouse to modify");
         errors.put("WRONG_PRODUCT_NAME", "Invalid product name!");
+        errors.put("WRONG_DAILY_CONSUMPTION", "The daily consumption quantity cannot be empty, negative or zero");
+        errors.put("EMPTY_QUANTITIES", "Quantity cannot be empty or string!");
     }
     public HashMap<String, String> getErrors(){
         return errors;

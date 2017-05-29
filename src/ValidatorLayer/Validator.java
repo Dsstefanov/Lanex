@@ -141,8 +141,8 @@ public class Validator {
         }
     }
 
-    public static int validateQuantities(Integer quantity) {
-        String result = SavedErrors.getInstance().getErrors().get("WRONG_QUANTITIES");
+    public static int validateCurrentQuantity(Integer quantity) {
+        String result = SavedErrors.getInstance().getErrors().get("WRONG_CURRENT_QUANTITY");
         if (quantity > 0) {
             return quantity;
         } else {
@@ -168,7 +168,7 @@ public class Validator {
     }
 
     public static int validateDailyConsumption(int currentQuantity) {
-        String result = SavedErrors.getInstance().getErrors().get("WRONG_MIN_QUANTITY");
+        String result = SavedErrors.getInstance().getErrors().get("WRONG_DAILY_CONSUMPTION");
         if (currentQuantity > 0) {
             return currentQuantity;
         } else {
@@ -192,7 +192,7 @@ public class Validator {
     }
 
     public static String validateProductName(String firstLastName) throws ValidationException {
-        final String regex = ".*";
+        final String regex = "^\\D+";
         final Pattern pattern = Pattern.compile(regex);
         final Matcher matcher = pattern.matcher(firstLastName);
 

@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 public class DBContractor implements IDBContractor {
     //check the numbers of tuples in the DB - needed fot transaction part!
-    public int getNumberRows(){
+    private int getNumberRows(){
         int counter = 0;
         String sql = String.format("SELECT * FROM person WHERE category = 2");
         try{

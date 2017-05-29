@@ -214,26 +214,47 @@ public class UpdateProduct extends JFrame{
 
         btnUpdate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                double height = Double.parseDouble(textHeight.getText());
-                double length = Double.parseDouble(textLength.getText());
-                double width = Double.parseDouble(textWidth.getText());
-                int dailyConsumption = Integer.parseInt(textdailyConsumption.getText());
-                int currentQuantity = Integer.parseInt(textcurrentQuantity.getText());
-                String name = textName.getText();
-                int cvr = Integer.parseInt(textCVR.getText());
-
-
                 try {
-                    controller.update(height,length,width,barcode,37*dailyConsumption,74*dailyConsumption,currentQuantity,dailyConsumption,name,cvr);
-                    clearFields();
-                    JOptionPane.showMessageDialog(null, "Operation finished with success!!");
+                    tryParseDouble(textHeight.getText());
+                    tryParseDouble(textLength.getText());
+                    tryParseDouble(textWidth.getText());
+                    tryParseInt(textdailyConsumption.getText());
+                    tryParseInt(textcurrentQuantity.getText());
+                    tryParseInt(textCVR.getText());
 
-                } catch(Exception e) {
-                    JOptionPane optionPane = new JOptionPane("You've got the following error:\n" + e.getMessage(), JOptionPane.ERROR_MESSAGE);
+                    double height = Double.parseDouble(textHeight.getText());
+                    double length = Double.parseDouble(textLength.getText());
+                    double width = Double.parseDouble(textWidth.getText());
+                    int dailyConsumption = Integer.parseInt(textdailyConsumption.getText());
+                    int currentQuantity = Integer.parseInt(textcurrentQuantity.getText());
+                    String name = textName.getText();
+                    int cvr = Integer.parseInt(textCVR.getText());
+
+                    try {
+                        controller.update(height,length,width,barcode,37*dailyConsumption,74*dailyConsumption,currentQuantity,dailyConsumption,name,cvr);
+                        clearFields();
+                        JOptionPane.showMessageDialog(null, "Operation finished with success!!");
+
+                    } catch(Exception e) {
+                        JOptionPane optionPane = new JOptionPane("You've got the following error:\n" + e.getMessage(), JOptionPane.ERROR_MESSAGE);
+                        JDialog dialog = optionPane.createDialog("Failure");
+                        dialog.setAlwaysOnTop(true);
+                        dialog.setVisible(true);
+                    }
+
+
+                } catch (NumberFormatException nfe) {
+                    JOptionPane optionPane = new JOptionPane("You've got the following error:\n" + SavedErrors.getInstance().getErrors().get("EMPTY_QUANTITIES"), JOptionPane.ERROR_MESSAGE);
                     JDialog dialog = optionPane.createDialog("Failure");
                     dialog.setAlwaysOnTop(true);
                     dialog.setVisible(true);
                 }
+
+
+
+
+
+
             }
 
             private void clearFields() {
