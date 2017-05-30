@@ -25,9 +25,9 @@ public class DBCrate implements IDBCrate {
             Crate crate = new Crate(id, height, length, width);
             String sql = String.format("INSERT INTO Crate (id, height, length, width) VALUES (?,?,?,?)");
 
-            try
-                    (java.sql.Connection conn = DBConnection.getInstance().getDBcon();
-                PreparedStatement ps =conn.prepareStatement(sql)){
+            try {
+                java.sql.Connection conn = DBConnection.getInstance().getDBcon();
+                PreparedStatement ps =conn.prepareStatement(sql);
                 ps.setInt(1, id);
                 ps.setDouble(2, height);
                 ps.setDouble(3,length);

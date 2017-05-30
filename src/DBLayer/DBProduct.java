@@ -1,6 +1,7 @@
 package DBLayer;
 
 import ModelLayer.Product;
+import com.sun.xml.internal.bind.v2.TODO;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -182,6 +183,19 @@ public class DBProduct implements IDBProduct{
             DBConnection.closeConnection();
         }
         return true;
+    }
+
+    public ArrayList<Product> getProductsToOrder(){
+
+       ArrayList<Product> productsToOrder = new ArrayList<>();
+        try {
+            java.sql.Connection conn = DBConnection.getInstance().getDBcon();
+            PreparedStatement preparedStatement = conn.prepareStatement("SELECT (barcode,minQuantity,maxQuantity,height,length,width,dailyConsumption) FROM Product WHERE isOrdered = 0 AND currentQuantity - 44*dailyConsumption<=0");
+            // TODO: 5/31/2017 : to also change as soon as selected the isOrdered to 1 and to create a different objectBuilder or to use the old one and reuse the data in ControlLayer
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return  productsToOrder;
     }
 
     public static boolean delete(String productId)throws SQLException{
