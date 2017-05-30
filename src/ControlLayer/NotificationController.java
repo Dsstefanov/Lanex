@@ -20,10 +20,19 @@ public class NotificationController {
                 //TODO create an exception and throw it
             }else{
                 product.setCurrentQuantity(product.getCurrentQuantity()-product.getDailyConsumption());
-                if (product.getCurrentQuantity()<=product.getMinQuantity()){
-                    productsToOrder.add(product);
-                }else if(product.getCurrentQuantity()<=product.getMinQuantity()+product.getMinQuantity()*0.1){//*0.1: 10% above the minimum quantity
-                    runningOutOfStockSoon.add(product);
+                boolean success = productController.update(
+                        product.getHeight(), product.getLength(), product.getWidth(), product.getBarcode(),
+                        product.getMinQuantity(), product.getMaxQuantity(), product.getCurrentQuantity(),
+                        product.getDailyConsumption(), product.getName(), product.getCvr()
+                );
+                if(success) {
+                    if (product.getCurrentQuantity() <= product.getMinQuantity()) {
+                        productsToOrder.add(product);
+                    } else if (product.getCurrentQuantity() <= product.getMinQuantity() + product.getMinQuantity() * 0.1) {//*0.1: 10% above the minimum quantity
+                        runningOutOfStockSoon.add(product);
+                    }
+                }else{
+                    //TODO throw exception for not updated
                 }
             }
         }
