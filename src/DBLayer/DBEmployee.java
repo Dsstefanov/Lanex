@@ -9,7 +9,7 @@ import java.util.ArrayList;
 /**
  * Created by USER on 12.4.2017 г..
  */
-public class DBEmployee {
+public class DBEmployee implements IDBEmployee {
     /**
      *
     // * @param name: employee name
@@ -20,16 +20,67 @@ public class DBEmployee {
      * @return employee object
      * @throws SQLException thrown if insertion fails
      */
-    public static void main(String[] args) {
-        try {
-            delete(268);
-        } catch (SQLException e) {
-            e.printStackTrace();
+
+    //check the numbers of tuples in the DB - needed fot transaction part!
+    private int getNumberRows(){
+        int counter = 0;
+        String sql = String.format("SELECT * FROM person WHERE category = 1");
+        try{
+            Connection conn = DBConnection.getInstance().getDBcon();
+            ResultSet rs = conn.createStatement().executeQuery(sql);
+            while(rs.next()){
+                counter++;
+            }
+
+        } catch (Exception e){
+            e.getMessage();
+        } finally {
+            DBConnection.closeConnection();
         }
+        return counter;
     }
-    //@Override
+
+
+
+    @Override
     public Employee create(String name, String address, String email, String phone, String city,int work_id)throws SQLException{
-        Employee employee = new Employee();
+        int currentRows = getNumberRows();
+        Employee employee = new Employee(name,address,email,phone,city,work_id);
+        String sql = "BEGIN TRANSACTION " +
+                "INSERT INTO person (name, address, email, phone, city, category) " +
+                "VALUES ('"+name+"', '"+address+"', '"+email+"', '"+phone+"', '"+city+"', 1) " +
+                "declare @sql as int " +
+                "SELECT @sql = id " +
+                "FROM Person ORDER BY Person.id ASC " +
+                "INSERT INTO employee (work_id, person_id) VALUES ('"+work_id+"', @sql) " +
+                "IF @@ROWCOUNT <> 1 " +
+                "BEGIN " +
+                "ROLLBACK " +
+                "RAISERROR('Work ID already exists!', 16, 1) " +
+                "END " +
+                "ELSE " +
+                "BEGIN " +
+                "COMMIT " +
+                "END";
+        try{
+            Connection conn = DBConnection.getInstance().getDBcon();
+            conn = DBConnection.getInstance().getDBcon();
+            conn.createStatement().executeUpdate(sql);
+
+        } catch (SQLException e){
+            e.getMessage();
+        } finally {
+            DBConnection.closeConnection();
+        }
+
+        int lastChangesOfRows = getNumberRows();
+        if(currentRows == lastChangesOfRows) {
+            throw new IllegalArgumentException("The Work ID already exists!!!");
+        }
+
+        return employee;
+
+       /* Employee employee = new Employee();
         String sql = String.format("INSERT INTO person (name, address, email, phone, city, category) VALUES ('%s', '%s', '%s', '%s', '%s', 1)", name, address, email, phone, city);
         try{
             Connection conn = DBConnection.getInstance().getDBcon();
@@ -50,11 +101,17 @@ public class DBEmployee {
         } finally {
             DBConnection.closeConnection();
         }
+
+        int lastChangesOfRows = getNumberRows();
+        if(currentRows == lastChangesOfRows) {
+            throw new IllegalArgumentException("The WORK ID already exists!!!");
+        }
         return employee;
+        */
     }
 
 
-   // @Override
+   @Override
     public Employee read(int work_id) throws SQLException{
         Employee employee = new Employee();
         try{
@@ -79,7 +136,7 @@ public class DBEmployee {
 
 
 
-    //@Override
+    @Override
     public boolean update(Employee employee , int work_id) throws SQLException{
         try {
             Connection conn = DBConnection.getInstance().getDBcon();
@@ -110,16 +167,19 @@ public class DBEmployee {
         return true;
     }
 
-    //@Override
-    public static boolean delete(int workId)throws SQLException{
+    @Override
+    public boolean delete(int work_id)throws SQLException{
         try {
             Connection conn = DBConnection.getInstance().getDBcon();
-           // String sql = String.format("Delete from employee where person_id=%d", id);
-           // conn.createStatement().executeUpdate(sql);
+            String sql0 = String.format("Select person_id from employee where work_id ='%d' ",work_id);
+            ResultSet rs = conn.createStatement().executeQuery(sql0);
+            int person_id;
+            while(rs.next()){
+                person_id =rs.getInt(1);
+                String sql = String.format("Delete from person where id= '%d'",person_id);
+                conn.createStatement().executeUpdate(sql);
+            }
 
-
-            String sql = String.format("Delete from person where id= '%d'",workId);
-            conn.createStatement().executeUpdate(sql);
         } catch(SQLException e) {
             e.printStackTrace();
             throw e;
@@ -129,7 +189,7 @@ public class DBEmployee {
         return true;
     }
 
-    //@Override
+    @Override
     public ArrayList<Person> readAll() throws SQLException {
         ArrayList<Person> person = new ArrayList<>();
         String sql = "SELECT * FROM person WHERE category = 1";

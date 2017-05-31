@@ -51,7 +51,7 @@ public class EmployeeRead extends JFrame {
     /**
      * Create the frame.
      */
-    private EmployeeRead() {
+    public EmployeeRead() {
         design();
         actions();
 

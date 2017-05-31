@@ -54,7 +54,7 @@ public class EmployeeUpdate extends JFrame {
     /**
      * Create the frame.
      */
-    private EmployeeUpdate() {
+    public EmployeeUpdate() {
         design();
         actions();
     }

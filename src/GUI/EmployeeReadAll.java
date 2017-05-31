@@ -2,8 +2,6 @@ package GUI;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,33 +10,34 @@ import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import DBLayer.DBConnection;
 import net.proteanit.sql.DbUtils;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JTable;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
+import javax.swing.border.TitledBorder;
 import java.awt.Font;
-
 
 public class EmployeeReadAll extends JFrame {
 
-
+    private JPanel contentPane;
+    private JTable tableResult;
     private Connection conn = null;
     private ResultSet rs = null;
     private PreparedStatement ps = null;
-    private JPanel contentPane;
-    private JTable tableResult;
-    private JPanel panel;
-    private JPanel panel_1;
+    private JButton btnReadAll;
     private JScrollPane scrollPane;
-    private JButton btnRead;
+    private JPanel panel;
     private JButton btnBack;
-
+    private JPanel panel_1;
     /**
      * Launch the application.
      */
@@ -61,45 +60,18 @@ public class EmployeeReadAll extends JFrame {
     public EmployeeReadAll() {
         design();
         actions();
-    }
 
-    private void design() {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 964, 585);
-        contentPane = new JPanel();
-        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-        setContentPane(contentPane);
-        contentPane.setLayout(null);
 
-        btnBack = new JButton("Back");
-        btnBack.setBounds(26, 28, 171, 41);
-        contentPane.add(btnBack);
-
-        JPanel panel = new JPanel();
-        panel.setBounds(12, 95, 696, 299);
-        contentPane.add(panel);
-        panel.setLayout(null);
-
-        JPanel panel_1 = new JPanel();
-        panel_1.setBorder(new TitledBorder(null, "JPanel title", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-        panel_1.setBounds(-6, -43, 907, 416);
-        panel.add(panel_1);
-        panel_1.setLayout(null);
-
-        JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setBounds(0, 76, 908, 383);
-        contentPane.add(scrollPane);
-
-        JTable tableResult = new JTable();
-        scrollPane.setViewportView(tableResult);
-
-        btnRead = new JButton("READ EMPLOYEE");
-        btnRead.setFont(new Font("Tahoma", Font.BOLD, 27));
-        btnRead.setBounds(643, 28, 263, 41);
-        contentPane.add(btnRead);
     }
 
     private void actions() {
+        btnReadAll.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                conn = DBConnection.getInstance().getDBcon();
+                fetchAllEmployees();
+            }
+        });
+
 
         btnBack.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -107,16 +79,7 @@ public class EmployeeReadAll extends JFrame {
                 EmployeeMenu.main(null);
             }
         });
-
-        btnRead.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                conn = DBConnection.getInstance().getDBcon();
-                fetchAllEmployees();
-            }
-        });
-
     }
-
 
     private void fetchAllEmployees(){
         try{
@@ -134,5 +97,47 @@ public class EmployeeReadAll extends JFrame {
             dialog.setAlwaysOnTop(true);
             dialog.setVisible(true);
         }
+    }
+
+    private void design() {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(600, 200, 938, 612);
+        contentPane = new JPanel();
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        setContentPane(contentPane);
+        contentPane.setLayout(null);
+
+        btnReadAll = new JButton("Read all Employees");
+        btnReadAll.setFont(new Font("Tahoma", Font.BOLD, 27));
+
+        btnReadAll.setBounds(561, 28, 345, 37);
+        contentPane.add(btnReadAll);
+
+        btnBack = new JButton("Back");
+        btnBack.setFont(new Font("Tahoma", Font.PLAIN, 27));
+
+        btnBack.setBounds(12, 13, 140, 37);
+        contentPane.add(btnBack);
+
+        panel = new JPanel();
+        panel.setBounds(12, 95, 696, 299);
+        contentPane.add(panel);
+        panel.setLayout(null);
+
+        panel_1 = new JPanel();
+        panel_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        panel_1.setBorder(new TitledBorder(null, "JPanel title", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+        panel_1.setBounds(-6, -43, 907, 416);
+        panel.add(panel_1);
+        panel_1.setLayout(null);
+
+        scrollPane = new JScrollPane();
+        scrollPane.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        scrollPane.setBounds(0, 76, 908, 383);
+        contentPane.add(scrollPane);
+
+        tableResult = new JTable();
+        scrollPane.setViewportView(tableResult);
+
     }
 }
