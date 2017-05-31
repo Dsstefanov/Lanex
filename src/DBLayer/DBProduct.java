@@ -50,7 +50,7 @@ public class DBProduct implements IDBProduct{
 
             System.out.println(barcode);
             System.out.println(currentDate);
-
+//
             String sql = "BEGIN TRANSACTION " +
                     "INSERT INTO Product (barcode,currentQuantity, minQuantity, "
                     + "maxQuantity, cvr, name, height, length, width,dailyConsumption,lastUpdated,isOrdered) " +
