@@ -28,6 +28,13 @@ public class Employee extends Person {
 
     @Override
     public String toString() {
-        return "Name: " + getName() + "Address : " + getAddress() + "Email : " + getEmail() + " Phone : " + getPhone() + " City : " + getCity();
+        return
+        " name" + getName() +
+                ", address" + getAddress() +
+                ", email" + getEmail() +
+                ", phone" + getPhone() +
+                ", city" + getCity() +
+                ", id" + getWorkId() +
+                '}';
     }
 }
