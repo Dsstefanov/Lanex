@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import ControlLayer.LoginController;
+import ControlLayer.NotificationController;
 
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
@@ -126,6 +127,19 @@ public class Login {
                     mainFrame.dispose();
                     MainMenu chooseMenu = new MainMenu();
                     chooseMenu.setVisible(true);
+                    NotificationController notificationController = new NotificationController();
+                    Runnable r1 = new Runnable() {
+                        public void run() {
+                            try {
+                                while (true) {
+                                    notificationController.compare();
+                                    Thread.sleep(10000 );
+                                }
+                            } catch (InterruptedException iex) {}
+                        }
+                    };
+                    Thread thr1 = new Thread(r1);
+                    thr1.start();
                 }
                 else {
                     JOptionPane.showMessageDialog(null, "Wrong username or password!");
