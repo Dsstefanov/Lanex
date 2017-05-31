@@ -132,7 +132,7 @@ public class Login {
                         public void run() {
                             try {
                                 while (true) {
-                                    notificationController.compare();
+                                    notificationController.substractAvarageConsumption();
                                     Thread.sleep(10000 );
                                 }
                             } catch (InterruptedException iex) {}
@@ -142,7 +142,7 @@ public class Login {
                     thr1.start();
                 }
                 else {
-                    JOptionPane.showMessageDialog(null, "Wrong username or password!");
+                    JOptionPane.showMessageDialog(null, "Wrong username");
                 }
             }
         });

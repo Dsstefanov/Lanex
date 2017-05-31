@@ -146,4 +146,9 @@ public class ProductController {
             return null;
         }
     }
+
+    public boolean update(String barcode, int currentQuantity, String date) {
+        dbProduct.setLastUpdate(barcode, currentQuantity,date);
+        return true;
+    }
 }

@@ -122,7 +122,8 @@ public class DBProduct implements IDBProduct{
             int dailyConsumption = rs.getInt("dailyConsumption");
             String name = rs.getString("name");
             int cvr  = rs.getInt("cvr");
-            product = new Product(productId,height,length,width,minQuantity,maxQuantity,currentCapacity,dailyConsumption,name,cvr);
+            String lastUpdated = rs.getString("lastUpdated");
+            product = new Product(productId,height,length,width,minQuantity,maxQuantity,currentCapacity,dailyConsumption,name,cvr, lastUpdated);
         } catch(SQLException e) {
             e.printStackTrace();
             throw e;
@@ -155,10 +156,10 @@ public class DBProduct implements IDBProduct{
 
     }
 
-    private boolean setLastUpdate(String barcode,String date){
+    public boolean setLastUpdate(String barcode, int currentQuantity,String date){
         try{
             java.sql.Connection conn = DBConnection.getInstance().getDBcon();
-            String sql = String.format("UPDATE Product SET lastUpdated = '%s' WHERE barcode= '%s' ",date,barcode);
+            String sql = String.format("UPDATE Product SET lastUpdated = '%s', currentQuantity='%d' WHERE barcode= '%s' ",date, currentQuantity,barcode);
             conn.createStatement().executeUpdate(sql);
 
         } catch (SQLException e1) {
