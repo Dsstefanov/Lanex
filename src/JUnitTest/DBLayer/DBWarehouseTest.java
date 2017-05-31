@@ -49,9 +49,9 @@ public class DBWarehouseTest {
         warehouse.setLength(5);
         warehouse.setWidth(5);
         dbWarehouse.update(warehouse);
-        assertEquals(warehouse.getHeight(),dbWarehouse.read(warehouse.getId()).getHeight());
-        assertEquals(warehouse.getLength(),dbWarehouse.read(warehouse.getId()).getLength());
-        assertEquals(warehouse.getWidth(),dbWarehouse.read(warehouse.getId()).getWidth());
+        assertEquals(warehouse.getHeight(),dbWarehouse.read(warehouse.getId()).getHeight(),0.02);
+        assertEquals(warehouse.getLength(),dbWarehouse.read(warehouse.getId()).getLength(),0.02);
+        assertEquals(warehouse.getWidth(),dbWarehouse.read(warehouse.getId()).getWidth(),0.02);
     }
 
     @Test

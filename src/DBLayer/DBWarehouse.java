@@ -13,16 +13,16 @@ public class DBWarehouse implements IDBWarehouse{
      * @return ModelLayer.Warehouse
      * @throws SQLException: if something goes wrong
      */
-    public synchronized Warehouse create(int length, int width, int height) throws SQLException{
+    public synchronized Warehouse create(double length, double width, double height) throws SQLException{
         Warehouse warehouse = new Warehouse(length,width,height);
         try{
             java.sql.Connection conn = DBConnection.getInstance().getDBcon();
             PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO Warehouse " +
                     "(length, width, height) VALUES " +
                     "(?,?,?)");
-            preparedStatement.setInt(1,length);
-            preparedStatement.setInt(2,width);
-            preparedStatement.setInt(3,height);
+            preparedStatement.setDouble(1,length);
+            preparedStatement.setDouble(2,width);
+            preparedStatement.setDouble(3,height);
             preparedStatement.executeUpdate();
             String sql2 = "SELECT TOP 1 id FROM warehouse ORDER BY id DESC";
             ResultSet rs = conn.createStatement().executeQuery(sql2);
@@ -83,7 +83,7 @@ public class DBWarehouse implements IDBWarehouse{
      * @throws SQLException
      */
     private Warehouse buildObject(ResultSet rs) throws SQLException{
-        Warehouse warehouse = new Warehouse(rs.getInt("length"), rs.getInt("height"), rs.getInt("width"));
+        Warehouse warehouse = new Warehouse(rs.getDouble("length"), rs.getDouble("height"), rs.getDouble("width"));
         try {
             warehouse.setId(rs.getInt("id"));
         } catch(SQLException e) {
@@ -104,10 +104,10 @@ public class DBWarehouse implements IDBWarehouse{
         try {
             java.sql.Connection conn = DBConnection.getInstance().getDBcon();
             PreparedStatement preparedStatement = conn.prepareStatement("UPDATE Warehouse SET length=?, width=?, height=? WHERE id=?");
-            preparedStatement.setInt(1,warehouse.getLength());
-            preparedStatement.setInt(2,warehouse.getWidth());
-            preparedStatement.setInt(3,warehouse.getHeight());
-            preparedStatement.setInt(4,warehouse.getId());
+            preparedStatement.setDouble(1,warehouse.getLength());
+            preparedStatement.setDouble(2,warehouse.getWidth());
+            preparedStatement.setDouble(3,warehouse.getHeight());
+            preparedStatement.setDouble(4,warehouse.getId());
             preparedStatement.executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();

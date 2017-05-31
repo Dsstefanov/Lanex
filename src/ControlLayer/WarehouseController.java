@@ -21,15 +21,15 @@ public class WarehouseController extends Controller{
      * @return true if object is saved in DB
      * @throws ValidationException
      */
-    public boolean create(int length, int width, int height)throws ValidationException{
+    public boolean create(double length, double width, double height)throws ValidationException{
         try{
             if (errors.size()!=0){
                 errors.clear();
             }
-            int checkedLength = (check(length, "validateObjectLength")!=null)?(int) check(length, "validateObjectLength"):length;
-            // int checkedLength = if(check(length, "validateObjectLength")!=null){return (int) check(length, "validateObjectLength")}else{return length};
-            int checkedWidth =  (check(width, "validateObjectWidth")!=null)?(int) check(width, "validateObjectWidth"):width;
-            int checkedHeight = (check(height, "validateObjectHeight")!=null)?(int) check(height, "validateObjectHeight"):height;
+            double checkedLength = (check(length, "validateObjectLength")!=null)?(double) check(length, "validateObjectLength"):length;
+            // double checkedLength = if(check(length, "validateObjectLength")!=null){return (double) check(length, "validateObjectLength")}else{return length};
+            double checkedWidth =  (check(width, "validateObjectWidth")!=null)?(double) check(width, "validateObjectWidth"):width;
+            double checkedHeight = (check(height, "validateObjectHeight")!=null)?(double) check(height, "validateObjectHeight"):height;
             if (errors.size()>0){
                 throw new ValidationException(String.join("\n", errors));
             }else {
@@ -70,14 +70,14 @@ public class WarehouseController extends Controller{
      * @return true if everything passes
      * @throws ValidationException
      */
-    public boolean update(Warehouse warehouse, int length, int width, int height) throws ValidationException{
+    public boolean update(Warehouse warehouse, double length, double width, double height) throws ValidationException{
         try{
             if (errors.size()!=0){
                 errors.clear();
             }
-            int checkedLength = (check(length, "validateObjectLength")!=null)?(int) check(length, "validateObjectLength"):length;
-            int checkedWidth =  (check(width, "validateObjectWidth")!=null)?(int) check(width, "validateObjectWidth"):width;
-            int checkedHeight = (check(height, "validateObjectHeight")!=null)?(int) check(height, "validateObjectHeight"):height;
+            double checkedLength = (check(length, "validateObjectLength")!=null)?(double) check(length, "validateObjectLength"):length;
+            double checkedWidth =  (check(width, "validateObjectWidth")!=null)?(double) check(width, "validateObjectWidth"):width;
+            double checkedHeight = (check(height, "validateObjectHeight")!=null)?(double) check(height, "validateObjectHeight"):height;
             if (errors.size()>0){
                 throw new ValidationException(String.join("\n", errors));
             }else {

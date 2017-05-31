@@ -5,17 +5,17 @@ package ModelLayer;
  */
 public class Warehouse {
     int id;
-    private int length;
-    private int width;
-    private int height;
+    private double length;
+    private double width;
+    private double height;
 
-    public Warehouse(int length, int width, int height) {
+    public Warehouse(double length, double width, double height) {
         this.length = length;
         this.width = width;
         this.height = height;
     }
 
-    public Warehouse(int id, int length, int width, int height) {
+    public Warehouse(int id, double length, double width, double height) {
         this.id = id;
         this.length = length;
         this.width = width;
@@ -31,27 +31,27 @@ public class Warehouse {
     }
 
 
-    public void setLength(int length) {
+    public void setLength(double length) {
         this.length = length;
     }
 
-    public void setWidth(int width) {
+    public void setWidth(double width) {
         this.width = width;
     }
 
-    public void setHeight(int height) {
+    public void setHeight(double height) {
         this.height = height;
     }
 
-    public int getLength() {
+    public double getLength() {
         return length;
     }
 
-    public int getWidth() {
+    public double getWidth() {
         return width;
     }
 
-    public int getHeight() {
+    public double getHeight() {
         return height;
     }
 
