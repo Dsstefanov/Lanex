@@ -13,6 +13,7 @@ public class Product extends Box{
     private int maxQuantity;
     private int cvr;
     private String name;
+    private int isOrdered;
 
     public Product(String barcode, double height, double length, double width,int minQuantity,int maxQuantity, int currentQuantity,int dailyConsumption,String name ,int cvr) {
         super(length, width, height);
@@ -23,11 +24,27 @@ public class Product extends Box{
         this.dailyConsumption = dailyConsumption;
         this.name = name;
         this.cvr = cvr;
+        isOrdered= 0;
     }
 
     public String getBarcode() {
 
         return barcode;
+    }
+
+    public int setAsOrdered(){
+        isOrdered = 1;
+        return  isOrdered;
+
+    }
+
+    public int setAsNotOrdered(){
+        isOrdered = 0;
+        return isOrdered;
+    }
+
+    public int getIsOrdered(){
+        return isOrdered;
     }
 
     public int getDailyConsumption(){

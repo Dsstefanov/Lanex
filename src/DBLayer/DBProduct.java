@@ -4,8 +4,9 @@ import ModelLayer.Product;
 import com.sun.xml.internal.bind.v2.TODO;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 /**
@@ -44,11 +45,17 @@ public class DBProduct implements IDBProduct{
             int dailyConsumption = product.getDailyConsumption();
             String name = product.getName();
             int cvr  = product.getCvr();
+            String currentDate = getCurrentDate();
+            int bit = 0 ;
+
+            System.out.println(barcode);
+            System.out.println(currentDate);
+
             String sql = "BEGIN TRANSACTION " +
                     "INSERT INTO Product (barcode,currentQuantity, minQuantity, "
-                    + "maxQuantity, cvr, name, height, length, width,dailyConsumption) " +
+                    + "maxQuantity, cvr, name, height, length, width,dailyConsumption,lastUpdated,isOrdered) " +
                     "VALUES ('"+barcode+"', '"+currentCapacity+"', '"+minQuantity+"', '"+maxQuantity+"', '"+cvr+"',  '"+name+"', " +
-                    "'"+height+"', '"+length+"', '"+width+"', '"+dailyConsumption+"') " +
+                    "'"+height+"', '"+length+"', '"+width+"', '"+dailyConsumption+"', '"+currentDate+"', '"+bit+"') " +
                     "IF @@ROWCOUNT <> 1 " +
                     "BEGIN " +
                     "ROLLBACK " +
@@ -77,6 +84,13 @@ public class DBProduct implements IDBProduct{
 
             return product;
         }
+
+    public  String getCurrentDate() {
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yy");
+        return dateFormat.format(new java.util.Date());
+
+
+    }
 
 
     public Product read(String productId) throws SQLException{
@@ -125,7 +139,36 @@ public class DBProduct implements IDBProduct{
         return products;
     }
 
+    private boolean changeOrderStatus(String barcode,int isOrdered){
+        try{
+            java.sql.Connection conn = DBConnection.getInstance().getDBcon();
+            String sql = String.format("UPDATE Product SET isOrdered = '%d' WHERE barcode= '%s' ",isOrdered,barcode);
+            conn.createStatement().executeUpdate(sql);
 
+            } catch (SQLException e1) {
+            e1.printStackTrace();
+        }
+        finally{
+            DBConnection.closeConnection();
+        }
+        return true;
+
+    }
+
+    private boolean setLastUpdate(String barcode,String date){
+        try{
+            java.sql.Connection conn = DBConnection.getInstance().getDBcon();
+            String sql = String.format("UPDATE Product SET lastUpdated = '%s' WHERE barcode= '%s' ",date,barcode);
+            conn.createStatement().executeUpdate(sql);
+
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        }
+        finally{
+            DBConnection.closeConnection();
+        }
+        return true;
+    }
 
     public ArrayList<Product> readAll() throws SQLException {
         ArrayList<Product> products = new ArrayList<>();
@@ -145,7 +188,7 @@ public class DBProduct implements IDBProduct{
     }
 
 
-    public static boolean update(Product product) throws SQLException{
+    public boolean update(Product product) throws SQLException{
         try {
             java.sql.Connection conn = DBConnection.getInstance().getDBcon();
             double height = product.getHeight();
@@ -198,7 +241,10 @@ public class DBProduct implements IDBProduct{
         return  productsToOrder;
     }
 
-    public static boolean delete(String productId)throws SQLException{
+
+
+
+    public boolean delete(String productId)throws SQLException{
         try {
             java.sql.Connection conn = DBConnection.getInstance().getDBcon();
             String sql = String.format("Delete from Product where barcode='%s'", productId);
