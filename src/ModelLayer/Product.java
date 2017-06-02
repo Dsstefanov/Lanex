@@ -16,6 +16,7 @@ public class Product extends Box{
     private int isOrdered;
     private String lastUpdatedDate;
 
+
     public String getLastUpdatedDate() {
         return lastUpdatedDate;
     }
@@ -35,6 +36,12 @@ public class Product extends Box{
         this.cvr = cvr;
         isOrdered= 0;
 
+    }
+
+    public Product (String barcode, double length, double height, double width, int currentQuantity){
+        super(length, width, height);
+        this.barcode = barcode;
+        this.currentQuantity = currentQuantity;
     }
     public Product(String barcode, double height, double length, double width,int minQuantity,int maxQuantity, int currentQuantity,int dailyConsumption,String name ,int cvr, String date) {
         super(length, width, height);

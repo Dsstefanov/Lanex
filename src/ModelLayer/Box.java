@@ -37,4 +37,10 @@ public abstract class Box {
     public void setWidth(double width) {
         this.width = width;
     }
+
+    public void subtractDimensions(double a, double b, double c){
+        length = length - a;
+        height = height - b;
+        width = width - c;
+    }
 }

@@ -3,6 +3,8 @@ package DBLayer;
 import ModelLayer.Crate;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Luke on 10.05.2017.
@@ -62,6 +64,54 @@ public class DBCrate implements IDBCrate {
             }
             return crate;
         }
+
+        public Crate getRequiredCrate(ArrayList<Double> reqDimensions) throws SQLException {
+        Crate crate = null;
+        try {
+                java.sql.Connection conn = DBConnection.getInstance().getDBcon();
+                PreparedStatement ps = conn.prepareStatement("SELECT * FROM Crate " +
+                        "WHERE height >= ? AND length >= ? AND width >= ? ;");
+
+                ps.setDouble(1, reqDimensions.get(0));
+                ps.setDouble(2, reqDimensions.get(1));
+                ps.setDouble(3,reqDimensions.get(2));
+                ResultSet rs =  ps.executeQuery();
+                if(rs.next()) {
+                    crate = buildObject(rs);
+                    return crate;
+                }
+                else
+                    {
+                        int id = findAvailableID();
+                        create(id, reqDimensions.get(0), reqDimensions.get(1), reqDimensions.get(2));
+                    }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw e;
+            } finally {
+                DBConnection.closeConnection();
+            }
+            return crate;
+
+    }
+
+    public int findAvailableID() throws SQLException {
+        String sql = String.format("SELECT id FROM Crate ORDER BY id DESC LIMIT 1;");
+        try{
+            java.sql.Connection conn = DBConnection.getInstance().getDBcon();
+            ResultSet rs = conn.createStatement().executeQuery(sql);
+            if (rs.next()){
+                return rs.getInt("id") + 1;
+            }
+
+        }catch (SQLException e) {
+            throw e;
+        }finally{
+            DBConnection.closeConnection();
+        }
+        return 1;
+    }
+
         private Crate buildObject(ResultSet rs) throws SQLException{
             Crate crate;
             try {
