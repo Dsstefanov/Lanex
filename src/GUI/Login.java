@@ -127,16 +127,14 @@ public class Login {
                     mainFrame.dispose();
                     MainMenu chooseMenu = new MainMenu();
                     chooseMenu.setVisible(true);
-                    NotificationController notificationController = new NotificationController();
-                    Runnable r1 = new Runnable() {
-                        public void run() {
-                            try {
-                                while (true) {
-                                    notificationController.substractAvarageConsumption();
-                                    Thread.sleep(10000 );
-                                }
-                            } catch (InterruptedException iex) {}
-                        }
+                    NotificationController notificationController = NotificationController.getInstance();
+                    Runnable r1 = () -> {
+                        try {
+                            while (true) {
+                                notificationController.substractAvarageConsumption();
+                                Thread.sleep(30000 );
+                            }
+                        } catch (InterruptedException iex) {}
                     };
                     Thread thr1 = new Thread(r1);
                     thr1.start();

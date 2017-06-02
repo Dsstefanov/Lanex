@@ -151,4 +151,10 @@ public class ProductController {
         dbProduct.setLastUpdate(barcode, currentQuantity,date);
         return true;
     }
+
+    public void update(ArrayList<Product> products){
+        for (Product product:products) {
+            dbProduct.update(product.getBarcode(), true);
+        }
+    }
 }

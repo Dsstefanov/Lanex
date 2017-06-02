@@ -16,9 +16,25 @@ import java.util.TimerTask;
  * Created by USER on 29.5.2017 г..
  */
 public class NotificationController  {
+    /**
+     *  singleton
+     */
+    private static NotificationController instance = null;
+    public static NotificationController getInstance(){
+        if (instance==null){
+            instance=new NotificationController();
+        }
+        return instance;
+    }
+    private NotificationController() {
+    }
+
     int differenceInDays;
 
 
+    public ArrayList<Product> getProductsToOrder() {
+        return productsToOrder;
+    }
 
     /**
      * productsToOrder: arraylist of all products that needs to be ordered

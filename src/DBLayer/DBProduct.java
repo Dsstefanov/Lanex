@@ -242,7 +242,19 @@ public class DBProduct implements IDBProduct{
         return  productsToOrder;
     }
 
+    public void update(String barcode, boolean update){
+        try{
+            java.sql.Connection conn = DBConnection.getInstance().getDBcon();
+            String sql = String.format("UPDATE Product SET isOrdered = '%b' WHERE barcode= '%s' ", update, barcode);
+            conn.createStatement().executeUpdate(sql);
 
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        }
+        finally{
+            DBConnection.closeConnection();
+        }
+    }
 
 
     public boolean delete(String productId)throws SQLException{
