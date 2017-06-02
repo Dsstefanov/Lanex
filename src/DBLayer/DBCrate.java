@@ -44,7 +44,7 @@ public class DBCrate implements IDBCrate {
             return crate;
         }
 
-
+    @Override
         public Crate read(int id) throws SQLException{
             Crate crate = null;
             String sql = String.format("SELECT * FROM crate where id= %d",id);
@@ -129,7 +129,9 @@ public class DBCrate implements IDBCrate {
 
             return crate;
         }
-        public boolean update(Crate crate) throws SQLException{
+@Override
+
+    public boolean update(Crate crate) throws SQLException{
             try {
                 Connection conn = DBConnection.getInstance().getDBcon();
                 double height = crate.getHeight();

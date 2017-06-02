@@ -14,4 +14,9 @@ public interface IDBCrate {
 
         boolean delete(int id) throws SQLException;
 //        ArrayList<Person> readAll() throws SQLException;
+         Crate read(int id) throws SQLException;
+
+         boolean update(Crate crate) throws SQLException;
+
+
 }
