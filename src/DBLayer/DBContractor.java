@@ -109,13 +109,12 @@ public class DBContractor implements IDBContractor {
                             "FROM Person p\n" +
                             "INNER JOIN Contractor c\n" +
                             "ON p.id = c.person_id\n" +
-                            "WHERE c.cvr = cvr");
+                            "WHERE c.cvr = " + cvr);
             preparedStatement.setNString(1,name);
             preparedStatement.setNString(2,address);
             preparedStatement.setNString(3,email);
             preparedStatement.setNString(4,city);
             preparedStatement.setNString(5,phone);
-            //preparedStatement.setInt(6,cvr); work in eclipse
             preparedStatement.executeUpdate();
         }catch (SQLException e) {
             e.printStackTrace();

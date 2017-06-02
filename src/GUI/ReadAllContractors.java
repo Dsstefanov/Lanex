@@ -95,7 +95,8 @@ public class ReadAllContractors extends JFrame {
                     "INNER JOIN Contractor ON " +
                     "Person.id = Contractor.person_id)" +
                     "INNER JOIN Product ON " +
-                    "Product.cvr = Contractor.cvr)";
+                    "Product.cvr = Contractor.cvr)" +
+                    "ORDER BY Person.name";
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
             tableResult.setModel(DbUtils.resultSetToTableModel(rs));
@@ -113,7 +114,8 @@ public class ReadAllContractors extends JFrame {
             String sql = "SELECT Person.id,Person.name,Person.address,Person.email,Person.city,Person.phone,Contractor.cvr " +
                     "FROM Person " +
                     "INNER JOIN Contractor ON " +
-                    "Person.id = Contractor.person_id";
+                    "Person.id = Contractor.person_id " +
+                    "ORDER BY Person.id";
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
             tableResult.setModel(DbUtils.resultSetToTableModel(rs));
