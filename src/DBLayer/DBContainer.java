@@ -7,20 +7,8 @@ import java.sql.*;
 /**
  * Created by Luke on 10.05.2017.
  */
-public class DBContainer {
+public class DBContainer implements IDBContainer{
 
-
-    public static void main(String[] args) {
-
-        try {
-//           Container container = new Container( "11234567",120.1,130,150);
-            new DBContainer().create(1,120.1, 130, 150 );
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        System.out.println("success");
-    }
     public Container create( int id, double height, double length, double width) throws SQLException {
         Container container = new Container(id, height, length, width);
         String sql = String.format("INSERT INTO Container (id, height, length, width) VALUES (?,?,?,?)");
