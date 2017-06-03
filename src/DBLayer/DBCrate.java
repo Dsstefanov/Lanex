@@ -72,8 +72,8 @@ public class DBCrate implements IDBCrate {
                 PreparedStatement ps = conn.prepareStatement("SELECT * FROM Crate " +
                         "WHERE height >= ? AND length >= ? AND width >= ? ;");
 
-                ps.setDouble(1, reqDimensions.get(0));
-                ps.setDouble(2, reqDimensions.get(1));
+                ps.setDouble(1, reqDimensions.get(1));
+                ps.setDouble(2, reqDimensions.get(0));
                 ps.setDouble(3,reqDimensions.get(2));
                 ResultSet rs =  ps.executeQuery();
                 if(rs.next()) {
@@ -84,6 +84,7 @@ public class DBCrate implements IDBCrate {
                     {
                         int id = findAvailableID();
                         create(id, reqDimensions.get(0), reqDimensions.get(1), reqDimensions.get(2));
+                        getRequiredCrate(reqDimensions);
                     }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -103,7 +104,6 @@ public class DBCrate implements IDBCrate {
             ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()){
                 int i = rs.getInt("id") + 1;
-                System.out.println(i);
                 return i;
             }
 

@@ -11,11 +11,12 @@ import java.util.ArrayList;
  * Created by RedJohn on 6/2/2017.
  */
 public class DBOrderLine {
-    public void createOrderLine(int orderID, ArrayList<Product> products)
+    public boolean createOrderLine(int orderID, ArrayList<Product> products)
     {
+        java.sql.Connection conn = DBConnection.getInstance().getDBcon();
         for(Product product : products)
         try {
-            java.sql.Connection conn = DBConnection.getInstance().getDBcon();
+
             PreparedStatement ps1 =conn.prepareStatement("INSERT INTO OrderLine (orderID, productBarcode,productQuantity) VALUES (?,?,?)");
             ps1.setInt(1,orderID);
             ps1.setString(2,product.getBarcode());
@@ -26,5 +27,20 @@ public class DBOrderLine {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return true;
+    }
+
+    public boolean deleteOrderLine(int orderID){
+        try {
+            java.sql.Connection conn = DBConnection.getInstance().getDBcon();
+            PreparedStatement ps1 =conn.prepareStatement("DELETE  FROM OrderLine WHERE orderID = ?");
+            ps1.setInt(1,orderID);
+            ps1.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+
     }
 }
