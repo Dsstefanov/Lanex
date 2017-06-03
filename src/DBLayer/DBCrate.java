@@ -96,12 +96,15 @@ public class DBCrate implements IDBCrate {
     }
 
     public int findAvailableID() throws SQLException {
-        String sql = String.format("SELECT id FROM Crate ORDER BY id DESC LIMIT 1;");
+
         try{
             java.sql.Connection conn = DBConnection.getInstance().getDBcon();
-            ResultSet rs = conn.createStatement().executeQuery(sql);
+            PreparedStatement preparedStatement = conn.prepareStatement("SELECT id FROM Crate ORDER BY id DESC ");
+            ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()){
-                return rs.getInt("id") + 1;
+                int i = rs.getInt("id") + 1;
+                System.out.println(i);
+                return i;
             }
 
         }catch (SQLException e) {

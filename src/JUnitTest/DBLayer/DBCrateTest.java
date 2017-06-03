@@ -6,6 +6,8 @@ import ModelLayer.Crate;
 import org.junit.After;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
 /**
@@ -22,7 +24,7 @@ public class DBCrateTest {
 
             try{
                 dbCrate = new DBCrate();
-                dbCrate.create(10,51,8,10);
+                dbCrate.create(12,51,8,10);
             } catch (Exception e){
                 System.out.println("Couldn't insert the crate in the DB");
                 e.getMessage();
@@ -34,7 +36,7 @@ public class DBCrateTest {
         public void tearDown() throws Exception {
             if (!isDeleted) {
                 try {
-                    dbCrate.delete(10);
+                    dbCrate.delete(12);
                 } catch (Exception e) {
                     System.out.println("Couldn't remove the test contractor from the DB");
                     fail();
@@ -44,10 +46,9 @@ public class DBCrateTest {
 
 
         @org.junit.Test
-        public void testACreate() throws Exception {
+        public void testCreate() throws Exception {
             try {
-                Crate crate = new Crate(10,5,8,10);
-                assertNotNull(crate);
+                assertNotNull(dbCrate.create(10,5,8,10));
             } catch(Exception e) {
                 e.getMessage();
                 fail();
@@ -55,10 +56,10 @@ public class DBCrateTest {
         }
 //
         @Test
-        public void testBRead() throws Exception {
+        public void testRead() throws Exception {
             try {
-                dbCrate.read(10);
-                assertNotNull(dbCrate.read(10));
+                dbCrate.read(12);
+                assertNotNull(dbCrate.read(12));
 
             } catch(Exception e) {
                 e.getMessage();
@@ -66,10 +67,22 @@ public class DBCrateTest {
             }
         }
 
+    @Test
+    public void testFindAvailableID() throws Exception {
+        try {
+            dbCrate.findAvailableID();
+            assertNotNull(dbCrate.findAvailableID());
+
+        } catch(Exception e) {
+            e.getMessage();
+            fail();
+        }
+    }
+
         @Test
-        public void testCUpdate() throws Exception {
+        public void testUpdate() throws Exception {
             try {
-                Crate crate = dbCrate.read(10);
+                Crate crate = dbCrate.read(12);
                 crate.setCrateId(15);
                 assertNotNull(crate.getCrateId());
             } catch(Exception e) {
@@ -79,43 +92,28 @@ public class DBCrateTest {
         }
 
         @Test
-        public void testDDelete() throws Exception {
+        public  void testGetRequiredCrate() throws Exception{
             try {
-                isDeleted = dbCrate.delete(10);
+                ArrayList <Double> dimensions = new ArrayList<>();
+                dimensions.add( 1.01);
+                dimensions.add(1.02);
+                dimensions.add(1.03);
+                assertNotNull(dbCrate.getRequiredCrate(dimensions));
+            } catch(Exception e) {
+                e.getMessage();
+                fail();
+            }
+        }
+
+        @Test
+        public void testDelete() throws Exception {
+            try {
+                isDeleted = dbCrate.delete(12);
                 assertTrue(isDeleted);
             } catch(Exception e) {
                 e.getMessage();
                 fail();
             }
         }
-//
-//    /*@Test
-//    public void readAll() throws Exception {
-//        try {
-//            dbProduct.readAll().forEach(x -> {System.out.print(x.toString());});
-//            assertNotNull(dbProduct.readAll());
-//        } catch(Exception e) {
-//            e.getMessage();
-//            fail();
-//        }
-//    }*/
-//
-//    /*public String getProductId() {
-//        try {
-//            String currentID;
-//            Connection conn = DBConnection.getInstance().getDBcon();
-//            String sql = "SELECT TOP 1 id FROM Product ORDER BY id DESC";
-//            ResultSet rs = conn.createStatement().executeQuery(sql);
-//            if (rs.next()) {
-//                currentID = rs.getString("barcode");
-//                return currentID;
-//            }
-//        } catch (Exception e) {
-//            System.out.println("Couldn't return the current id");
-//            fail();
-//        }
-//        return 0;
-//    }*/
-//
-//    }
+
 }

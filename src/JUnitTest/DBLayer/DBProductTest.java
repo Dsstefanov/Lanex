@@ -18,6 +18,7 @@ public class DBProductTest {
     DBProduct dbProduct;
     boolean isDeleted = false;
     Product product = null;
+
     @org.junit.Before
     public void setUp() throws Exception {
 
@@ -47,9 +48,11 @@ public class DBProductTest {
 
 
     @org.junit.Test
-    public void testACreate() throws Exception {
+    public void testCreate() throws Exception {
         try {
-            assertNotNull(product);
+            int dailyConsumption = 30;
+            product = new Product("123488",1.15,0.44,0.23,37*dailyConsumption,74*dailyConsumption,44*dailyConsumption,dailyConsumption,"Lime Rope",11111111);
+            assertNotNull(dbProduct.create(product));
         } catch(Exception e) {
             e.getMessage();
             fail();
@@ -57,11 +60,10 @@ public class DBProductTest {
     }
 
     @Test
-    public void testBRead() throws Exception {
+    public void testRead() throws Exception {
         try {
             dbProduct.read("123456");
             assertNotNull(dbProduct.read("123456"));
-            System.out.println(dbProduct.read("123456"));
         } catch(Exception e) {
             e.getMessage();
             fail();
@@ -69,12 +71,11 @@ public class DBProductTest {
     }
 
     @Test
-    public void testCUpdate() throws Exception {
+    public void testUpdate() throws Exception {
         try {
             Product myNewProduct = dbProduct.read("123456");
-            assertNotNull(dbProduct.read("123456"));
             myNewProduct.setMaxQuantity(myNewProduct.getMaxQuantity()*2);
-            dbProduct.update(myNewProduct);
+            assertNotNull(dbProduct.update(myNewProduct));
         } catch(Exception e) {
             e.getMessage();
             fail();
@@ -82,7 +83,7 @@ public class DBProductTest {
     }
 
     @Test
-    public void testDDelete() throws Exception {
+    public void testDelete() throws Exception {
         try {
             isDeleted = dbProduct.delete("123456");
             assertTrue(isDeleted);
