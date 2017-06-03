@@ -1,16 +1,12 @@
 package ControlLayer;
 
-import DBLayer.DBConnection;
-import DBLayer.DBNotification;
 import ModelLayer.Product;
 
-import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.TimerTask;
 
 /**
  * Created by USER on 29.5.2017 г..
@@ -47,7 +43,6 @@ public class NotificationController  {
     String today;
     DateFormat dateFormat = new SimpleDateFormat("dd-MM-yy");
     boolean update;
-    DBNotification dbNotification = new DBNotification();
 
 
     public  String getCurrentDate() {
