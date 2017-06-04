@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import GUI.A;
 
 /**
  * Created by USER on 29.5.2017 г..
@@ -85,8 +86,8 @@ public class NotificationController  {
     }
     public boolean notifyEmployee() {
         try {
-            //TODO write code to notify the users
-            return true;
+            A.main(null);
+             return true;
         }catch (Exception e){
             //TODO specify what kind of exceptions might be thrown during the process
             return false;//TODO will be changed to throw exception showing what went wrong
