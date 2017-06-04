@@ -21,7 +21,7 @@ public class A extends javax.swing.JFrame {
 
         // use the addRowToJTable
         addRowToJTable();
-        products = productController.readAll();
+        products = notificationController.getProductsToOrder();
 
     }
 
@@ -34,22 +34,22 @@ public class A extends javax.swing.JFrame {
     public void addRowToJTable()
     {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        ArrayList<Product> list = notificationController.getProductsToOrder();
+
         Object rowData[] = new Object[13];
-        for(int i = 0; i < list.size(); i++)
+        for(int i = 0; i < products.size(); i++)
         {
-            rowData[0] = list.get(i).getBarcode();
-            rowData[1] = list.get(i).getCurrentQuantity();
-            rowData[2] = list.get(i).getMinQuantity();
-            rowData[3] = list.get(i).getMaxQuantity();
-            rowData[4] = list.get(i).getCvr();
-            rowData[5] = list.get(i).getName();
-            rowData[6] = list.get(i).getHeight();
-            rowData[7] = list.get(i).getLength();
-            rowData[8] = list.get(i).getWidth();
-            rowData[9] = list.get(i).getDailyConsumption();
-            rowData[10] = list.get(i).getLastUpdatedDate();
-            rowData[11] = list.get(i).getIsOrdered();
+            rowData[0] = products.get(i).getBarcode();
+            rowData[1] = products.get(i).getCurrentQuantity();
+            rowData[2] = products.get(i).getMinQuantity();
+            rowData[3] = products.get(i).getMaxQuantity();
+            rowData[4] = products.get(i).getCvr();
+            rowData[5] = products.get(i).getName();
+            rowData[6] = products.get(i).getHeight();
+            rowData[7] = products.get(i).getLength();
+            rowData[8] = products.get(i).getWidth();
+            rowData[9] = products.get(i).getDailyConsumption();
+            rowData[10] = products.get(i).getLastUpdatedDate();
+            rowData[11] = products.get(i).getIsOrdered();
 
             model.addRow(rowData);
         }
