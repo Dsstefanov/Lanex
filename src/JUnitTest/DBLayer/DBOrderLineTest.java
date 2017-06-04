@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**
@@ -19,12 +20,12 @@ public class DBOrderLineTest {
         try {
             DBProduct dbProduct = new DBProduct();
             DBOrderLine dbOrderLine = new DBOrderLine();
-            Product productOne = dbProduct.read("123488");
+            Product productOne = dbProduct.read("222333");
             Product productTwo = dbProduct.read("147148");
             ArrayList <Product> testProducts = new ArrayList<>();
             testProducts.add(productOne);
             testProducts.add(productTwo);
-            assertNotNull(dbOrderLine.createOrderLine(2,testProducts));
+            assertTrue(dbOrderLine.createOrderLine(2,testProducts));
         } catch (Exception e) {
             e.getMessage();
             fail();
@@ -32,14 +33,16 @@ public class DBOrderLineTest {
     }
 
     @Test
-    public void delete() throws Exception {
+    public void delete() throws Exception
+    {
         try{
             DBOrderLine dbOrderLine = new DBOrderLine();
-            assertNotNull(dbOrderLine.deleteOrderLine(2));
-        } catch (Exception e) {
+            assertTrue(dbOrderLine.deleteOrderLine(2));
+        }
+        catch (Exception e)
+        {
             e.getMessage();
             fail();
-
-    }
+        }
     }
 }

@@ -3,6 +3,7 @@ package DBLayer;
 import ModelLayer.Container;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 /**
  * Created by Luke on 10.05.2017.
@@ -10,12 +11,13 @@ import java.sql.*;
 public class DBContainer implements IDBContainer{
 
     public Container create( int id, double height, double length, double width) throws SQLException {
-        Container container = new Container(id, height, length, width);
-        String sql = String.format("INSERT INTO Container (id, height, length, width) VALUES (?,?,?,?)");
 
-        try
-                (java.sql.Connection conn = DBConnection.getInstance().getDBcon();
-                 PreparedStatement ps =conn.prepareStatement(sql)){
+        Container container = new Container(id, height, length, width);
+        try {
+            
+            String sql = "INSERT INTO Container (id, height, length, width) VALUES (?,?,?,?)";
+            java.sql.Connection conn = DBConnection.getInstance().getDBcon();
+            PreparedStatement ps =conn.prepareStatement(sql);
             ps.setInt(1, id);
             ps.setDouble(2, height);
             ps.setDouble(3,length);
@@ -33,19 +35,15 @@ public class DBContainer implements IDBContainer{
 
     public Container read(int id) throws SQLException{
         Container container = null;
-        String sql = String.format("SELECT * FROM container where id= %d",id);
         try{
             java.sql.Connection conn = DBConnection.getInstance().getDBcon();
-
-            ResultSet rs = conn.createStatement().executeQuery(sql);
+            PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM container where id=?");
+            ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()){
                 container = buildObject(rs);
             }
-
-
-        }catch (SQLException e) {
-            throw e;
-        }finally{
+            
+        } finally{
             DBConnection.closeConnection();
         }
         return container;
@@ -67,6 +65,51 @@ public class DBContainer implements IDBContainer{
 
         return container;
     }
+
+    public Container getRequiredContainer(ArrayList<Double> reqDimensions) throws SQLException {
+        try {
+            java.sql.Connection conn = DBConnection.getInstance().getDBcon();
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Container " +
+                    "WHERE height >= ? AND length >= ? AND width >= ? ;");
+
+            ps.setDouble(1, reqDimensions.get(1));
+            ps.setDouble(2, reqDimensions.get(0));
+            ps.setDouble(3, reqDimensions.get(2));
+            ResultSet rs =  ps.executeQuery();
+            if(rs.next()) {
+                return buildObject(rs);
+            }
+            else
+            {
+                int id = findAvailableID();
+                create(id, reqDimensions.get(0), reqDimensions.get(1), reqDimensions.get(2));
+                return getRequiredContainer(reqDimensions);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            DBConnection.closeConnection();
+        }
+    }
+
+    private int findAvailableID() throws SQLException {
+
+        try{
+            java.sql.Connection conn = DBConnection.getInstance().getDBcon();
+            PreparedStatement preparedStatement = conn.prepareStatement("SELECT id FROM Container ORDER BY id DESC ");
+            ResultSet rs = preparedStatement.executeQuery();
+            if (rs.next()){
+                return rs.getInt("id") + 1;
+            }
+
+        } finally{
+            DBConnection.closeConnection();
+        }
+        return 1;
+    }
+
+
     public boolean update(Container container) throws SQLException{
         try {
             Connection conn = DBConnection.getInstance().getDBcon();
@@ -78,11 +121,10 @@ public class DBContainer implements IDBContainer{
 
             PreparedStatement psttm = conn.prepareStatement("UPDATE Container SET height = ?,length = ?, width = ? WHERE id = ? ");
             psttm.setInt(4,containerId);
-            psttm.setDouble(1,height);
-            psttm.setDouble(2,length);
-            psttm.setDouble(3,width);
-
-
+            psttm.setDouble(1, height);
+            psttm.setDouble(2, length);
+            psttm.setDouble(3, width);
+            
             psttm.executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();

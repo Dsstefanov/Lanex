@@ -8,6 +8,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static java.lang.String.format;
+
 
 /**
  * Created by RedJohn on 4/26/2017.
@@ -16,7 +18,7 @@ public class DBProduct implements IDBProduct{
 
     public int getNumberRows(){
         int counter = 0;
-        String sql = String.format("SELECT * FROM Product");
+        String sql = format("SELECT * FROM Product");
         try{
             Connection conn = DBConnection.getInstance().getDBcon();
             ResultSet rs = conn.createStatement().executeQuery(sql);
@@ -97,7 +99,7 @@ public class DBProduct implements IDBProduct{
         Product product = null;
         try{
             java.sql.Connection conn = DBConnection.getInstance().getDBcon();
-            String sql = String.format("SELECT * FROM product WHERE barcode= %s ",productId);
+            String sql = format("SELECT * FROM Product WHERE barcode= %s ",productId);
             ResultSet rs = conn.createStatement().executeQuery(sql);
             if (rs.next()){
                 product = buildObject(rs);
@@ -143,7 +145,7 @@ public class DBProduct implements IDBProduct{
     private boolean changeOrderStatus(String barcode,int isOrdered){
         try{
             java.sql.Connection conn = DBConnection.getInstance().getDBcon();
-            String sql = String.format("UPDATE Product SET isOrdered = '%d' WHERE barcode= '%s' ",isOrdered,barcode);
+            String sql = format("UPDATE Product SET isOrdered = '%d' WHERE barcode= '%s' ",isOrdered,barcode);
             conn.createStatement().executeUpdate(sql);
 
             } catch (SQLException e1) {
@@ -159,7 +161,7 @@ public class DBProduct implements IDBProduct{
     public boolean setLastUpdate(String barcode, int currentQuantity,String date){
         try{
             java.sql.Connection conn = DBConnection.getInstance().getDBcon();
-            String sql = String.format("UPDATE Product SET lastUpdated = '%s', currentQuantity='%d' WHERE barcode= '%s' ",date, currentQuantity,barcode);
+            String sql = format("UPDATE Product SET lastUpdated = '%s', currentQuantity='%d' WHERE barcode= '%s' ",date, currentQuantity,barcode);
             conn.createStatement().executeUpdate(sql);
 
         } catch (SQLException e1) {
@@ -179,13 +181,13 @@ public class DBProduct implements IDBProduct{
             while(rs.next()) {
                 products = buildObjects(rs);
             }
+            return  products;
         } catch(SQLException e) {
             e.printStackTrace();
             throw e;
         } finally {
             DBConnection.closeConnection();
         }
-        return  products;
     }
 
 
@@ -234,7 +236,14 @@ public class DBProduct implements IDBProduct{
        ArrayList<Product> productsToOrder = new ArrayList<>();
         try {
             java.sql.Connection conn = DBConnection.getInstance().getDBcon();
-            PreparedStatement preparedStatement = conn.prepareStatement("SELECT (barcode,minQuantity,maxQuantity,height,length,width,dailyConsumption) FROM Product WHERE isOrdered = 0 AND currentQuantity - 44*dailyConsumption<=0");
+            PreparedStatement preparedStatement = conn.prepareStatement("BEGIN TRAN " +
+                    "SELECT * FROM Product WHERE isOrdered = 0 AND currentQuantity - 44*dailyConsumption<=0;" +
+                    "" +
+                    "UPDATE Product SET isOrdered = 1 WHERE isOrdered = 0 AND currentQuantity - 44*dailyConsumption<=0;" +
+                    "" +
+                    "COMMIT TRAN ");
+            ResultSet rs = preparedStatement.executeQuery();
+            return buildObjects(rs);
             // TODO: 5/31/2017 : to also change as soon as selected the isOrdered to 1 and to create a different objectBuilder or to use the old one and reuse the data in ControlLayer
         } catch (SQLException e) {
             e.printStackTrace();
@@ -245,7 +254,7 @@ public class DBProduct implements IDBProduct{
     public void update(String barcode, boolean update){
         try{
             java.sql.Connection conn = DBConnection.getInstance().getDBcon();
-            String sql = String.format("UPDATE Product SET isOrdered = '%b' WHERE barcode= '%s' ", update, barcode);
+            String sql = format("UPDATE Product SET isOrdered = '%b' WHERE barcode= '%s' ", update, barcode);
             conn.createStatement().executeUpdate(sql);
 
         } catch (SQLException e1) {
@@ -260,7 +269,7 @@ public class DBProduct implements IDBProduct{
     public boolean delete(String productId)throws SQLException{
         try {
             java.sql.Connection conn = DBConnection.getInstance().getDBcon();
-            String sql = String.format("Delete from Product where barcode='%s'", productId);
+            String sql = format("Delete from Product where barcode='%s'", productId);
             conn.createStatement().executeUpdate(sql);
         } catch(SQLException e) {
             e.printStackTrace();

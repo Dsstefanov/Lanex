@@ -1,8 +1,7 @@
 package ControlLayer;
 
-import DBLayer.DBCrate;
-import DBLayer.DBOrder;
-import DBLayer.DBOrderLine;
+import DBLayer.*;
+import ModelLayer.Container;
 import ModelLayer.Crate;
 import ModelLayer.Product;
 
@@ -15,33 +14,71 @@ import java.util.ArrayList;
  */
 public class AlgorithmController {
     private ArrayList <Crate> usedCrates;
+    private ArrayList <Container> usedContainers;
     private Crate protoCrate;
+    private Container protoContainer;
     private ArrayList<Product> products;
     private int orderID;
     private DBOrder dbOrder;
     private DBOrderLine dbOrderLine;
     private DBCrate dbCrate;
-
+    private DBContainer dbContainer;
+    private DBProductCrateMap dbProductCrateMap;
+    private DBCrateContainerMap dbCrateContainerMap;
+    
+    
     public AlgorithmController( ArrayList<Product> products)
     {
         usedCrates = new ArrayList<>();
+        usedContainers = new ArrayList<>();
         this.products = products;
         dbOrder = new DBOrder();
         dbOrderLine = new DBOrderLine();
         dbCrate = new DBCrate();
-        myMethod();
+        dbContainer = new DBContainer();
+        dbCrateContainerMap = new DBCrateContainerMap();
+        dbProductCrateMap = new DBProductCrateMap();
+
+        mainMethod();
     }
 
 
-    public void myMethod(){
+    public void mainMethod(){
+
+        setProductsQuantitiesForOrder();
+
         orderID = dbOrder.createOrder();
         dbOrderLine.createOrderLine(orderID,products);
-        ArrayList<Double> reqDimensions = getRequiredDimensions();
+
+        ArrayList<Double> reqDimensions1 = getRequiredDimensionsPC();
+
         try {
-            protoCrate = dbCrate.getRequiredCrate(reqDimensions);
+            protoCrate = dbCrate.getRequiredCrate(reqDimensions1);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        try {
+            ArrayList<Double> reqDimensions2 = new ArrayList<>();
+            reqDimensions2.add(protoCrate.getLength());
+            reqDimensions2.add(protoCrate.getHeight());
+            reqDimensions2.add(protoCrate.getWidth());
+            protoContainer = dbContainer.getRequiredContainer(reqDimensions2);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        for (Product product: products){
+            product.setCurrentQuantity(maximizeLayers(product));
+            createNewCrates(product,protoCrate);
+            product.setCurrentQuantity(0);
+        }
+
+        ArrayList<Integer> crateNumbers = dbProductCrateMap.create(orderID,usedCrates);
+        int numberOfCrates = usedCrates.size();
+        createNewContainers(protoCrate, protoContainer,numberOfCrates,crateNumbers);
+
+        dbCrateContainerMap.create(orderID,protoContainer.getContainerId(),usedContainers);
 
     }
     /** The method createNewCrates() creates additional crates in the system in order to supply the need of product space for shipping.
@@ -52,8 +89,8 @@ public class AlgorithmController {
     private void createNewCrates(Product product, Crate crate) {
 
 
-        int bestQuantityPerCrate = getBestQuantityPerCrate(product, crate).get(1);
-        int position = getBestQuantityPerCrate(product, crate).get(0);
+        int bestQuantityPerCrate = getBestQuantity(product, crate).get(1);
+        int position = getBestQuantity(product, crate).get(0);
         //System.out.println(bestQuantityPerCrate + " and product's quantity is:" + product.getCurrentQuantity()());
 
         if (product.getCurrentQuantity() >= bestQuantityPerCrate)
@@ -78,8 +115,42 @@ public class AlgorithmController {
         }
     }
 
+    private void createNewContainers(Crate crate, Container container, int numberOfCrates, ArrayList<Integer> crateNumbers) {
 
-    public ArrayList<Double> getRequiredDimensions(){
+
+        int bestQuantityPerContainer = getBestQuantityTwo(crate, container).get(0);
+        int aux = 0;
+        if (numberOfCrates >= bestQuantityPerContainer)
+            while (numberOfCrates >= bestQuantityPerContainer)
+            {
+                Container auxContainer = new Container(container.getHeight(),container.getWidth(),container.getLength());
+                for(int i = 0; i < numberOfCrates ; i++)
+                {
+                    auxContainer.addCrateNumber(crateNumbers.get(aux));
+                    aux ++;
+                }
+                numberOfCrates -= bestQuantityPerContainer;
+                usedContainers.add(auxContainer);
+
+            }
+        if (numberOfCrates > 0) {
+            Container auxContainer = new Container(container.getHeight(),container.getWidth(),container.getLength());
+            while (aux < crateNumbers.size()){
+            auxContainer.addCrateNumber(crateNumbers.get(aux));
+            aux ++;
+            }
+            usedContainers.add(auxContainer);
+        }
+    }
+
+
+    private void setProductsQuantitiesForOrder(){
+        for(Product product : products){
+            product.setCurrentQuantity(product.getMaxQuantity() - product.getCurrentQuantity() + product.getMinQuantity());
+        }
+    }
+
+    public ArrayList<Double> getRequiredDimensionsPC(){
         double length = 0, width = 0, height = 0;
         for(Product product : products){
             if(product.getLength() > length) length = product.getLength();
@@ -105,8 +176,8 @@ public class AlgorithmController {
         {
             if(auxCrate.usableCrate())
             {
-                int bestQuantityPerCrate = getBestQuantityPerCrate(product, auxCrate).get(1);
-                int position = getBestQuantityPerCrate(product, auxCrate).get(0);
+                int bestQuantityPerCrate = getBestQuantity(product, auxCrate).get(1);
+                int position = getBestQuantity(product, auxCrate).get(0);
                 if(bestQuantityPerCrate > 0 && product.getCurrentQuantity() >= bestQuantityPerCrate)
                 {
                     Product iffyProduct = new Product(product.getName(), product.getLength(), product.getHeight(), product.getWidth(),bestQuantityPerCrate);
@@ -115,7 +186,7 @@ public class AlgorithmController {
                     subtractDimensionsOne(position,iffyProduct,auxCrate);
                     auxCrate.addProduct(iffyProduct);
                 }
-                else if (product.getCurrentQuantity() < bestQuantityPerCrate &&product.getCurrentQuantity() > 0)
+                else if (product.getCurrentQuantity() < bestQuantityPerCrate && product.getCurrentQuantity() > 0)
                 {
                     Product iffyProduct = new Product(product.getName(), product.getLength(), product.getHeight(), product.getWidth(), product.getCurrentQuantity());
                     //iffyProduct.printDetails();
@@ -128,7 +199,9 @@ public class AlgorithmController {
         return product.getCurrentQuantity();
     }
 
-    private ArrayList<Integer> getBestQuantityPerCrate(Product product, Crate crate)
+
+
+    private ArrayList<Integer> getBestQuantity(Product product, Crate crate)
     {
         int sliceWidthWidth = (int)(crate.getWidth()/ product.getWidth());
         int sliceLengthLength = (int)(crate.getLength()/ product.getLength());
@@ -171,6 +244,43 @@ public class AlgorithmController {
 
     }
 
+
+    private ArrayList<Integer> getBestQuantityTwo( Crate crate, Container container)
+    {
+        int sliceWidthWidth = (int)(container.getWidth()/ crate.getWidth());
+        int sliceLengthLength = (int)(container.getLength()/ crate.getLength());
+        int sliceHeight = (int)(container.getHeight()/ crate.getHeight());
+        int quantityPerContainerZero = sliceLengthLength*sliceHeight*sliceWidthWidth;
+
+        int sliceWidthLength = (int)(container.getWidth()/ crate.getLength());
+        int sliceLengthHeight = (int)(container.getLength()/ crate.getHeight());
+        int sliceHeightWidth = (int)(container.getHeight()/ crate.getWidth());
+        int quantityPerContainerNinety = sliceLengthHeight*sliceHeightWidth*sliceWidthLength;
+
+        int sliceWidthHeight = (int)(container.getWidth()/ crate.getHeight());
+        int sliceLengthWidth = (int)(container.getLength()/ crate.getWidth());
+        int sliceHeightLength = (int)(container.getHeight()/ crate.getLength());
+        int quantityPerContainerOneEighty = sliceLengthWidth*sliceHeightLength*sliceWidthHeight;
+
+        ArrayList<Integer> aux = new ArrayList<>();
+
+        if((quantityPerContainerZero >quantityPerContainerNinety)&&(quantityPerContainerZero > quantityPerContainerOneEighty)){
+            //quantity for that position
+            aux.add(quantityPerContainerZero);
+            return aux;
+        }
+
+        if ((quantityPerContainerZero <= quantityPerContainerNinety)&&(quantityPerContainerNinety > quantityPerContainerOneEighty))
+        {
+            //quantity for that position
+            aux.add(quantityPerContainerNinety);
+            return aux;
+        }
+        //quantity for that position
+        aux.add(quantityPerContainerOneEighty);
+        return aux;
+
+    }
 
 
     private void subtractDimensionsOne(int position, Product product, Crate crate)

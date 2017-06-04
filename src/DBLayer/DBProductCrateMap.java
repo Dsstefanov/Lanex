@@ -13,8 +13,9 @@ import java.util.ArrayList;
  */
 public class DBProductCrateMap {
 
-    public boolean create(int orderID,ArrayList<Crate> crates){
+    public ArrayList<Integer> create(int orderID,ArrayList<Crate> crates){
         java.sql.Connection conn = DBConnection.getInstance().getDBcon();
+        ArrayList<Integer> crateNumbers = new ArrayList<>();
         for(Crate crate : crates){
             try {
                 PreparedStatement ps1 =conn.prepareStatement("INSERT INTO CrateIdentificationTable (crateID, orderID) " +
@@ -25,10 +26,11 @@ public class DBProductCrateMap {
                 PreparedStatement ps2 = conn.prepareStatement("SELECT TOP 1 crateNumber FROM CrateIdentificationTable ORDER BY crateNumber DESC");
                 ResultSet rs = ps2.executeQuery();
                 int crateNumber;
+
                 if(rs.next())
                 {
                     crateNumber = rs.getInt("crateNumber");
-                    System.out.println(crateNumber);
+                    crateNumbers.add(crateNumber);
                     for(Product product : crate.getProducts()){
                         PreparedStatement ps3 = conn.prepareStatement("INSERT INTO ProductCrateMap (productBarcode, crateNumber, productQuantity) VALUES ( ?, ?, ?)");
                         ps3.setString(1,product.getBarcode());
@@ -41,7 +43,7 @@ public class DBProductCrateMap {
                 e.printStackTrace();
             }
         }
-    return true;
+        return crateNumbers;
     }
     /** To be modified to DeleteOnCascade**/
     public boolean delete(int orderID){
