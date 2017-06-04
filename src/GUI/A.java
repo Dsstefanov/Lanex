@@ -1,9 +1,12 @@
 package GUI;
 import ControlLayer.ProductController;
 import ModelLayer.Product;
-
+import javax.swing.JFrame;
 import java.util.ArrayList;
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import ControlLayer.NotificationController;
 /**
@@ -17,6 +20,7 @@ public class A extends javax.swing.JFrame {
     private ArrayList<Product> products;
     private ArrayList<Product> orderedProducts = new ArrayList<>();
     public A() {
+
         initComponents();
 
         // use the addRowToJTable
@@ -66,8 +70,11 @@ public class A extends javax.swing.JFrame {
         jScrollPane1.setBounds(0,0,750,700);
         getContentPane().add(jScrollPane1);
         jTable1.setBounds(0,0,750,750);
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
         getContentPane().add(jTable1);
+        Border border = jScrollPane1.getBorder();
+        Border margin = new EmptyBorder(10,10,10,10);
+        jScrollPane1.setBorder(new CompoundBorder(border, margin));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
                 new Object [][] {
@@ -89,7 +96,7 @@ public class A extends javax.swing.JFrame {
             A frame = new A();
             frame.setVisible(true);
             frame.getContentPane().setLayout(null);
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             frame.setBounds(100, 100, 850, 700);
 
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {

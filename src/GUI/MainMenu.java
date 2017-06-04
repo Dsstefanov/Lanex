@@ -3,16 +3,9 @@ package GUI;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import javax.swing.JButton;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
@@ -28,6 +21,7 @@ public class MainMenu extends JFrame {
     private JButton btProduct;
     private JButton btContractor;
     private JButton btExit;
+    private JButton btNotification;
 
     /**
      * Launch the application.
@@ -38,6 +32,7 @@ public class MainMenu extends JFrame {
                 try {
                     MainMenu frame = new MainMenu();
                     frame.setVisible(true);
+                    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -56,7 +51,7 @@ public class MainMenu extends JFrame {
     private void initializeComponents() {
         setTitle("Main Menu");
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         setBounds(100, 100, 579, 447);
 
         JMenuBar menuBar = new JMenuBar();
@@ -98,6 +93,15 @@ public class MainMenu extends JFrame {
 
         btExit.setBounds(197, 293, 158, 36);
         contentPane.add(btExit);
+        btNotification = new JButton("Notification");
+        btNotification.setBounds(452, 30, 97, 25);
+        contentPane.add(btNotification);
+        btNotification.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                A.main(null);
+            }
+        });
+
     }
 
     private void createEvents() {
