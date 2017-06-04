@@ -18,6 +18,7 @@ public class Login {
     private JMenuItem mbiExit;
     private JButton btnLogin;
     int loginCommand;
+    private JLabel lblCredintials;
     /**
      * Launch the application.
      */
@@ -66,9 +67,14 @@ public class Login {
         txtUsername.setColumns(10);
 
         btnLogin = new JButton("LOGIN");
+
+        lblCredintials = new JLabel("Username: 123456789");
+
+        lblCredintials.setFont(new Font("SansSerif", Font.PLAIN, 15));
+
         GroupLayout groupLayout = new GroupLayout(mainFrame.getContentPane());
         groupLayout.setHorizontalGroup(
-                groupLayout.createParallelGroup(Alignment.LEADING)
+                groupLayout.createParallelGroup(Alignment.TRAILING)
                         .addGroup(groupLayout.createSequentialGroup()
                                 .addGap(56)
                                 .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
@@ -78,11 +84,17 @@ public class Login {
                                                 .addPreferredGap(ComponentPlacement.RELATED)
                                                 .addComponent(txtUsername, 143, 143, 143)))
                                 .addGap(223))
+                        .addGroup(groupLayout.createSequentialGroup()
+                                .addContainerGap(359, Short.MAX_VALUE)
+                                .addComponent(lblCredintials)
+                                .addGap(28))
         );
         groupLayout.setVerticalGroup(
                 groupLayout.createParallelGroup(Alignment.LEADING)
                         .addGroup(groupLayout.createSequentialGroup()
-                                .addGap(89)
+                                .addContainerGap()
+                                .addComponent(lblCredintials)
+                                .addGap(60)
                                 .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
                                         .addGroup(groupLayout.createSequentialGroup()
                                                 .addGap(3)
