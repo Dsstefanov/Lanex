@@ -55,6 +55,7 @@ public class NotificationController  {
     }
     public boolean substractAvarageConsumption(){
         for (Product product:productController.readAll()) {
+
             int days = 0;
             try{
                 DateFormat dateFormat1 = new SimpleDateFormat("dd-MM-yy");
@@ -64,21 +65,26 @@ public class NotificationController  {
 
             }
             if(product.getCurrentQuantity()<product.getDailyConsumption()){
-                //TODO create an exception and throw it
+                product.setCurrentQuantity(0);
+                boolean success = productController.update(product.getBarcode(), product.getCurrentQuantity(), getCurrentDate());
+                if (success) {
+                    productsToOrder.add(product);
+                    if (productsToOrder.size()>0){
+                        algorithmController = new AlgorithmController(productsToOrder);
+                    }
+                }
             }else {
-                if (product.getIsOrdered()==0 && days>0) {
+                if (days>0) {
                     product.setCurrentQuantity(product.getCurrentQuantity() - product.getDailyConsumption() *days);
                     boolean success = productController.update(product.getBarcode(), product.getCurrentQuantity(), getCurrentDate());
                     if (success) {
-                        if (product.getCurrentQuantity() <= product.getMinQuantity() +  7*product.getDailyConsumption()) {
+                        if ((product.getCurrentQuantity() <= product.getMinQuantity() +  7*product.getDailyConsumption()) && product.getIsOrdered()==0) {
                             productsToOrder.add(product);
                         }
                         if (productsToOrder.size()>0){
                             algorithmController = new AlgorithmController(productsToOrder);
 
                         }
-                    } else {
-                        //TODO throw exception for not updated
                     }
                 }
             }
