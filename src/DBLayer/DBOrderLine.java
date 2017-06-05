@@ -25,6 +25,7 @@ public class DBOrderLine {
             PreparedStatement ps2 = conn.prepareStatement("UPDATE Product SET isOrdered = 1 WHERE barcode = ?");
             ps2.setString(1,product.getBarcode());
             ps2.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
