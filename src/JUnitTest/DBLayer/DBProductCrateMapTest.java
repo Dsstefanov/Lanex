@@ -34,7 +34,7 @@ public class DBProductCrateMapTest {
             ArrayList<Crate> crates = new ArrayList<>();
             crates.add(crate);
             crates.add(crate1);
-            assertTrue(dbProductCrateMap.create(2,crates));
+            assertNotNull(dbProductCrateMap.create(2,crates));
         } catch (Exception e) {
             e.getMessage();
             fail();

@@ -64,15 +64,11 @@ public class NotificationController  {
             }catch (ParseException e){
 
             }
-            if(product.getCurrentQuantity()<product.getDailyConsumption()){
+            if(product.getCurrentQuantity()<product.getDailyConsumption() && days>0){
                 product.setCurrentQuantity(0);
-                boolean success = productController.update(product.getBarcode(), product.getCurrentQuantity(), getCurrentDate());
-                if (success) {
-                    productsToOrder.add(product);
-                    if (productsToOrder.size()>0){
-                        algorithmController = new AlgorithmController(productsToOrder);
-                    }
-                }
+                productController.update(product.getBarcode(), product.getCurrentQuantity(), getCurrentDate());
+                productsToOrder.add(product);
+
             }else {
                 if (days>0) {
                     product.setCurrentQuantity(product.getCurrentQuantity() - product.getDailyConsumption() *days);
@@ -81,16 +77,12 @@ public class NotificationController  {
                         if ((product.getCurrentQuantity() <= product.getMinQuantity() +  7*product.getDailyConsumption()) && product.getIsOrdered()==0) {
                             productsToOrder.add(product);
                         }
-                        if (productsToOrder.size()>0){
-                            algorithmController = new AlgorithmController(productsToOrder);
-
-                        }
                     }
                 }
             }
         }
         if (productsToOrder.size()!=0){
-            this.notifyEmployee();
+            algorithmController = new AlgorithmController(productsToOrder);
         }
         return true;
     }
