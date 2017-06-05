@@ -38,7 +38,7 @@ public class AlgorithmController {
         dbContainer = new DBContainer();
         dbCrateContainerMap = new DBCrateContainerMap();
         dbProductCrateMap = new DBProductCrateMap();
-
+        System.out.println("Main started");
         mainMethod();
     }
 
@@ -57,29 +57,34 @@ public class AlgorithmController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        System.out.println("Crate dimensions found");
         try {
             ArrayList<Double> reqDimensions2 = new ArrayList<>();
             reqDimensions2.add(protoCrate.getLength());
             reqDimensions2.add(protoCrate.getHeight());
             reqDimensions2.add(protoCrate.getWidth());
+            System.out.println("Container dimensions: " + reqDimensions2.get(0)+"  " + reqDimensions2.get(1)+ " " + reqDimensions2.get(2));
             protoContainer = dbContainer.getRequiredContainer(reqDimensions2);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        System.out.println("Container dimensions found");
 
         for (Product product: products){
+            System.out.println("Product's barcode: " + product.getBarcode());
             product.setCurrentQuantity(maximizeLayers(product));
             createNewCrates(product,protoCrate);
             product.setCurrentQuantity(0);
         }
+        System.out.println("Products added into crates");
+
 
         ArrayList<Integer> crateNumbers = dbProductCrateMap.create(orderID,usedCrates);
         int numberOfCrates = usedCrates.size();
         createNewContainers(protoCrate, protoContainer,numberOfCrates,crateNumbers);
 
         dbCrateContainerMap.create(orderID,protoContainer.getContainerId(),usedContainers);
-
+        System.out.println("Crates added into containers");
     }
     /** The method createNewCrates() creates additional crates in the system in order to supply the need of product space for shipping.
      *  The header contains the product than need to be ordered and inserted in crate/crates and crate defines the model of crate that is going to be used.
@@ -91,12 +96,10 @@ public class AlgorithmController {
 
         int bestQuantityPerCrate = getBestQuantity(product, crate).get(1);
         int position = getBestQuantity(product, crate).get(0);
-        //System.out.println(bestQuantityPerCrate + " and product's quantity is:" + product.getCurrentQuantity()());
 
         if (product.getCurrentQuantity() >= bestQuantityPerCrate)
             while (product.getCurrentQuantity() >= bestQuantityPerCrate) {
-                Product iffyProduct = new Product(product.getName(), product.getLength(), product.getHeight(), product.getWidth(),bestQuantityPerCrate);
-                //iffyProduct.printDetails();
+                Product iffyProduct = new Product(product.getBarcode(), product.getLength(), product.getHeight(), product.getWidth(),bestQuantityPerCrate);
                 product.setCurrentQuantity(product.getCurrentQuantity() - bestQuantityPerCrate);
                 Crate cratos = new Crate(crate.getCrateId(),crate.getLength(), crate.getHeight(), crate.getWidth());
                 subtractDimensionsOne(position,iffyProduct,cratos);
@@ -104,8 +107,7 @@ public class AlgorithmController {
                 usedCrates.add(cratos);
             }
         if (product.getCurrentQuantity() > 0) {
-            System.out.println(product.getName());
-            Product iffyProduct = new Product(product.getName(), product.getLength(), product.getHeight(), product.getWidth(), product.getCurrentQuantity());
+            Product iffyProduct = new Product(product.getBarcode(), product.getLength(), product.getHeight(), product.getWidth(), product.getCurrentQuantity());
             //iffyProduct.printDetails();
             product.setCurrentQuantity(0);
             Crate cratos = new Crate(crate.getCrateId(),crate.getLength(), crate.getHeight(), crate.getWidth());
@@ -120,11 +122,11 @@ public class AlgorithmController {
 
         int bestQuantityPerContainer = getBestQuantityTwo(crate, container).get(0);
         int aux = 0;
-        if (numberOfCrates >= bestQuantityPerContainer)
-            while (numberOfCrates >= bestQuantityPerContainer)
+        if (numberOfCrates > bestQuantityPerContainer)
+            while (numberOfCrates > bestQuantityPerContainer)
             {
                 Container auxContainer = new Container(container.getHeight(),container.getWidth(),container.getLength());
-                for(int i = 0; i < numberOfCrates ; i++)
+                for(int i = 0; i < bestQuantityPerContainer ; i++)
                 {
                     auxContainer.addCrateNumber(crateNumbers.get(aux));
                     aux ++;
@@ -146,7 +148,9 @@ public class AlgorithmController {
 
     private void setProductsQuantitiesForOrder(){
         for(Product product : products){
+            if(product.getCurrentQuantity() >= product.getMinQuantity())
             product.setCurrentQuantity(product.getMaxQuantity() - product.getCurrentQuantity() + product.getMinQuantity());
+            else product.setCurrentQuantity(product.getMaxQuantity() - product.getCurrentQuantity());
         }
     }
 
@@ -180,7 +184,7 @@ public class AlgorithmController {
                 int position = getBestQuantity(product, auxCrate).get(0);
                 if(bestQuantityPerCrate > 0 && product.getCurrentQuantity() >= bestQuantityPerCrate)
                 {
-                    Product iffyProduct = new Product(product.getName(), product.getLength(), product.getHeight(), product.getWidth(),bestQuantityPerCrate);
+                    Product iffyProduct = new Product(product.getBarcode(), product.getLength(), product.getHeight(), product.getWidth(),bestQuantityPerCrate);
                     product.setCurrentQuantity(product.getCurrentQuantity() - bestQuantityPerCrate);
                     //iffyProduct.printDetails();
                     subtractDimensionsOne(position,iffyProduct,auxCrate);
@@ -188,7 +192,7 @@ public class AlgorithmController {
                 }
                 else if (product.getCurrentQuantity() < bestQuantityPerCrate && product.getCurrentQuantity() > 0)
                 {
-                    Product iffyProduct = new Product(product.getName(), product.getLength(), product.getHeight(), product.getWidth(), product.getCurrentQuantity());
+                    Product iffyProduct = new Product(product.getBarcode(), product.getLength(), product.getHeight(), product.getWidth(), product.getCurrentQuantity());
                     //iffyProduct.printDetails();
                     product.setCurrentQuantity(0);
                     subtractDimensionsTwo(position,iffyProduct,auxCrate);

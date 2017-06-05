@@ -16,7 +16,6 @@ public class DBOrderLine {
         java.sql.Connection conn = DBConnection.getInstance().getDBcon();
         for(Product product : products)
         try {
-
             PreparedStatement ps1 =conn.prepareStatement("INSERT INTO OrderLine (orderID, productBarcode,productQuantity) VALUES (?,?,?)");
             ps1.setInt(1,orderID);
             ps1.setString(2,product.getBarcode());

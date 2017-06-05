@@ -14,7 +14,7 @@ public class DBContainer implements IDBContainer{
 
         Container container = new Container(id, height, length, width);
         try {
-            
+
             String sql = "INSERT INTO Container (id, height, length, width) VALUES (?,?,?,?)";
             java.sql.Connection conn = DBConnection.getInstance().getDBcon();
             PreparedStatement ps =conn.prepareStatement(sql);
@@ -42,7 +42,7 @@ public class DBContainer implements IDBContainer{
             if (rs.next()){
                 container = buildObject(rs);
             }
-            
+
         } finally{
             DBConnection.closeConnection();
         }
@@ -82,8 +82,7 @@ public class DBContainer implements IDBContainer{
             else
             {
                 int id = findAvailableID();
-                create(id, reqDimensions.get(0), reqDimensions.get(1), reqDimensions.get(2));
-                return getRequiredContainer(reqDimensions);
+                return create(id, reqDimensions.get(0), reqDimensions.get(1), reqDimensions.get(2));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -124,7 +123,7 @@ public class DBContainer implements IDBContainer{
             psttm.setDouble(1, height);
             psttm.setDouble(2, length);
             psttm.setDouble(3, width);
-            
+
             psttm.executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();

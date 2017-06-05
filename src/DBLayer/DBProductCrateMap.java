@@ -30,9 +30,12 @@ public class DBProductCrateMap {
                 if(rs.next())
                 {
                     crateNumber = rs.getInt("crateNumber");
+                    System.out.println("Crate number is: " + crateNumber);
                     crateNumbers.add(crateNumber);
                     for(Product product : crate.getProducts()){
                         PreparedStatement ps3 = conn.prepareStatement("INSERT INTO ProductCrateMap (productBarcode, crateNumber, productQuantity) VALUES ( ?, ?, ?)");
+
+                        System.out.println("Product Barcode: " + product.getBarcode());
                         ps3.setString(1,product.getBarcode());
                         ps3.setInt(2,crateNumber);
                         ps3.setInt(3,product.getCurrentQuantity());

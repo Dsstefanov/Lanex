@@ -198,7 +198,6 @@ public class DBProduct implements IDBProduct{
             double length = product.getLength();
             double width = product.getWidth();
             String barcode = product.getBarcode();
-            System.out.println(barcode);
             int minQuantity = product.getMinQuantity();
             int maxQuantity = product.getMaxQuantity();
             int currentCapacity = product.getCurrentQuantity();
@@ -231,25 +230,6 @@ public class DBProduct implements IDBProduct{
         return true;
     }
 
-    public ArrayList<Product> getProductsToOrder(){
-
-       ArrayList<Product> productsToOrder = new ArrayList<>();
-        try {
-            java.sql.Connection conn = DBConnection.getInstance().getDBcon();
-            PreparedStatement preparedStatement = conn.prepareStatement("BEGIN TRAN " +
-                    "SELECT * FROM Product WHERE isOrdered = 0 AND currentQuantity - 44*dailyConsumption<=0;" +
-                    "" +
-                    "UPDATE Product SET isOrdered = 1 WHERE isOrdered = 0 AND currentQuantity - 44*dailyConsumption<=0;" +
-                    "" +
-                    "COMMIT TRAN ");
-            ResultSet rs = preparedStatement.executeQuery();
-            return buildObjects(rs);
-            // TODO: 5/31/2017 : to also change as soon as selected the isOrdered to 1 and to create a different objectBuilder or to use the old one and reuse the data in ControlLayer
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return  productsToOrder;
-    }
 
     public void update(String barcode, boolean update){
         try{

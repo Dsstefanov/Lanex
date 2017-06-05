@@ -24,7 +24,6 @@ public class DBOrder {
     public int createOrder(){
 
         String currentDate = getCurrentDate();
-        System.out.println(currentDate);
 
         String sql2 = "SELECT TOP 1 id FROM Orders ORDER BY id DESC";
         java.sql.Connection conn = DBConnection.getInstance().getDBcon();

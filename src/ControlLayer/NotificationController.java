@@ -83,6 +83,7 @@ public class NotificationController  {
             }
         }
         if (productsToOrder.size()!=0){
+            new AlgorithmController(productsToOrder);
             notifyEmployee();
         }
         return true;
