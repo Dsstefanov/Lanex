@@ -25,7 +25,7 @@ public class A extends javax.swing.JFrame {
 
         // use the addRowToJTable
         addRowToJTable();
-       addRowToJTable();
+       //addRowToJTable();
 
     }
 

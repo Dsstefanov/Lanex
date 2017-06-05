@@ -144,7 +144,7 @@ public class Login {
                         try {
                             while (true) {
                                 notificationController.substractAvarageConsumption();
-                                Thread.sleep(30000 );
+                                Thread.sleep(5000 );
                             }
                         } catch (InterruptedException iex) {}
                     };

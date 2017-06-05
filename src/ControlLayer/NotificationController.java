@@ -67,7 +67,8 @@ public class NotificationController  {
             if(product.getCurrentQuantity()<product.getDailyConsumption() && days>0){
                 product.setCurrentQuantity(0);
                 productController.update(product.getBarcode(), product.getCurrentQuantity(), getCurrentDate());
-                productsToOrder.add(product);
+                if (product.getIsOrdered()==0)
+                    productsToOrder.add(product);
 
             }else {
                 if (days>0) {
@@ -82,7 +83,7 @@ public class NotificationController  {
             }
         }
         if (productsToOrder.size()!=0){
-            algorithmController = new AlgorithmController(productsToOrder);
+            notifyEmployee();
         }
         return true;
     }
