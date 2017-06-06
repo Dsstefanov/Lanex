@@ -32,6 +32,8 @@ public class Login {
 
                     Login window = new Login();
                     window.mainFrame.setVisible(true);
+                    window.mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -138,6 +140,7 @@ public class Login {
                     JOptionPane.showMessageDialog(null, "Welcome");
                     mainFrame.dispose();
                     MainMenu chooseMenu = new MainMenu();
+                    chooseMenu.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                     chooseMenu.setVisible(true);
                     NotificationController notificationController = NotificationController.getInstance();
                     Runnable r1 = () -> {

@@ -1,6 +1,5 @@
 package GUI;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.*;
@@ -8,9 +7,6 @@ import javax.swing.border.EmptyBorder;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.Toolkit;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class MainMenu extends JFrame {
 
@@ -33,6 +29,7 @@ public class MainMenu extends JFrame {
                     MainMenu frame = new MainMenu();
                     frame.setVisible(true);
                     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -98,7 +95,7 @@ public class MainMenu extends JFrame {
         contentPane.add(btNotification);
         btNotification.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                A.main(null);
+                Notification.main(null);
             }
         });
 
