@@ -13,7 +13,7 @@ import GUI.A;
  * Created by USER on 29.5.2017 г..
  */
 public class NotificationController  {
-    AlgorithmController algorithmController;
+    //AlgorithmController algorithmController;
 
     /**
      *  singleton
@@ -28,7 +28,7 @@ public class NotificationController  {
     private NotificationController() {
     }
 
-    int differenceInDays;
+    //int differenceInDays;
 
 
     public ArrayList<Product> getProductsToOrder() {
@@ -41,11 +41,11 @@ public class NotificationController  {
     ArrayList<Product> productsToOrder = new ArrayList<>();
     ProductController productController = new ProductController();
 
-    String lastUpdated;
-    Date lastUpdatedDate;
+    //String lastUpdated;
+    //Date lastUpdatedDate;
     String today;
     DateFormat dateFormat = new SimpleDateFormat("dd-MM-yy");
-    boolean update;
+    //boolean update;
 
 
     public  String getCurrentDate() {

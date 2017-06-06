@@ -12,11 +12,11 @@ import java.util.ArrayList;
  * Created by RedJohn on 4/26/2017.
  */
 public class ProductController {
-    ArrayList<String> errors = new ArrayList<>();
-    DBProduct dbProduct;
-    double height, length, width;
-    String productID, name;
-    int minQuantity, maxQuantity, currentQuantity, dailyConsumption, cvr;
+    private ArrayList<String> errors = new ArrayList<>();
+    private DBProduct dbProduct;
+    private double height, length, width;
+    private String productID, name;
+    private int minQuantity, maxQuantity, currentQuantity, dailyConsumption, cvr;
 
     public ArrayList<String> getErrors(){
         return errors;

@@ -11,9 +11,9 @@ import java.util.ArrayList;
 /**
  * Created by Admin on 4/28/2017.
  */
-public class ContractorController extends Controller{
+public class ContractorController {
     private DBContractor dbContractor;
-    ArrayList<String> errors = new ArrayList<>();
+    private ArrayList<String> errors = new ArrayList<>();
     private String validateName, validateAddress, validateEmail, validatePhone, validateCity;
     private int validateCVR;
 

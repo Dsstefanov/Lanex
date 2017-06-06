@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * Created by Luke on 23.05.2017.
  */
 public class LoginController {
-    ArrayList<Integer> logins = new ArrayList<>();
+    private ArrayList<Integer> logins = new ArrayList<>();
 
 
     public LoginController() {
@@ -40,7 +40,7 @@ public class LoginController {
 
 
 
-    public boolean checkLogin(Integer x) {
+    public boolean checkLogin(int x) {
         boolean loginSuccessful = false;
         try {
 
