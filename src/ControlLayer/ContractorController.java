@@ -12,13 +12,17 @@ import java.util.ArrayList;
  * Created by Admin on 4/28/2017.
  */
 public class ContractorController {
-    private DBContractor dbContractor;//
+    private DBContractor dbContractor =new DBContractor();
+    private static ContractorController instance;
     private ArrayList<String> errors = new ArrayList<>();
     private String validateName, validateAddress, validateEmail, validatePhone, validateCity;
     private int validateCVR;
 
-    public ContractorController() {
-        dbContractor = new DBContractor();
+    public static ContractorController getInstance() {
+        if (instance == null) {
+            instance = new ContractorController();
+        }
+        return instance;
     }
 
     public ArrayList<String> getErrors(){
