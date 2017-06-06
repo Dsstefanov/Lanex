@@ -12,12 +12,16 @@ import java.util.ArrayList;
  * Created by Yeah on 5/21/2017.
  */
 public class EmployeeController extends Controller {
+    private static EmployeeController instance;
     ArrayList<String> errors = new ArrayList<>();
-    private DBEmployee dbEmployee;
+    private DBEmployee dbEmployee = new DBEmployee();
     Validator validator = new Validator();
 
-    public EmployeeController() {
-        dbEmployee = new DBEmployee();
+    public static EmployeeController getInstance() {
+        if (instance == null) {
+            instance = new EmployeeController();
+        }
+        return instance;
     }
     public ArrayList<String> getErrors(){
         return errors;
