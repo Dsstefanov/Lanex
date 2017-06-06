@@ -77,7 +77,7 @@ public class EmployeeCreate extends JFrame {
                     }
                 } catch (NumberFormatException e) {
                     e.getMessage();
-                    //employeeController.getErrors().add(e.getMessage());
+                    employeeController.getErrors().add(e.getMessage());
                 }
 
                 try {
@@ -96,7 +96,7 @@ public class EmployeeCreate extends JFrame {
                     JDialog dialog = optionPane.createDialog("Failure");
                     dialog.setAlwaysOnTop(true);
                     dialog.setVisible(true);
-                    //employeeController.removeErrorMessages();
+                    employeeController.removeErrorMessages();
                 }
             }
         });

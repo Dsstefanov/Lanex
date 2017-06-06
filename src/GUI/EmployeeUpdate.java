@@ -18,6 +18,7 @@ import javax.swing.JTextField;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import ValidatorLayer.Validator;
 
 public class EmployeeUpdate extends JFrame {
 
@@ -60,6 +61,7 @@ public class EmployeeUpdate extends JFrame {
     }
 
     private void actions(){
+        Validator validator = new Validator();
 
         EmployeeController empControl = new EmployeeController();
 
@@ -123,19 +125,17 @@ public class EmployeeUpdate extends JFrame {
                 String currentCity = tfCity.getText();
 
                 try{
-
-
                     if(empControl.update(new Employee(currentName,currentAddress,currentEmail,currentPhone,currentCity),currentId));
                     clearFields();
                     JOptionPane.showMessageDialog(null, "Operation finished with success!!");
 
                 }catch(Exception ee) {
-                    //empControl.getErrors().add(e.getMessage());
+                    //empControl.getErrors().add(ee.getMessage());
                     JOptionPane optionPane = new JOptionPane("You've got the following error:\n" + ee.getMessage(), JOptionPane.ERROR_MESSAGE);
                     JDialog dialog = optionPane.createDialog("Failure");
                     dialog.setAlwaysOnTop(true);
                     dialog.setVisible(true);
-                    //empControl.removeErrorMessages();
+                    empControl.removeErrorMessages();
                 }
 
             }

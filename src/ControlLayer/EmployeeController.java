@@ -11,27 +11,72 @@ import java.util.ArrayList;
 /**
  * Created by Yeah on 5/21/2017.
  */
-public class EmployeeController {
+public class EmployeeController extends Controller {
+    ArrayList<String> errors = new ArrayList<>();
     private DBEmployee dbEmployee;
     Validator validator = new Validator();
 
     public EmployeeController() {
         dbEmployee = new DBEmployee();
     }
+    public ArrayList<String> getErrors(){
+        return errors;
+    }
+    private String validateName, validateAddress, validateEmail, validatePhone, validateCity;
+    private int validateWorkId;
+
+    public void removeErrorMessages() {
+        this.errors.clear();
+    }
+
+    public void checkAllErrors (String firstLastName,String address,String email,String phone,String city,int work_id){
+        try {
+            String validateName = validator.validateName(firstLastName);
+        } catch (IllegalArgumentException e) {
+            errors.add(e.getMessage());
+        }
+        try {
+            String validateAddress = validator.validateAddress(address);
+        } catch (IllegalArgumentException e) {
+            errors.add(e.getMessage());
+        }
+        try {
+            String validateEmail = validator.validateEmail(email);
+        } catch (IllegalArgumentException e) {
+            errors.add(e.getMessage());
+        }
+        try {
+            String validatePhone = validator.validatePhone(phone);
+        } catch (IllegalArgumentException e) {
+            errors.add(e.getMessage());
+        }
+        try {
+            String validateCity = validator.validateCity(city);
+        } catch (IllegalArgumentException e) {
+            errors.add(e.getMessage());
+        }
+        try {
+            int validateWorkId = validator.validateWorkId(work_id);
+        } catch (IllegalArgumentException e) {
+            errors.add(e.getMessage());
+        }
+    }
+
 
         public boolean create (String firstLastName, String address, String email, String phone, String city, int work_id) {
-            try {
-                String validateName = validator.validateName(firstLastName);
-                String validateAddress = validator.validateAddress(address);
-                String validateEmail = validator.validateEmail(email);
-                String validatePhone = validator.validatePhone(phone);
-                String validateCity = validator.validateCity(city);
-                int validateWorkId = validator.validateWorkId(work_id);
-                dbEmployee.create(validateName, validateAddress, validateEmail, validatePhone, validateCity, validateWorkId);
-                return true;
-            }catch(SQLException e) {
-                e.getMessage();
-                return false;
+            checkAllErrors(firstLastName,address,email,phone,city,work_id);
+            if (errors.size() == 0) {
+                try {
+                    dbEmployee.create(validateName, validateAddress, validateEmail, validatePhone, validateCity, validateWorkId);
+                    return true;
+                } catch (SQLException e) {
+                    e.getMessage();
+                    return false;
+                }
+            } else {
+                throw new IllegalArgumentException(String.join("\n", errors));
+
+
             }
         }
 
@@ -44,11 +89,16 @@ public class EmployeeController {
         }
 
         public boolean update(Employee employee , int work_id) {
-            try{
-                dbEmployee.update(employee, work_id);
-                return true;
-            }catch(SQLException e) {
-                return false;
+            checkAllErrors(employee.getName(), employee.getAddress(), employee.getEmail(), employee.getPhone(), employee.getEmail(), work_id);
+            if (errors.size() == 0) {
+                try {
+                    dbEmployee.update(employee, work_id);
+                    return true;
+                } catch (SQLException e) {
+                    return false;
+                }
+            } else {
+                throw new IllegalArgumentException(String.join("\n", errors));
             }
         }
 
