@@ -83,8 +83,8 @@ public class DBCrate implements IDBCrate {
                 else
                     {
                         int id = findAvailableID();
-                        create(id, reqDimensions.get(0), reqDimensions.get(1), reqDimensions.get(2));
-                        getRequiredCrate(reqDimensions);
+                        return create(id, reqDimensions.get(0), reqDimensions.get(1), reqDimensions.get(2));
+
                     }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -92,7 +92,6 @@ public class DBCrate implements IDBCrate {
             } finally {
                 DBConnection.closeConnection();
             }
-            return crate;
 
     }
 

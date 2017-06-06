@@ -1,5 +1,6 @@
 package ControlLayer;
 
+import DBLayer.DBOrder;
 import ModelLayer.Product;
 
 import java.text.DateFormat;
@@ -80,13 +81,35 @@ public class NotificationController {
         return true;
     }
 
+    public boolean checkOrders(){
+        DBOrder dbOrder = new DBOrder();
+        ArrayList<Integer> orderIDs = dbOrder.getIDByStatus();
+        ArrayList<String> orderDates = dbOrder.getDatesByStatus(orderIDs);
+        int index = 0;
+
+
+            for(String orderDate: orderDates)
+            {
+                int days;
+                try {
+                    DateFormat dateFormat1 = new SimpleDateFormat("dd-MM-yy");
+                    Date lastOrderDate = dateFormat1.parse(orderDate);
+                    days = (int) ((dateFormat.parse(getCurrentDate()).getTime() - lastOrderDate.getTime()) / 86400000);
+                    if(days > 37 ) dbOrder.deliverOrder(orderIDs.get(index));
+                } catch (ParseException e) {}
+                index++;
+            }
+            return true;
+        }
+
+
     public boolean notifyEmployee() {
         try {
             Notification.main(null);
             return true;
         } catch (Exception e) {
-            //TODO specify what kind of exceptions might be thrown during the process
-            return false;//TODO will be changed to throw exception showing what went wrong
+
+            return false;
         }
     }
 }

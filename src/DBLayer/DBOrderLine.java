@@ -43,6 +43,28 @@ public class DBOrderLine {
             e.printStackTrace();
         }
         return true;
+    }
+
+    public boolean updateProductQuantities(int orderID){
+        try {
+            java.sql.Connection conn = DBConnection.getInstance().getDBcon();
+            PreparedStatement ps =conn.prepareStatement("SELECT * FROM OrderLine WHERE orderID = ?");
+            ps.setInt(1,orderID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                String barcode = rs.getString("productBarcode");
+                int productQuantity = rs.getInt("productQuantity");
+                PreparedStatement ps2 = conn.prepareStatement("UPDATE Product SET isOrdered = 0,currentQuantity = (currentQuantity + ?) WHERE barcode = ?");
+                ps2.setInt(1,productQuantity);
+                ps2.setString(2,barcode);
+                ps2.executeUpdate();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+
 
     }
 }
