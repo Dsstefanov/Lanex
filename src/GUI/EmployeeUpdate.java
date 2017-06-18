@@ -80,41 +80,30 @@ public class EmployeeUpdate extends JFrame {
                     if (tryParseInt(currentId)) {
                         currentId = Integer.parseInt(tfWorkId.getText());
                     }
+                    try {
+                        String splitEmployee = empControl.read(currentId);
+                        String[] result = splitEmployee.split(",");
+                        if(result.length != 0) {
+                            tfName.setText(result[0].substring(5));
+                            tfAddress.setText(result[1].substring(8));
+                            tfEmail.setText(result[2].substring(6));
+                            tfPhone.setText(result[3].substring(6));
+                            tfCity.setText(result[4].substring(5));
+                        }
+                    }catch (NullPointerException npe) {
+                        JOptionPane optionPane = new JOptionPane("You've got the following error:\n" + "There is no such user!", JOptionPane.ERROR_MESSAGE);
+                        JDialog dialog = optionPane.createDialog("Failure");
+                        dialog.setAlwaysOnTop(true);
+                        dialog.setVisible(true);
+                    }
                 }catch (NumberFormatException ee) {
                     setFieldsToNull();
                     JOptionPane optionPane = new JOptionPane("You've got the following error:\n" + "Work ID field cannot be empty or letters!", JOptionPane.ERROR_MESSAGE);
                     JDialog dialog = optionPane.createDialog("Failure");
                     dialog.setAlwaysOnTop(true);
                     dialog.setVisible(true);
-
-                }catch (NullPointerException npe) {
-                    setFieldsToNull();
-                    JOptionPane optionPane = new JOptionPane("You've got the following error:\n" + "There is no such user!", JOptionPane.ERROR_MESSAGE);
-                    JDialog dialog = optionPane.createDialog("Failure");
-                    dialog.setAlwaysOnTop(true);
-                    dialog.setVisible(true);
                 }
-
-                try {
-                    String splitEmployee = empControl.read(currentId);
-                    String[] result = splitEmployee.split(",");
-                    if(result.length != 0) {
-                        tfName.setText(result[0].substring(5));
-                        tfAddress.setText(result[1].substring(8));
-                        tfEmail.setText(result[2].substring(6));
-                        tfPhone.setText(result[3].substring(6));
-                        tfCity.setText(result[4].substring(5));
-                    }
-
-                }catch(NullPointerException npe){
-                    JOptionPane optionPane = new JOptionPane("You've got the following error:\n" + "There is no such user!!", JOptionPane.ERROR_MESSAGE);
-                    JDialog dialog = optionPane.createDialog("Failure");
-                    dialog.setAlwaysOnTop(true);
-                    dialog.setVisible(true);
-                }
-            }
-
-        });
+        }});
 
         btnUpdate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

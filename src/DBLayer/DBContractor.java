@@ -44,7 +44,7 @@ public class DBContractor implements IDBContractor {
                 "IF @@ROWCOUNT <> 1 " +
                 "BEGIN " +
                 "ROLLBACK " +
-                "RAISERROR('CVR already exists!', 16, 1) " +
+                "RAISERROR('CVR already exists!', 16, 1) " + //only in MS Management studio
                 "END " +
                 "ELSE " +
                 "BEGIN " +

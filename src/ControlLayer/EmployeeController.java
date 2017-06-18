@@ -35,32 +35,32 @@ public class EmployeeController extends Controller {
 
     public void checkAllErrors (String firstLastName,String address,String email,String phone,String city,int work_id){
         try {
-            String validateName = validator.validateName(firstLastName);
+            this.validateName = validator.validateName(firstLastName);
         } catch (IllegalArgumentException e) {
             errors.add(e.getMessage());
         }
         try {
-            String validateAddress = validator.validateAddress(address);
+            this.validateAddress = validator.validateAddress(address);
         } catch (IllegalArgumentException e) {
             errors.add(e.getMessage());
         }
         try {
-            String validateEmail = validator.validateEmail(email);
+            this.validateEmail = validator.validateEmail(email);
         } catch (IllegalArgumentException e) {
             errors.add(e.getMessage());
         }
         try {
-            String validatePhone = validator.validatePhone(phone);
+            this.validatePhone = validator.validatePhone(phone);
         } catch (IllegalArgumentException e) {
             errors.add(e.getMessage());
         }
         try {
-            String validateCity = validator.validateCity(city);
+            this.validateCity = validator.validateCity(city);
         } catch (IllegalArgumentException e) {
             errors.add(e.getMessage());
         }
         try {
-            int validateWorkId = validator.validateWorkId(work_id);
+            this.validateWorkId = validator.validateWorkId(work_id);
         } catch (IllegalArgumentException e) {
             errors.add(e.getMessage());
         }
