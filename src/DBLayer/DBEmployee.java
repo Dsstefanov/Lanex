@@ -150,7 +150,7 @@ public class DBEmployee implements IDBEmployee {
                     "FROM Person p\n" +
                     "INNER JOIN Employee e\n" +
                     "ON p.id = e.person_id\n" +
-                    "WHERE e.work_id = work_id");
+                    "WHERE e.work_id = ", work_id);
             preparedStatement.setNString(1,name);
             preparedStatement.setNString(2,address);
             preparedStatement.setNString(3,email);
