@@ -93,7 +93,7 @@ public class EmployeeController extends Controller {
         }
 
         public boolean update(Employee employee , int work_id) {
-            checkAllErrors(employee.getName(), employee.getAddress(), employee.getEmail(), employee.getPhone(), employee.getEmail(), work_id);
+            checkAllErrors(employee.getName(), employee.getAddress(), employee.getEmail(), employee.getPhone(),employee.getCity(),work_id);
             if (errors.size() == 0) {
                 try {
                     dbEmployee.update(employee, work_id);
